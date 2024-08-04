@@ -20,13 +20,19 @@ const whitelist = [
   "http://localhost:3000",
   "https://my-tatra-guide-2efc021c92c4.herokuapp.com/",
 ];
+// const corsOptions = {
+//   origin: function (origin, callback) {
+//     if (whitelist.indexOf(origin) !== -1 || !origin) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error("Not allowed by CORS"));
+//     }
+//   },
+// };
+
 const corsOptions = {
   origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1 || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
+    callback(null, true);
   },
 };
 
@@ -960,7 +966,7 @@ app.use(
 
 app.get("*", (req, res) => {
   res.sendFile(
-    path.join(__dirname, "..", "client", "tatra-app", "dist", "index.html")
+    path.resolve(__dirname, "..", "client", "tatra-app", "dist", "index.html")
   );
 });
 
