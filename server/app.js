@@ -8,10 +8,15 @@ const jwt = require("jsonwebtoken");
 const { Pool } = require("pg");
 require("dotenv").config();
 
-let pool = new Pool();
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
+});
 
 const whitelist = ["http://localhost:5173", "http://localhost:3000"];
-let corsOption = {
+const corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
       callback(null, true);
@@ -22,16 +27,12 @@ let corsOption = {
 };
 
 app.use(morgan("dev"));
-app.use(
-  express.urlencoded({
-    extended: true,
-  })
-);
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cors(corsOption));
+app.use(cors(corsOptions));
 
 app.disable("etag");
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 
 app.post("/api/auth/register", (req, res) => {
   console.log(req.body);
@@ -949,7 +950,9 @@ app.post("/api/trails/user-trails", async (req, res) => {
   }
 });
 
-app.use(express.static(path.join(__dirname, "..", "client", "dist")));
+app.use(
+  express.static(path.join(__dirname, "..", "client", "tatra-app", "dist"))
+);
 
 app.get("*", (req, res) => {
   res.sendFile(
@@ -958,5 +961,5 @@ app.get("*", (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log("serv" + port);
+  console.log(`Server is running on port ${port}`);
 });
