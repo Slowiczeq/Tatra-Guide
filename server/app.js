@@ -15,7 +15,11 @@ const pool = new Pool({
   },
 });
 
-const whitelist = ["http://localhost:5173", "http://localhost:3000"];
+const whitelist = [
+  "http://localhost:5173",
+  "http://localhost:3000",
+  "https://my-tatra-guide-2efc021c92c4.herokuapp.com/",
+];
 const corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
