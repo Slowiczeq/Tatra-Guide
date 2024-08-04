@@ -2,7 +2,7 @@
   "name": "tatra-guide",
   "version": "1.0.0",
   "scripts": {
-    "heroku-postbuild": "cd client/tatra-app && npm install --include=dev && npm run build",
+    "heroku-postbuild": "cd client/tatra-app && npm install --include=dev && npm run build && cd ../../server && npm install",
     "start": "cd server && node app.js"
   },
   "engines": {
