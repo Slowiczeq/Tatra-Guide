@@ -1,0 +1,87 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('../assets/fonts/Inter-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'Inter';
+    src: url('../assets/fonts/Inter-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'Inter';
+    src: url('../assets/fonts/Inter-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'Inter';
+    src: url('../assets/fonts/Inter-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'Inter';
+    src: url('../assets/fonts/Inter-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+  }
+  .btn-primary {
+    background-color: $secondary-color !important;
+    color: white !important;
+    border-radius: 25px !important;
+    padding: 20px 30px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+  }
+
+  .btn-danger {
+    background-color: $danger-color !important;
+    color: white !important;
+    border-radius: 25px !important;
+    padding: 20px 30px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+  }
+  .container {
+    max-width: 1600px;
+    width: 1400px;
+    margin: 60px auto;
+  }
+  .main-title {
+    font-size: 28px;
+    margin: 10px auto 40px;
+    font-weight: 700;
+    color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid $secondary-color;
+    padding-bottom: 40px;
+  }
+  .search-wrapper .el-select__wrapper {
+    padding-left: 35px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 20px;
+    box-shadow: unset !important;
+  }
+  .container-wrapper {
+    background-color: #EDE8DA;
+    padding: 40px 0;
+  }

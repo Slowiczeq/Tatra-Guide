@@ -1,0 +1,62 @@
+
+.page-menu {
+    height: 80px !important;
+    padding: 0px 15px !important;
+    .el-menu-item {
+        border-bottom: unset !important;
+        font-size: 16px;
+        font-weight: 400;
+        a {
+            text-decoration: unset;
+            height: 100%;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        .router-link-active {
+            color: #d59617 !important;
+        }
+        &:hover {
+            background-color: unset !important;
+        }
+        &:focus {
+            background-color: unset !important;
+        }
+    }
+    .el-sub-menu {
+        font-size: 16px;
+        color: #000;
+        a {
+            text-decoration: unset;
+            height: 100%;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            color: black;
+            font-size: 16px;
+        }
+    }
+    .menu-title {
+        font-weight: 700;
+        font-size: 16px;
+        text-transform: uppercase;
+        margin-right: 50px !important;
+        .router-link-active {
+            color: #000 !important
+        }
+
+    }
+}
+
+.el-menu--popup .el-menu-item {
+    font-size: 16px;
+    color: #000;
+    a {
+        text-decoration: unset;
+        height: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        color: black;
+    }
+}
