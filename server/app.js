@@ -10,7 +10,7 @@ require("dotenv").config();
 
 let pool = new Pool();
 
-const whitelist = ["http://localhost:5173"];
+const whitelist = ["http://localhost:5173", "http://localhost:3000"];
 let corsOption = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
@@ -32,10 +32,6 @@ app.use(cors(corsOption));
 
 app.disable("etag");
 const port = process.env.PORT;
-
-app.get("/", (req, res) => {
-  res.send("Witaj, świat!");
-});
 
 app.post("/api/auth/register", (req, res) => {
   console.log(req.body);
@@ -956,7 +952,9 @@ app.post("/api/trails/user-trails", async (req, res) => {
 app.use(express.static(path.join(__dirname, "..", "client", "dist")));
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "client", "dist", "index.html"));
+  res.sendFile(
+    path.join(__dirname, "..", "client", "tatra-app", "dist", "index.html")
+  );
 });
 
 app.listen(port, () => {
