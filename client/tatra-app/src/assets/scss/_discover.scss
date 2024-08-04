@@ -51,3 +51,10 @@
         align-items: center;
     }
 }
+
+@media(max-width: 768px) {
+    .discover-page__list {
+        flex-direction: column;
+        margin-top: 20px;
+    }
+}

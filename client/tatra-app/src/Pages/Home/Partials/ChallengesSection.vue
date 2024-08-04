@@ -83,4 +83,16 @@ import { ref, computed } from "vue";
   width: 100%;
   border-radius: 20px;
 }
+@media (max-width: 768px) {
+  .challenge-left-title {
+    font-size: 20px;
+  }
+  .challenge-left-text {
+    font-size: 18px;
+  }
+  .container {
+    flex-direction: column;
+    gap: 15px;
+  }
+}
 </style>

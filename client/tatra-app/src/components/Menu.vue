@@ -1,8 +1,24 @@
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, onMounted, onBeforeUnmount } from "vue";
 import { useGlobalStore } from "../stores/globalStore";
+
 const globalStore = useGlobalStore();
+const isEllipsis = ref(false);
+
+const handleResize = () => {
+  isEllipsis.value = window.innerWidth < 768;
+};
+
+onMounted(() => {
+  handleResize();
+  window.addEventListener("resize", handleResize);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", handleResize);
+});
 </script>
+
 <template>
   <header>
     <el-menu
@@ -10,7 +26,7 @@ const globalStore = useGlobalStore();
       mode="horizontal"
       background-color="#EDE8DA"
       text-color="#000"
-      :ellipsis="false"
+      :ellipsis="isEllipsis"
     >
       <el-menu-item class="menu-title">
         <RouterLink to="/">Tatra Guide</RouterLink>
@@ -68,3 +84,8 @@ const globalStore = useGlobalStore();
     </el-menu>
   </header>
 </template>
+<style scoped>
+header {
+  max-width: 360px;
+}
+</style>

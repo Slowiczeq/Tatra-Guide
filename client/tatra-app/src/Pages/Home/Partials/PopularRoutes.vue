@@ -106,4 +106,16 @@ function getDifficultyColor(level) {
   font-size: 1rem;
   color: #000;
 }
+
+@media (max-width: 768px) {
+  .routes-home-title {
+    font-size: 20px;
+  }
+  .routers-home-container {
+    flex-direction: column;
+  }
+  .list-item {
+    width: 100%;
+  }
+}
 </style>

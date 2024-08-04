@@ -363,4 +363,8 @@ function handleCheckboxClick(event) {
   flex-wrap: wrap;
   gap: 10px;
 }
+.container {
+  margin: 30px 0;
+  margin-bottom: 60px;
+}
 </style>

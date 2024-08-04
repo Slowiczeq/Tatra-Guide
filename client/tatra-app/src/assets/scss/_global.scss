@@ -85,3 +85,14 @@
     background-color: #EDE8DA;
     padding: 40px 0;
   }
+
+
+  @media(max-width: 768px) {
+    .container {
+      max-width: 320px;
+      width: 100%;
+      margin: 30px auto;
+      padding: 0 15px;
+    }
+  }
+  

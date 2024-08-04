@@ -93,4 +93,26 @@ import { ref, computed } from "vue";
 .discover-images img {
   width: 100%;
 }
+@media (max-width: 768px) {
+  .discover-left-title {
+    font-size: 20px;
+  }
+  .discover-left-text {
+    font-size: 18px;
+  }
+  .discover-right-text {
+    font-size: 12px;
+  }
+  .container {
+    flex-direction: column;
+  }
+  .discover-right-side {
+    flex-direction: column;
+    width: 100%;
+  }
+  .discover-images {
+    flex-basis: 100%;
+    width: 100%;
+  }
+}
 </style>

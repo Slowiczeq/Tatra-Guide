@@ -486,4 +486,10 @@ function filterTrails(query) {
 .item-text:not(:last-child) {
   margin-right: 10px;
 }
+
+@media (max-width: 768px) {
+  .map-container {
+    flex-direction: column;
+  }
+}
 </style>

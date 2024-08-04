@@ -95,6 +95,15 @@ const handleSelect = (id) => {
   z-index: 3;
 }
 
-.search-input {
+@media (max-width: 768px) {
+  .title {
+    font-size: 24px;
+  }
+  .search-wrapper {
+    width: 300px;
+  }
+  .search-container {
+    height: 400px;
+  }
 }
 </style>
