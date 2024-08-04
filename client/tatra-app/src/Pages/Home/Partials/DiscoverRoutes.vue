@@ -43,6 +43,7 @@ import { ref, computed } from "vue";
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 20px;
 }
 .discover-left-side {
   flex-basis: 40%;

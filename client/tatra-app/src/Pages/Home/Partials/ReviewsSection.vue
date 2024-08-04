@@ -43,7 +43,7 @@ function renderStars(rating) {
 </script>
 
 <template>
-  <div class="container-wrapper">
+  <div v-if="reviewsData.length > 0" class="container-wrapper">
     <div class="container">
       <h3 class="routes-home-title">Najnowsze opinie</h3>
       <div class="review-section-container">
