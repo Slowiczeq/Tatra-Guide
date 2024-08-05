@@ -49,9 +49,5 @@ const globalStore = useGlobalStore();
     box-shadow: unset !important;
     border: unset;
   }
-  .trip-header {
-    flex-direction: column;
-    gap: 15px;
-  }
 }
 </style>

@@ -92,6 +92,13 @@
   }
 
   @media(max-width: 768px) {
+    .trip-header {
+      flex-direction: column;
+      gap: 15px;
+    }
+    .trip-item {
+      padding: 5px !important;
+    }
     .container {
       max-width: 320px !important;
       width: 100%;
