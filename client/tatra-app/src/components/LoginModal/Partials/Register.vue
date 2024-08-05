@@ -53,7 +53,12 @@ async function onSubmit() {
         form.email = "";
         form.password = "";
       } catch (error) {
-        ElMessage.error("Wystąpił bład podczas rejestracji");
+        console.log(error.response.data);
+        if (error.response.data) {
+          ElMessage.error(error.response.data);
+        } else {
+          ElMessage.error("Wystąpił bład podczas rejestracji");
+        }
       }
     } else {
       ElMessage.error("Wystąpił bład podczas rejestracji");

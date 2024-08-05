@@ -44,52 +44,77 @@ app.use(cors(corsOptions));
 app.disable("etag");
 const port = process.env.PORT || 3000;
 
-app.post("/api/auth/register", (req, res) => {
-  console.log(req.body);
+app.post("/api/auth/register", async (req, res) => {
   try {
-    pool.connect(async (error, client, release) => {
-      const hashedPassword = SHA256(req.body.password).toString();
-      let resp = await client.query(
-        `INSERT INTO "Users" ("firstName", "lastName", "email", "password") VALUES ('${req.body.firstName}', '${req.body.lastName}', '${req.body.email}', '${hashedPassword}')`
+    const client = await pool.connect();
+    try {
+      // Sprawdź, czy email już istnieje
+      const emailCheck = await client.query(
+        `SELECT * FROM "Users" WHERE "email" = $1`,
+        [req.body.email]
       );
-      res.send(resp.rows);
-      release();
-    });
+
+      if (emailCheck.rows.length > 0) {
+        return res.status(409).send({ message: "Email jest już w użyciu" });
+      }
+
+      // Hashuj hasło i wstaw nowego użytkownika
+      const hashedPassword = SHA256(req.body.password).toString();
+      const result = await client.query(
+        `INSERT INTO "Users" ("firstName", "lastName", "email", "password") VALUES ($1, $2, $3, $4) RETURNING *`,
+        [req.body.firstName, req.body.lastName, req.body.email, hashedPassword]
+      );
+      res.status(201).send(result.rows[0]);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: "Server error" });
+    } finally {
+      client.release();
+    }
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    res.status(500).send({ message: "Database connection error" });
   }
 });
 
-app.post("/api/auth/user-login", (req, res) => {
+app.post("/api/auth/user-login", async (req, res) => {
   try {
-    pool.connect(async (error, client, release) => {
-      let token;
-      let user = await client.query(
-        `SELECT * FROM "Users" WHERE "email"='${req.body.email}'`
+    const client = await pool.connect();
+    try {
+      const result = await client.query(
+        `SELECT * FROM "Users" WHERE "email" = $1`,
+        [req.body.email]
       );
-      if (user.rows.length === 0) {
-        res.sendStatus(401);
-      } else {
-        if (user.rows[0].password === SHA256(req.body.password).toString()) {
-          token = jwt.sign(req.body, "secret");
-          await client.query(
-            `UPDATE "Users" SET "token"='${token}' WHERE "email"='${req.body.email}'`
-          );
-          res.send({
-            ...user.rows[0],
-            token,
-          });
-          release();
-        } else {
-          res.sendStatus(401);
-          release();
-        }
+
+      if (result.rows.length === 0) {
+        return res.status(401).send({ message: "Invalid email or password" });
       }
-    });
+
+      const user = result.rows[0];
+      const hashedPassword = SHA256(req.body.password).toString();
+
+      if (user.password !== hashedPassword) {
+        return res.status(401).send({ message: "Invalid email or password" });
+      }
+
+      const token = jwt.sign({ email: user.email }, "secret", {
+        expiresIn: "1h",
+      });
+      await client.query(`UPDATE "Users" SET "token" = $1 WHERE "email" = $2`, [
+        token,
+        req.body.email,
+      ]);
+
+      res.send({ ...user, token });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: "Server error" });
+    } finally {
+      client.release();
+    }
   } catch (error) {
-    console.log(error);
-    res.sendStatus(401);
-    release();
+    console.error(error);
+    res.status(500).send({ message: "Database connection error" });
   }
 });
 
