@@ -40,6 +40,10 @@ const globalStore = useGlobalStore();
   margin-bottom: 20px;
 }
 @media (max-width: 768px) {
+  .container {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
   .completed-trips-card {
     padding: 0;
     box-shadow: unset !important;

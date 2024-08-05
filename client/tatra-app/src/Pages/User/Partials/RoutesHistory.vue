@@ -116,4 +116,10 @@ const completedTrails = computed(() => {
 .started-trails-card {
   margin-bottom: 20px;
 }
+@media (max-width: 768px) {
+  .container {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+}
 </style>

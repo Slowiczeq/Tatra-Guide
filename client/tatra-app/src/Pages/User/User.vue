@@ -129,4 +129,10 @@ onMounted(() => {
   font-weight: bold;
   color: #333;
 }
+@media (max-width: 768px) {
+  .container {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+}
 </style>

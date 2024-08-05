@@ -125,6 +125,10 @@ function renderStars(rating) {
 }
 @media (max-width: 768px) {
   .container {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  .container {
     padding: 10px;
   }
 
