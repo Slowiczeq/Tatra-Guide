@@ -241,9 +241,14 @@ function filterTrails(query) {
 
 <template>
   <div>
-    <Auth style="margin-top: 95px" v-if="!globalStore.token" />
-    <div v-else>
-      <div style="padding: 10px 30px" class="filters">
+    <div class="container" v-if="!globalStore.token">
+      <Auth style="margin-top: 95px" />
+    </div>
+    <div class="map-page-container" v-else>
+      <span style="padding: 0px 30px" class="filters-title"
+        >Dostosuj filtry</span
+      >
+      <div style="padding: 5px 30px" class="filters">
         <el-dropdown trigger="click">
           <el-button type="primary">
             Pasmo górskie
@@ -409,8 +414,21 @@ function filterTrails(query) {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-bottom: 20px;
-  margin-top: 40px;
+  margin-bottom: 10px;
+}
+.filters-title {
+  font-size: 20px;
+  font-weight: 600;
+  display: flex;
+  margin-bottom: 15px;
+  margin-top: 20px;
+}
+.filters .el-dropdown button {
+  background: transparent;
+  color: #828282;
+  border: 1px solid #828282;
+  border-radius: 25px;
+  padding: 20px 15px;
 }
 
 .checkbox-item {
@@ -490,6 +508,22 @@ function filterTrails(query) {
 @media (max-width: 768px) {
   .map-container {
     flex-direction: column;
+  }
+  .map-page-container {
+    max-width: 320px;
+    margin: 30px auto;
+  }
+  .map-aside {
+    border-right: unset;
+  }
+  #map {
+    height: 500px;
+  }
+  .filters {
+    padding: 0 5px !important;
+  }
+  .filters-title {
+    padding: 0 5px !important;
   }
 }
 </style>

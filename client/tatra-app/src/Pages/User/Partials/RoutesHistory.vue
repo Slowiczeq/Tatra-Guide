@@ -64,7 +64,7 @@ const completedTrails = computed(() => {
           <div class="header">Ukończone trasy</div>
         </template>
         <el-table :data="completedTrails" style="width: 100%">
-          <el-table-column prop="trailName" label="Nazwa trasy">
+          <el-table-column width="190" prop="trailName" label="Nazwa trasy">
             <template #default="{ row }">
               <RouterLink :to="`/route/${row.routeID}`">
                 {{ getTrailName(row.routeID) }}
@@ -72,19 +72,22 @@ const completedTrails = computed(() => {
             </template>
           </el-table-column>
           <el-table-column
+            width="190"
             prop="routeDist"
             label="Dystans (km)"
           ></el-table-column>
           <el-table-column
+            width="190"
             prop="routeTime"
             label="Średni czas"
           ></el-table-column>
-          <el-table-column label="Mój czas">
+          <el-table-column width="190" label="Mój czas">
             <template #default="{ row }">
               {{ formatUserTime(row.userTime) }}
             </template>
           </el-table-column>
           <el-table-column
+            width="190"
             prop="timeEnd"
             label="Czas zakończenia"
             :formatter="(row) => formatDate(row.timeEnd)"

@@ -52,11 +52,9 @@ function renderStars(rating) {
           :key="review.id"
           class="review-item"
         >
-          <RouterLink
-            class="review-title"
-            :to="`/discover/${review.routeID}`"
-            >{{ review.trailName }}</RouterLink
-          >
+          <RouterLink class="review-title" :to="`/route/${review.routeID}`">{{
+            review.trailName
+          }}</RouterLink>
           <img src="../../../assets/img/route-img.png" alt="trasa" />
           <div class="reviews-box-container">
             <div class="review-box">
@@ -129,5 +127,33 @@ function renderStars(rating) {
   font-size: 40px;
   font-weight: 400;
   margin-bottom: 60px;
+}
+
+@media (max-width: 768px) {
+  .routes-home-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  .review-section-container {
+    flex-direction: column;
+  }
+  .review-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: 3px;
+  }
+  .stars {
+    margin-left: -3px;
+  }
+  .review-title {
+    font-size: 16px;
+  }
+  .container-wrapper {
+    padding: 15px 0;
+  }
 }
 </style>

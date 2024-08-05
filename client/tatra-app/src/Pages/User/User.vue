@@ -78,19 +78,12 @@ onMounted(() => {
     <div v-else>
       <el-card class="user-info-card">
         <template #header>
-          <div class="header">Informacje użytkownika</div>
+          <div class="header">
+            {{ globalStore.userFirstName }} {{ globalStore.userLastName }}
+          </div>
         </template>
         <div class="user-info-item">
-          <strong>Imię:</strong> {{ globalStore.userFirstName }}
-        </div>
-        <div class="user-info-item">
-          <strong>Nazwisko:</strong> {{ globalStore.userLastName }}
-        </div>
-        <div class="user-info-item">
           <strong>Email:</strong> {{ globalStore.userEmail }}
-        </div>
-        <div class="user-info-item">
-          <strong>ID:</strong> {{ globalStore.userID }}
         </div>
         <div v-if="userData">
           <div class="user-info-item">

@@ -335,4 +335,9 @@ async function saveTrip() {
   text-align: center;
   margin-top: 20px;
 }
+@media (max-width: 768px) {
+  .main-title {
+    margin-top: 30px;
+  }
+}
 </style>

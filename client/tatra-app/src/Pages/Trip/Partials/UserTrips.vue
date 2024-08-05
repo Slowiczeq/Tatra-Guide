@@ -155,7 +155,7 @@ onMounted(() => {
         <div v-for="(routes, dayIndex) in trip.trips" :key="dayIndex">
           <h4 class="day-h4">Dzień {{ dayIndex + 1 }}</h4>
           <el-table :data="routes" style="width: 100%">
-            <el-table-column label="Nazwa trasy">
+            <el-table-column width="155" label="Nazwa trasy">
               <template #default="{ row }">
                 <RouterLink :to="`/route/${row.routeID}`">
                   {{ row.trailName }}

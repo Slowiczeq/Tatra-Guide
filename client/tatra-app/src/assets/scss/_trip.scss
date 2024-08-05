@@ -58,3 +58,21 @@
     justify-content: center;
     align-items: center;
 }
+
+@media(max-width: 768px) {
+    .challenges-container {
+        .el-card {
+            box-shadow: unset !important;
+            border: unset;
+            &__body {
+                padding: 0;
+            }
+        }
+        .el-form-item--label-top .el-form-item__label {
+            margin-bottom: 5px
+        }
+        .el-card__header {
+            margin-bottom: 10px;
+        }
+    }
+}

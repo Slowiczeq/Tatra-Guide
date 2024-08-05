@@ -95,7 +95,10 @@ onMounted(() => {
               >Rozpocznij wyzwanie</el-button
             >
           </div>
-          <div v-else-if="getChallengeStatus(item.id).status === 'rozpoczęto'">
+          <div
+            class="progress-container"
+            v-else-if="getChallengeStatus(item.id).status === 'rozpoczęto'"
+          >
             <el-progress
               :text-inside="true"
               :stroke-width="26"
@@ -189,5 +192,15 @@ onMounted(() => {
   justify-content: center;
   align-items: center;
   gap: 10px;
+}
+@media (max-width: 768px) {
+  .main-title {
+    font-size: 24px;
+    margin-top: 20px;
+    margin-bottom: 0;
+  }
+  .progress-container {
+    width: 100%;
+  }
 }
 </style>

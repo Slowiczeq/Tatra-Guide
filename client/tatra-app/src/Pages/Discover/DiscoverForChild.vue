@@ -34,9 +34,9 @@ let selectedSkillLevels = ref([
   "Średniozaawansowany",
   "Zaawansowany",
 ]);
-let childFriendly = ref([]);
-let suitableForSeniors = ref([]);
-let wheelchairAccessible = ref([]);
+let childFriendly = ref(["Tak", "Nie"]);
+let suitableForSeniors = ref(["Tak", "Nie"]);
+let wheelchairAccessible = ref(["Tak", "Nie"]);
 
 async function loadTrails() {
   try {
@@ -116,12 +116,11 @@ function handleCheckboxClick(event) {
   <div class="container">
     <Auth v-if="!globalStore.token" />
     <div v-else class="discover-page">
-      <span class="filters-title">Dostosuj filtry</span>
       <div class="filters">
         <el-dropdown trigger="click">
           <el-button type="primary">
             Pasmo górskie
-            <!-- <el-icon class="el-icon--right"><arrow-down /></el-icon> -->
+            <el-icon class="el-icon--right"><arrow-down /></el-icon>
           </el-button>
           <template #dropdown>
             <el-dropdown-menu>
@@ -149,7 +148,7 @@ function handleCheckboxClick(event) {
         <el-dropdown trigger="click">
           <el-button type="primary">
             Czas trasy
-            <!-- <el-icon class="el-icon--right"><arrow-down /></el-icon> -->
+            <el-icon class="el-icon--right"><arrow-down /></el-icon>
           </el-button>
           <template #dropdown>
             <el-dropdown-menu>
@@ -174,7 +173,7 @@ function handleCheckboxClick(event) {
         <el-dropdown trigger="click">
           <el-button type="primary">
             Przewyższenie
-            <!-- <el-icon class="el-icon--right"><arrow-down /></el-icon> -->
+            <el-icon class="el-icon--right"><arrow-down /></el-icon>
           </el-button>
           <template #dropdown>
             <el-dropdown-menu>
@@ -199,7 +198,7 @@ function handleCheckboxClick(event) {
         <el-dropdown trigger="click">
           <el-button type="primary">
             Poziom trudności
-            <!-- <el-icon class="el-icon--right"><arrow-down /></el-icon> -->
+            <el-icon class="el-icon--right"><arrow-down /></el-icon>
           </el-button>
           <template #dropdown>
             <el-dropdown-menu>
@@ -231,7 +230,7 @@ function handleCheckboxClick(event) {
         <el-dropdown trigger="click">
           <el-button type="primary">
             Poziom zaawansowania
-            <!-- <el-icon class="el-icon--right"><arrow-down /></el-icon> -->
+            <el-icon class="el-icon--right"><arrow-down /></el-icon>
           </el-button>
           <template #dropdown>
             <el-dropdown-menu>
@@ -259,36 +258,71 @@ function handleCheckboxClick(event) {
 
         <el-dropdown trigger="click">
           <el-button type="primary">
-            Więcej filtrów
-            <!-- <el-icon class="el-icon--right"><arrow-down /></el-icon> -->
+            Trasa dla dzieci
+            <el-icon class="el-icon--right"><arrow-down /></el-icon>
           </el-button>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item class="more-filters">
-                <div class="checkbox-item">
-                  <el-checkbox
-                    @click="handleCheckboxClick"
-                    v-model="childFriendly"
-                    label="Tak"
-                    >Trasa dla dzieci</el-checkbox
-                  >
-                </div>
-                <div class="checkbox-item">
-                  <el-checkbox
-                    @click="handleCheckboxClick"
-                    v-model="suitableForSeniors"
-                    label="Tak"
-                    >Trasa dla seniorów</el-checkbox
-                  >
-                </div>
-                <div class="checkbox-item">
-                  <el-checkbox
-                    @click="handleCheckboxClick"
-                    v-model="wheelchairAccessible"
-                    label="Tak"
-                    >Trasa dla osób na wózku</el-checkbox
-                  >
-                </div>
+              <el-dropdown-item>
+                <el-checkbox-group
+                  v-model="childFriendly"
+                  @click="handleCheckboxClick"
+                >
+                  <div class="checkbox-item">
+                    <el-checkbox label="Tak">Tak</el-checkbox>
+                  </div>
+                  <div class="checkbox-item">
+                    <el-checkbox label="Nie">Nie</el-checkbox>
+                  </div>
+                </el-checkbox-group>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+
+        <el-dropdown trigger="click">
+          <el-button type="primary">
+            Trasa dla seniorów
+            <el-icon class="el-icon--right"><arrow-down /></el-icon>
+          </el-button>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item>
+                <el-checkbox-group
+                  v-model="suitableForSeniors"
+                  @click="handleCheckboxClick"
+                >
+                  <div class="checkbox-item">
+                    <el-checkbox label="Tak">Tak</el-checkbox>
+                  </div>
+                  <div class="checkbox-item">
+                    <el-checkbox label="Nie">Nie</el-checkbox>
+                  </div>
+                </el-checkbox-group>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+
+        <el-dropdown trigger="click">
+          <el-button type="primary">
+            Trasa dla osób na wózku
+            <el-icon class="el-icon--right"><arrow-down /></el-icon>
+          </el-button>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item>
+                <el-checkbox-group
+                  v-model="wheelchairAccessible"
+                  @click="handleCheckboxClick"
+                >
+                  <div class="checkbox-item">
+                    <el-checkbox label="Tak">Tak</el-checkbox>
+                  </div>
+                  <div class="checkbox-item">
+                    <el-checkbox label="Nie">Nie</el-checkbox>
+                  </div>
+                </el-checkbox-group>
               </el-dropdown-item>
             </el-dropdown-menu>
           </template>
@@ -302,13 +336,13 @@ function handleCheckboxClick(event) {
               <img src="../../assets/img/route-img.png" alt="trasa" />
             </div>
             <div class="list-item-main">
+              <el-tag :type="getDifficultyColor(item.difficulty_level)">
+                {{ item.difficulty_level }}
+              </el-tag>
               <span class="item-title">{{ item.trail_name }}</span>
               <span class="item-text">{{ item.mountain_range }}</span>
               <span class="item-text"
-                >{{ item.route_length }}km - {{ item.route_time }} -
-                <el-tag :type="getDifficultyColor(item.difficulty_level)">
-                  {{ item.difficulty_level }}
-                </el-tag></span
+                >{{ item.route_length }} - {{ item.route_time }}</span
               >
             </div>
             <div class="list-item-footer"></div>
@@ -328,19 +362,9 @@ function handleCheckboxClick(event) {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-bottom: 10px;
 }
-.filters-title {
-  font-size: 20px;
-  font-weight: 600;
-  display: flex;
-  margin-bottom: 15px;
-}
-.filters .el-dropdown button {
-  background: transparent;
-  color: #828282;
-  border: 1px solid #828282;
-  border-radius: 25px;
-  padding: 20px 15px;
+.container {
+  margin: 30px 0;
+  margin-bottom: 60px;
 }
 </style>

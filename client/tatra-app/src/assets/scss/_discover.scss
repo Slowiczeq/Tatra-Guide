@@ -56,5 +56,22 @@
     .discover-page__list {
         flex-direction: column;
         margin-top: 20px;
+        flex-wrap: nowrap;
     }
+    .discover-page__list .list-item .list-item-link {
+        margin-right: 0;
+    }
+    .discover-page__list .list-item {
+        flex-basis: 100%;
+    }
+    .route-page {
+        .el-card {
+            box-shadow: unset !important;
+            border: unset;
+            &__body {
+                padding: 0;
+            }
+        }
+    }
+
 }

@@ -25,7 +25,9 @@ function getDifficultyColor(level) {
 
 <template>
   <div class="container">
-    <h3 class="routes-home-title">Popularne trasy</h3>
+    <RouterLink class="routes-home-title" :to="`/discover`">
+      <h3 class="routes-home-title">Popularne trasy</h3>
+    </RouterLink>
     <div class="routers-home-container">
       <div
         v-for="item in Object.values(trailsData).slice(0, 3)"
@@ -68,6 +70,8 @@ function getDifficultyColor(level) {
 .routes-home-title {
   font-size: 40px;
   font-weight: 400;
+  color: #000;
+  text-decoration: unset;
 }
 
 .list-item {
@@ -109,13 +113,17 @@ function getDifficultyColor(level) {
 
 @media (max-width: 768px) {
   .routes-home-title {
-    font-size: 20px;
+    font-size: 24px;
+    font-weight: 600;
   }
   .routers-home-container {
     flex-direction: column;
   }
   .list-item {
     width: 100%;
+  }
+  .item-title {
+    font-size: 16px;
   }
 }
 </style>

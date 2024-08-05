@@ -349,11 +349,22 @@ async function saveTrip() {
 }
 
 @media (max-width: 768px) {
-  .container {
-    max-width: 320px;
-  }
   .trip-form-card {
     padding: 0;
+  }
+  .container {
+    margin: 30px auto;
+  }
+  .main-title {
+    padding-bottom: 20px;
+    text-align: center;
+  }
+  .title {
+    font-size: 16px;
+    text-align: center;
+  }
+  .day-card {
+    padding: 5px;
   }
 }
 </style>

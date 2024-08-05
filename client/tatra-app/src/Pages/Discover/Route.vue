@@ -13,6 +13,8 @@ import { Star, StarFilled } from "@element-plus/icons-vue";
 import { useRoute } from "vue-router";
 import { useGlobalStore } from "../../stores/globalStore";
 import Reviews from "./Partials/Reviews.vue";
+import Auth from "../../components/Login/Auth.vue";
+
 const globalStore = useGlobalStore();
 
 const route = useRoute();
@@ -121,7 +123,8 @@ async function submitReview() {
 </script>
 
 <template>
-  <div class="container route-page">
+  <Auth v-if="!globalStore.token" />
+  <div v-else class="container route-page">
     <el-card v-if="trailData" class="route-page__item">
       <div class="list-item-header">
         <img
@@ -268,5 +271,22 @@ async function submitReview() {
 .review-input {
   width: 100%;
   margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+  .action-buttons {
+    top: 5px;
+    right: 5px;
+  }
+  .route-img {
+    height: 310px !important;
+  }
+  .item-details {
+    gap: 0;
+  }
 }
 </style>

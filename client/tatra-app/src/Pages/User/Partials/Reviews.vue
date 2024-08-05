@@ -66,37 +66,38 @@ function renderStars(rating) {
     <div v-else>
       <el-card class="reviews-card">
         <div class="header">Moje Recenzje</div>
-        <el-table :data="userReviews">
-          <el-table-column prop="trailName" label="Nazwa Trasy">
-            <template #default="{ row }">
-              <RouterLink :to="`/route/${row.routeID}`">
-                {{ row.trailName }}
-              </RouterLink>
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="content"
-            label="Treść Recenzji"
-          ></el-table-column>
-          <el-table-column label="Ocena">
-            <template #default="{ row }">
-              <div class="stars">
-                <el-icon
-                  v-for="(star, index) in renderStars(row.rating)"
-                  :key="index"
-                  style="font-size: 24px; color: #f7ba2a"
-                >
-                  <component :is="star" />
-                </el-icon>
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="date"
-            label="Data"
-            :formatter="(row) => formatDate(row.date)"
-          ></el-table-column>
-        </el-table>
+        <div class="table-container">
+          <el-table :data="userReviews">
+            <el-table-column prop="trailName" label="Nazwa Trasy" width="240">
+              <template #default="{ row }">
+                <RouterLink :to="`/route/${row.routeID}`">
+                  {{ row.trailName }}
+                </RouterLink>
+              </template>
+            </el-table-column>
+            <el-table-column prop="content" label="Treść Recenzji" width="300">
+            </el-table-column>
+            <el-table-column label="Ocena" width="220">
+              <template #default="{ row }">
+                <div class="stars">
+                  <el-icon
+                    v-for="(star, index) in renderStars(row.rating)"
+                    :key="index"
+                    style="font-size: 24px; color: #f7ba2a"
+                  >
+                    <component :is="star" />
+                  </el-icon>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="date"
+              label="Data"
+              width="180"
+              :formatter="(row) => formatDate(row.date)"
+            ></el-table-column>
+          </el-table>
+        </div>
       </el-card>
     </div>
   </div>
@@ -118,5 +119,30 @@ function renderStars(rating) {
 }
 .stars {
   display: flex;
+}
+.table-container {
+  overflow-x: auto;
+}
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+
+  .header {
+    font-size: 16px;
+    text-align: center;
+  }
+
+  .el-card {
+    padding: 10px;
+  }
+
+  .el-table {
+    font-size: 14px;
+  }
+
+  .stars {
+    justify-content: center;
+  }
 }
 </style>

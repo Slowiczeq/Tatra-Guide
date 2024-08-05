@@ -2,50 +2,52 @@
 .page-menu {
     height: 80px !important;
     padding: 0px 15px !important;
-    .el-menu-item {
-        border-bottom: unset !important;
-        font-size: 16px;
-        font-weight: 400;
-        a {
-            text-decoration: unset;
-            height: 100%;
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-        }
-        .router-link-active {
-            color: #d59617 !important;
-        }
-        &:hover {
-            background-color: unset !important;
-        }
-        &:focus {
-            background-color: unset !important;
-        }
-    }
-    .el-sub-menu {
-        font-size: 16px;
-        color: #000;
-        a {
-            text-decoration: unset;
-            height: 100%;
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            color: black;
-            font-size: 16px;
-        }
-    }
-    .menu-title {
-        font-weight: 700;
-        font-size: 16px;
-        text-transform: uppercase;
-        margin-right: 50px !important;
-        .router-link-active {
-            color: #000 !important
-        }
+}
+.el-menu-item {
+    border-bottom: unset !important;
+    font-size: 16px;
+    font-weight: 400;
 
+    a {
+        text-decoration: unset;
+        height: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        color: #000;
     }
+    .router-link-active {
+        color: #d59617 !important;
+    }
+    &:hover {
+        background-color: unset !important;
+    }
+    &:focus {
+        background-color: unset !important;
+    }
+}
+.el-sub-menu {
+    font-size: 16px;
+    color: #000;
+    a {
+        text-decoration: unset;
+        height: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        color: black;
+        font-size: 16px;
+    }
+}
+.menu-title {
+    font-weight: 700;
+    font-size: 16px;
+    text-transform: uppercase;
+    margin-right: 50px !important;
+    .router-link-active {
+        color: #000 !important
+    }
+
 }
 
 .el-menu--popup .el-menu-item {
@@ -58,5 +60,33 @@
         justify-content: flex-start;
         align-items: center;
         color: black;
+    }
+}
+
+
+
+.drawer-menu-box {
+    background-color: $primary-color !important;
+    .el-drawer__header {
+        margin-bottom: 10px;
+    }
+}
+
+@media(max-width: 768px) {
+    .el-menu-item a {
+        font-size: 16px
+    }
+    .el-menu-item {
+        margin-left: 10px;
+    }
+    .menu-title {
+        margin-left: 0
+    }
+    .el-sub-menu .el-menu-item {
+        font-size: 14px;
+    }
+    .mobile-menu-user {
+        font-weight: 600;   
+        font-size: 16px;
     }
 }

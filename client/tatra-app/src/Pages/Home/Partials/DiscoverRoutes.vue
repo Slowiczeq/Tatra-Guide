@@ -12,9 +12,11 @@ import { ref, computed } from "vue";
         <span class="discover-left-text"
           >Poznaj trasy skorojone na miarę twoich oczekiwań</span
         >
-        <RouterLink class="discover-left-link" to="/discover"
-          >Odkrywaj</RouterLink
-        >
+        <div class="button-section-container">
+          <RouterLink class="discover-left-link" to="/discover"
+            >Odkrywaj</RouterLink
+          >
+        </div>
       </div>
       <div class="discover-right-side">
         <div class="discover-images">
@@ -95,7 +97,8 @@ import { ref, computed } from "vue";
 }
 @media (max-width: 768px) {
   .discover-left-title {
-    font-size: 20px;
+    font-size: 24px;
+    font-weight: 600;
   }
   .discover-left-text {
     font-size: 18px;
@@ -105,6 +108,8 @@ import { ref, computed } from "vue";
   }
   .container {
     flex-direction: column;
+    margin-top: 0;
+    margin-bottom: 0;
   }
   .discover-right-side {
     flex-direction: column;
@@ -112,6 +117,19 @@ import { ref, computed } from "vue";
   }
   .discover-images {
     flex-basis: 100%;
+    width: 100%;
+  }
+  .discover-left-link {
+    padding: 15px 30px;
+    font-size: 16px;
+  }
+  .discover-left-side {
+    gap: 20px;
+  }
+  .button-section-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
   }
 }

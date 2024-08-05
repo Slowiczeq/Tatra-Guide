@@ -53,30 +53,37 @@ const formatDate = (dateString) => {
       <el-card class="challenges-card">
         <div class="header">Moje Wyzwania</div>
         <el-table :data="userChallenges">
-          <el-table-column prop="name" label="Nazwa wyzwania"></el-table-column>
           <el-table-column
+            width="140"
+            prop="name"
+            label="Nazwa wyzwania"
+          ></el-table-column>
+          <el-table-column
+            width="135"
             prop="challangeType"
             label="Typ wyzwania"
           ></el-table-column>
           <el-table-column
+            width="130"
             prop="challangeProgress"
             label="Postęp"
           ></el-table-column>
           <el-table-column
+            width="130"
             prop="challengeValue"
             label="Wartość"
           ></el-table-column>
-          <el-table-column label="Status">
+          <el-table-column width="140" label="Status">
             <template #default="{ row }">
               {{ row.status === "zakończono" ? "Zakończono" : "W trakcie" }}
             </template>
           </el-table-column>
-          <el-table-column label="Czas rozpoczęcia">
+          <el-table-column width="140" label="Czas rozpoczęcia">
             <template #default="{ row }">
               <span>{{ formatDate(row.timeStart) }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="Czas zakończenia">
+          <el-table-column width="140" label="Czas zakończenia">
             <template #default="{ row }">
               <span>{{ formatDate(row.timeEnd) }}</span>
             </template>

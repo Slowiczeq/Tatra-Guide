@@ -16,9 +16,11 @@ import { ref, computed } from "vue";
           >Weź udział w challengu, śledź swoje postępy i rywalizuj z innymi
           członkami naszej społeczności</span
         >
-        <RouterLink class="challenge-left-link" to="/Podemij wyzwanie"
-          >Podejmij wyzwanie</RouterLink
-        >
+        <div class="button-section-container">
+          <RouterLink class="challenge-left-link" to="/Podemij wyzwanie"
+            >Podejmij wyzwanie</RouterLink
+          >
+        </div>
       </div>
     </div>
   </div>
@@ -85,7 +87,8 @@ import { ref, computed } from "vue";
 }
 @media (max-width: 768px) {
   .challenge-left-title {
-    font-size: 20px;
+    font-size: 24px;
+    font-weight: 600;
   }
   .challenge-left-text {
     font-size: 18px;
@@ -93,6 +96,20 @@ import { ref, computed } from "vue";
   .container {
     flex-direction: column;
     gap: 15px;
+  }
+  .challenge-left-side {
+    flex-basis: 100%;
+    gap: 20px;
+  }
+  .challenge-left-link {
+    padding: 15px 30px;
+    font-size: 16px;
+  }
+  .button-section-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
   }
 }
 </style>

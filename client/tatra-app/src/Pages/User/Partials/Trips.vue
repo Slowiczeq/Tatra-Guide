@@ -39,4 +39,15 @@ const globalStore = useGlobalStore();
 .started-trails-card {
   margin-bottom: 20px;
 }
+@media (max-width: 768px) {
+  .completed-trips-card {
+    padding: 0;
+    box-shadow: unset !important;
+    border: unset;
+  }
+  .trip-header {
+    flex-direction: column;
+    gap: 15px;
+  }
+}
 </style>
