@@ -107,5 +107,14 @@
         padding: 25px 5px;
       }
   }
+  .login-modal {
+    max-width: 320px;
+  }
+  .login-modal__content {
+    .el-form-item__content {
+      flex-wrap: nowrap;
+    }
+  }
+
   }
   
