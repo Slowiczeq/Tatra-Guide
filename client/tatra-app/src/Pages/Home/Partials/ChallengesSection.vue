@@ -17,7 +17,7 @@ import { ref, computed } from "vue";
           członkami naszej społeczności</span
         >
         <div class="button-section-container">
-          <RouterLink class="challenge-left-link" to="/Podemij wyzwanie"
+          <RouterLink class="challenge-left-link" to="/challenges"
             >Podejmij wyzwanie</RouterLink
           >
         </div>

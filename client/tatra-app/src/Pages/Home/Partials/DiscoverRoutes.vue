@@ -20,20 +20,31 @@ import { ref, computed } from "vue";
       </div>
       <div class="discover-right-side">
         <div class="discover-images">
-          <span class="discover-right-text">Dla rodzin z dziećmi</span>
-          <img src="../../../assets/img/route-img.png" alt="trasa" />
+          <RouterLink to="/discover/for-child">
+            <span class="discover-right-text">Dla rodzin z dziećmi</span>
+            <img src="../../../assets/img/route-img.png" alt="trasa" />
+          </RouterLink>
         </div>
+
         <div class="discover-images">
-          <span class="discover-right-text">Dla początkujących</span>
-          <img src="../../../assets/img/route-img.png" alt="trasa" />
+          <RouterLink to="/discover/for-beginner">
+            <span class="discover-right-text">Dla początkujących</span>
+            <img src="../../../assets/img/route-img.png" alt="trasa" />
+          </RouterLink>
         </div>
+
         <div class="discover-images">
-          <span class="discover-right-text">Dla fanów adrenaliny</span>
-          <img src="../../../assets/img/route-img.png" alt="trasa" />
+          <RouterLink to="/discover/for-advanced">
+            <span class="discover-right-text">Dla fanów adrenaliny</span>
+            <img src="../../../assets/img/route-img.png" alt="trasa" />
+          </RouterLink>
         </div>
+
         <div class="discover-images">
-          <span class="discover-right-text">Dla wózków inwalidzkich</span>
-          <img src="../../../assets/img/route-img.png" alt="trasa" />
+          <RouterLink to="/discover/for-disabled">
+            <span class="discover-right-text">Dla wózków inwalidzkich</span>
+            <img src="../../../assets/img/route-img.png" alt="trasa" />
+          </RouterLink>
         </div>
       </div>
     </div>
