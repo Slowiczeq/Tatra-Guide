@@ -10,7 +10,7 @@ import { ref, computed } from "vue";
           >Szlaki dopasowane do Twoich potrzeb</span
         >
         <span class="discover-left-text"
-          >Poznaj trasy skorojone na miarę twoich oczekiwań</span
+          >Poznaj trasy skrojone na miarę twoich oczekiwań</span
         >
         <div class="button-section-container">
           <RouterLink class="discover-left-link" to="/discover"

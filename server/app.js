@@ -81,40 +81,42 @@ app.post("/api/auth/user-login", async (req, res) => {
   try {
     const client = await pool.connect();
     try {
-      const result = await client.query(
+      const email = req.body.email.toLowerCase();
+      const password = SHA256(req.body.password).toString();
+
+      let user = await client.query(
         `SELECT * FROM "Users" WHERE "email" = $1`,
-        [req.body.email]
+        [email]
       );
 
-      if (result.rows.length === 0) {
-        return res.status(401).send({ message: "Invalid email or password" });
+      if (user.rows.length === 0) {
+        res.sendStatus(401);
+      } else {
+        if (user.rows[0].password === password) {
+          const token = jwt.sign({ email: user.rows[0].email }, "secret", {
+            expiresIn: "1h",
+          });
+          await client.query(
+            `UPDATE "Users" SET "token" = $1 WHERE "email" = $2`,
+            [token, email]
+          );
+          res.send({
+            ...user.rows[0],
+            token,
+          });
+        } else {
+          res.sendStatus(401);
+        }
       }
-
-      const user = result.rows[0];
-      const hashedPassword = SHA256(req.body.password).toString();
-
-      if (user.password !== hashedPassword) {
-        return res.status(401).send({ message: "Invalid email or password" });
-      }
-
-      const token = jwt.sign({ email: user.email }, "secret", {
-        expiresIn: "1h",
-      });
-      await client.query(`UPDATE "Users" SET "token" = $1 WHERE "email" = $2`, [
-        token,
-        req.body.email,
-      ]);
-
-      res.send({ ...user, token });
     } catch (error) {
       console.error(error);
-      res.status(500).send({ message: "Server error" });
+      res.sendStatus(401);
     } finally {
       client.release();
     }
   } catch (error) {
     console.error(error);
-    res.status(500).send({ message: "Database connection error" });
+    res.sendStatus(500);
   }
 });
 

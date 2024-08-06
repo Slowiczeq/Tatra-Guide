@@ -245,8 +245,12 @@ async function saveTrip() {
               </el-select>
             </el-form-item>
             <el-form-item label="Czas użytkownika">
-              <el-time-picker
+              <el-time-select
                 v-model="form.trips[index][rIndex].userTime"
+                style="width: 240px"
+                start="00:00"
+                step="00:01"
+                end="20:00"
                 placeholder="Wybierz czas"
               />
             </el-form-item>

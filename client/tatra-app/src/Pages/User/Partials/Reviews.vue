@@ -17,6 +17,11 @@ import { RouterLink } from "vue-router";
 const globalStore = useGlobalStore();
 
 let userData = ref(null);
+const isMobile = ref(window.innerWidth < 768);
+
+window.addEventListener("resize", () => {
+  isMobile.value = window.innerWidth < 768;
+});
 
 async function loadData() {
   if (globalStore.token) {
@@ -67,7 +72,7 @@ function renderStars(rating) {
       <el-card class="reviews-card">
         <div class="header">Moje Recenzje</div>
         <div class="table-container">
-          <el-table :data="userReviews">
+          <el-table v-if="!isMobile" :data="userReviews">
             <el-table-column prop="trailName" label="Nazwa Trasy" width="240">
               <template #default="{ row }">
                 <RouterLink :to="`/route/${row.routeID}`">
@@ -97,6 +102,30 @@ function renderStars(rating) {
               :formatter="(row) => formatDate(row.date)"
             ></el-table-column>
           </el-table>
+          <div v-else class="mobile-reviews">
+            <div v-for="review in userReviews" :key="review.id" class="review">
+              <p>
+                <strong>Nazwa Trasy: </strong>
+                <RouterLink :to="`/route/${review.routeID}`">{{
+                  review.trailName
+                }}</RouterLink>
+              </p>
+              <p><strong>Treść Recenzji: </strong> {{ review.content }}</p>
+              <p class="review-p-box">
+                <strong>Ocena: </strong>
+                <span class="stars">
+                  <el-icon
+                    v-for="(star, index) in renderStars(review.rating)"
+                    :key="index"
+                    style="font-size: 24px; color: #f7ba2a"
+                  >
+                    <component :is="star" />
+                  </el-icon>
+                </span>
+              </p>
+              <p><strong>Data: </strong> {{ formatDate(review.date) }}</p>
+            </div>
+          </div>
         </div>
       </el-card>
     </div>
@@ -123,6 +152,13 @@ function renderStars(rating) {
 .table-container {
   overflow-x: auto;
 }
+.mobile-reviews {
+  display: none;
+}
+.review {
+  border-bottom: 1px solid #ebeef5;
+  padding: 10px 0;
+}
 @media (max-width: 768px) {
   .container {
     margin-top: 20px;
@@ -145,8 +181,19 @@ function renderStars(rating) {
     font-size: 14px;
   }
 
-  .stars {
-    justify-content: center;
+  .mobile-reviews {
+    display: block;
   }
+  .table-container .el-table {
+    display: none;
+  }
+  .review-p-box {
+    display: flex;
+    align-items: center;
+  }
+}
+a {
+  color: #000;
+  text-decoration: unset;
 }
 </style>

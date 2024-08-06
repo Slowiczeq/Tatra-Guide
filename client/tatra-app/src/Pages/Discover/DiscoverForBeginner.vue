@@ -24,7 +24,7 @@ async function loadTrails() {
   try {
     const response = await api.trails.loadTrails();
     trailsData.value = response.data.filter(
-      (item) => item.child_friendly == "Tak"
+      (item) => item.skill_level == "Początkujący"
     );
   } catch (error) {
     ElMessage.error("Błąd ładowania listy tras");
@@ -59,7 +59,7 @@ function handleCheckboxClick(event) {
   <div class="container">
     <Auth v-if="!globalStore.token" />
     <div v-else class="discover-page">
-      <span class="filters-title">Trasy dla rodzin z dziećmi</span>
+      <span class="filters-title">Trasy dla początkujących</span>
       <div v-if="trailsData.length > 0" class="discover-page__list">
         <div v-for="item in trailsData" :key="item.id" class="list-item">
           <RouterLink :to="`/route/${item.id}`" class="list-item-link">

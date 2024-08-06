@@ -6,10 +6,18 @@
         <RouterLink to="/discover" class="footer-list-title"
           >Odkrywaj</RouterLink
         >
-        <RouterLink to="/discover">Trasy dla rodzin z dziećmi</RouterLink>
-        <RouterLink to="/discover">Trasy dla początkujących</RouterLink>
-        <RouterLink to="/discover">Trasy dla fanów adrenaliny</RouterLink>
-        <RouterLink to="/discover">Trasy dla wózków inwalidzkich</RouterLink>
+        <RouterLink to="/discover/for-child"
+          >Trasy dla rodzin z dziećmi</RouterLink
+        >
+        <RouterLink to="/discover/for-beginner"
+          >Trasy dla początkujących</RouterLink
+        >
+        <RouterLink to="/discover/for-advanced"
+          >Trasy dla fanów adrenaliny</RouterLink
+        >
+        <RouterLink to="/discover/for-disabled"
+          >Trasy dla wózków inwalidzkich</RouterLink
+        >
       </div>
       <div class="footer-list">
         <RouterLink to="/challenges" class="footer-list-title"
@@ -21,7 +29,7 @@
       </div>
       <div class="footer-list">
         <RouterLink to="/routes" class="footer-list-title"
-          >Dowiedź się więcej</RouterLink
+          >Dowiedz się więcej</RouterLink
         >
         <RouterLink to="/Blog">Blog</RouterLink>
         <RouterLink to="/routes">Wyszukaj trasę</RouterLink>

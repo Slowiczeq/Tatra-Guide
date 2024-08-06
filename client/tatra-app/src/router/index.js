@@ -1,6 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../Pages/Home/Home.vue";
 import Discover from "../Pages/Discover/Discover.vue";
+import DiscoverForChild from "../Pages/Discover/DiscoverForChild.vue";
+import DiscoverForBeginner from "../Pages/Discover/DiscoverForBeginner.vue";
+import DiscoverForAdvanced from "../Pages/Discover/DiscoverForAdvanced.vue";
+import DiscoverForDisabled from "../Pages/Discover/DiscoverForDisabled.vue";
 import Route from "../Pages/Discover/Route.vue";
 import Routes from "../Pages/Routes/Routes.vue";
 import Challenges from "../Pages/Challenges/Challenges.vue";
@@ -54,6 +58,26 @@ const router = createRouter({
       component: Discover,
     },
     {
+      path: "/discover/for-child",
+      name: "discover-for-child",
+      component: DiscoverForChild,
+    },
+    {
+      path: "/discover/for-beginner",
+      name: "discover-for-beginner",
+      component: DiscoverForBeginner,
+    },
+    {
+      path: "/discover/for-advanced",
+      name: "discover-for-advanced",
+      component: DiscoverForAdvanced,
+    },
+    {
+      path: "/discover/for-disabled",
+      name: "discover-for-disabled",
+      component: DiscoverForDisabled,
+    },
+    {
       path: "/route/:id",
       name: "route",
       component: Route,
@@ -89,6 +113,9 @@ const router = createRouter({
       component: Trip,
     },
   ],
+  scrollBehavior(to, from, savedPosition) {
+    return { top: 0 };
+  },
 });
 
 export default router;

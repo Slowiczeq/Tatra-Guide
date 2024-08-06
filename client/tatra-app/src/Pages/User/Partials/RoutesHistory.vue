@@ -10,6 +10,11 @@ import { RouterLink } from "vue-router";
 const globalStore = useGlobalStore();
 
 let userData = ref(null);
+const isMobile = ref(window.innerWidth < 768);
+
+window.addEventListener("resize", () => {
+  isMobile.value = window.innerWidth < 768;
+});
 
 async function loadData() {
   if (globalStore.token) {
@@ -63,7 +68,7 @@ const completedTrails = computed(() => {
         <template #header>
           <div class="header">Ukończone trasy</div>
         </template>
-        <el-table :data="completedTrails" style="width: 100%">
+        <el-table v-if="!isMobile" :data="completedTrails" style="width: 100%">
           <el-table-column width="190" prop="trailName" label="Nazwa trasy">
             <template #default="{ row }">
               <RouterLink :to="`/route/${row.routeID}`">
@@ -93,6 +98,24 @@ const completedTrails = computed(() => {
             :formatter="(row) => formatDate(row.timeEnd)"
           ></el-table-column>
         </el-table>
+        <div v-else class="mobile-completed-trails">
+          <div v-for="trail in completedTrails" :key="trail.id" class="trail">
+            <p>
+              <strong>Nazwa trasy:</strong>
+              <RouterLink :to="`/route/${trail.routeID}`">{{
+                getTrailName(trail.routeID)
+              }}</RouterLink>
+            </p>
+            <p><strong>Dystans (km):</strong> {{ trail.routeDist }}</p>
+            <p><strong>Średni czas:</strong> {{ trail.routeTime }}</p>
+            <p>
+              <strong>Mój czas:</strong> {{ formatUserTime(trail.userTime) }}
+            </p>
+            <p>
+              <strong>Czas zakończenia:</strong> {{ formatDate(trail.timeEnd) }}
+            </p>
+          </div>
+        </div>
       </el-card>
     </div>
   </div>
@@ -116,10 +139,24 @@ const completedTrails = computed(() => {
 .started-trails-card {
   margin-bottom: 20px;
 }
+.trail {
+  border-bottom: 1px solid #ebeef5;
+  padding: 10px 0;
+}
 @media (max-width: 768px) {
   .container {
     margin-top: 20px;
     margin-bottom: 20px;
   }
+  .mobile-completed-trails {
+    display: block;
+  }
+  .el-table {
+    display: none;
+  }
+}
+a {
+  color: #000;
+  text-decoration: unset;
 }
 </style>
