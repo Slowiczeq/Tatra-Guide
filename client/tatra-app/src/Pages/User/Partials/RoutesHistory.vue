@@ -88,7 +88,7 @@ const completedTrails = computed(() => {
           ></el-table-column>
           <el-table-column width="190" label="Mój czas">
             <template #default="{ row }">
-              {{ formatUserTime(row.userTime) }}
+              {{ row.userTime }}
             </template>
           </el-table-column>
           <el-table-column
@@ -101,18 +101,17 @@ const completedTrails = computed(() => {
         <div v-else class="mobile-completed-trails">
           <div v-for="trail in completedTrails" :key="trail.id" class="trail">
             <p>
-              <strong>Nazwa trasy:</strong>
+              <strong>Nazwa trasy: </strong>
               <RouterLink :to="`/route/${trail.routeID}`">{{
                 getTrailName(trail.routeID)
               }}</RouterLink>
             </p>
-            <p><strong>Dystans (km):</strong> {{ trail.routeDist }}</p>
-            <p><strong>Średni czas:</strong> {{ trail.routeTime }}</p>
+            <p><strong>Dystans (km): </strong> {{ trail.routeDist }}</p>
+            <p><strong>Średni czas: </strong> {{ trail.routeTime }}</p>
+            <p><strong>Mój czas: </strong> {{ trail.userTime }}</p>
             <p>
-              <strong>Mój czas:</strong> {{ formatUserTime(trail.userTime) }}
-            </p>
-            <p>
-              <strong>Czas zakończenia:</strong> {{ formatDate(trail.timeEnd) }}
+              <strong>Czas zakończenia: </strong>
+              {{ formatDate(trail.timeEnd) }}
             </p>
           </div>
         </div>
