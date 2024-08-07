@@ -8,6 +8,11 @@ import {
   ElButton,
   ElCard,
   ElIcon,
+  ElDialog,
+  ElForm,
+  ElFormItem,
+  ElTimeSelect,
+  ElDatePicker,
 } from "element-plus";
 import { useGlobalStore } from "../../../stores/globalStore";
 import { RouterLink } from "vue-router";
@@ -36,35 +41,57 @@ async function loadTrips() {
   }
 }
 
-async function endRoute(tripID, dayIndex, routeIndex) {
+const modalVisible = ref(false);
+const currentTripID = ref(null);
+const currentDayIndex = ref(null);
+const currentRouteIndex = ref(null);
+const form = ref({
+  userTime: "",
+  timeStart: "",
+  timeEnd: "",
+});
+
+function openModal(tripID, dayIndex, routeIndex) {
+  currentTripID.value = tripID;
+  currentDayIndex.value = dayIndex;
+  currentRouteIndex.value = routeIndex;
+
+  const route = tripsData.value.find((trip) => trip.id === tripID).trips[
+    dayIndex
+  ][routeIndex];
+
+  form.value.userTime = route.userTime || "";
+  form.value.timeStart = route.timeStart ? new Date(route.timeStart) : "";
+  form.value.timeEnd = route.timeEnd ? new Date(route.timeEnd) : "";
+
+  modalVisible.value = true;
+}
+
+async function submitEndRoute() {
   const payload = {
-    tripID,
-    dayIndex,
-    routeIndex,
+    tripID: currentTripID.value,
+    dayIndex: currentDayIndex.value,
+    routeIndex: currentRouteIndex.value,
     userID: globalStore.userID,
+    userTime: form.value.userTime,
+    timeStart: form.value.timeStart,
+    timeEnd: form.value.timeEnd,
   };
 
   try {
     const response = await api.trip.endRoute(payload);
-    updateRouteStatus(tripID, dayIndex, routeIndex, "ended", null);
+    updateRouteStatus(
+      currentTripID.value,
+      currentDayIndex.value,
+      currentRouteIndex.value,
+      "ended",
+      form.value.timeStart,
+      form.value.timeEnd
+    );
     ElMessage.success("Trasa zakończona");
+    modalVisible.value = false;
   } catch (error) {
     ElMessage.error("Błąd podczas zakańczania trasy");
-  }
-}
-
-async function deleteTrip(tripID) {
-  const payload = {
-    tripID,
-    userID: globalStore.userID,
-  };
-
-  try {
-    await api.trip.deleteTrip(payload);
-    loadTrips(); // Reload trips after deletion
-    ElMessage.success("Wycieczka usunięta");
-  } catch (error) {
-    ElMessage.error("Błąd podczas usuwania wycieczki");
   }
 }
 
@@ -103,17 +130,6 @@ function updateRouteStatus(
   }
 }
 
-function formatTripStatus(status) {
-  switch (status) {
-    case "finished":
-      return "Zakończona";
-    case "started":
-      return "W trakcie";
-    default:
-      return "Nie rozpoczęta";
-  }
-}
-
 function formatRouteStatus(status) {
   switch (status) {
     case "planned":
@@ -127,11 +143,6 @@ function formatRouteStatus(status) {
 
 function formatDateTime(dateTime) {
   return format(new Date(dateTime), "yyyy-MM-dd");
-}
-
-function formatUserTime(userTime) {
-  if (!userTime) return "Brak";
-  return format(new Date(userTime), "HH:mm");
 }
 
 onMounted(() => {
@@ -176,13 +187,18 @@ onMounted(() => {
                 label="Średni czas"
               ></el-table-column>
               <el-table-column label="Mój czas">
-                <template #default="{ row }">
-                  {{ formatUserTime(row.userTime) }}h
-                </template>
+                <template #default="{ row }"> {{ row.userTime }} </template>
               </el-table-column>
               <el-table-column label="Status">
                 <template #default="{ row }">
                   {{ formatRouteStatus(row.status) }}
+                </template>
+              </el-table-column>
+              <el-table-column label="Czas rozpoczęcia">
+                <template #default="{ row }">
+                  <span v-if="row.timeStart">{{
+                    formatDateTime(row.timeStart)
+                  }}</span>
                 </template>
               </el-table-column>
               <el-table-column label="Czas zakończenia">
@@ -196,7 +212,7 @@ onMounted(() => {
                 <template #default="{ row, $index }">
                   <el-button
                     v-if="row.status === 'planned'"
-                    @click="endRoute(trip.id, dayIndex, $index)"
+                    @click="openModal(trip.id, dayIndex, $index)"
                     type="primary"
                   >
                     Zakończ
@@ -220,26 +236,26 @@ onMounted(() => {
               class="mobile-route"
             >
               <p>
-                <strong>Nazwa trasy:</strong>
+                <strong>Nazwa trasy: </strong>
                 <RouterLink :to="`/route/${route.routeID}`">{{
                   route.trailName
                 }}</RouterLink>
               </p>
-              <p><strong>Dystans (km):</strong> {{ route.routeDist }}</p>
-              <p><strong>Średni czas:</strong> {{ route.routeTime }}</p>
-              <p><strong>Mój czas:</strong> {{ route.userTime }}</p>
+              <p><strong>Dystans (km): </strong>{{ route.routeDist }}</p>
+              <p><strong>Średni czas: </strong>{{ route.routeTime }}</p>
+              <p><strong>Mój czas: </strong>{{ route.userTime }}</p>
               <p>
-                <strong>Status:</strong> {{ formatRouteStatus(route.status) }}
+                <strong>Status: </strong>{{ formatRouteStatus(route.status) }}
               </p>
               <p>
-                <strong>Czas zakończenia:</strong>
+                <strong>Czas zakończenia: </strong>
                 <span v-if="route.timeEnd">{{
                   formatDateTime(route.timeEnd)
                 }}</span>
               </p>
               <div class="button-end-route" v-if="route.status === 'planned'">
                 <el-button
-                  @click="endRoute(trip.id, dayIndex, routeIndex)"
+                  @click="openModal(trip.id, dayIndex, routeIndex)"
                   type="primary"
                 >
                   Zakończ
@@ -253,6 +269,46 @@ onMounted(() => {
     <div class="trips-empty" v-else>
       <p>Brak wycieczek do wyświetlenia.</p>
     </div>
+
+    <el-dialog
+      class="end-trip-dialog"
+      v-model="modalVisible"
+      :visible.sync="modalVisible"
+      title="Zakończ trasę"
+    >
+      <el-form>
+        <el-form-item label="Czas użytkownika">
+          <el-time-select
+            v-model="form.userTime"
+            start="00:00"
+            step="00:01"
+            end="20:00"
+            placeholder="Wybierz czas"
+          />
+        </el-form-item>
+
+        <el-form-item label="Data rozpoczęcia">
+          <el-date-picker
+            v-model="form.timeStart"
+            type="date"
+            placeholder="Wybierz datę"
+          />
+        </el-form-item>
+
+        <el-form-item label="Data zakończenia">
+          <el-date-picker
+            v-model="form.timeEnd"
+            type="date"
+            placeholder="Wybierz datę"
+          />
+        </el-form-item>
+
+        <el-form-item>
+          <el-button type="primary" @click="submitEndRoute">Zakończ</el-button>
+          <el-button @click="modalVisible = false">Anuluj</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
@@ -326,6 +382,9 @@ a {
   }
   .button-end-route {
     margin-top: 10px;
+  }
+  .mobile-route p {
+    margin-bottom: 3px;
   }
 }
 </style>

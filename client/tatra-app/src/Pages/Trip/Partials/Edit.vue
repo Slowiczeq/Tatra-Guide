@@ -254,6 +254,15 @@ async function saveTrip() {
                 placeholder="Wybierz czas"
               />
             </el-form-item>
+
+            <el-form-item label="Data rozpoczęcia">
+              <el-date-picker
+                v-model="form.trips[index][rIndex].timeStart"
+                type="date"
+                placeholder="Wybierz datę"
+              />
+            </el-form-item>
+
             <el-form-item label="Data zakończenia">
               <el-date-picker
                 v-model="form.trips[index][rIndex].timeEnd"

@@ -22,6 +22,7 @@ let trailsData = ref([]);
 let filteredTrails = ref([]);
 let selectedMountainRanges = ref(["Tatry Wysokie", "Tatry Zachodnie"]);
 let maxRouteTime = ref(20);
+let maxRouteLength = ref(40);
 let maxElevationGain = ref(2000);
 let selectedDifficultyLevels = ref([
   "Łatwy",
@@ -56,6 +57,7 @@ watch(
   [
     selectedMountainRanges,
     maxRouteTime,
+    maxRouteLength,
     maxElevationGain,
     selectedDifficultyLevels,
     selectedSkillLevels,
@@ -71,6 +73,7 @@ watch(
 function applyFilters() {
   filteredTrails.value = trailsData.value.filter((trail) => {
     const trailTime = parseFloat(trail.route_time);
+    const trailLength = parseFloat(trail.route_length);
     const elevationGain = parseInt(trail.elevation_gain);
 
     return (
@@ -87,7 +90,8 @@ function applyFilters() {
       (suitableForSeniors.value.length === 0 ||
         suitableForSeniors.value.includes(trail.suitable_for_seniors)) &&
       (wheelchairAccessible.value.length === 0 ||
-        wheelchairAccessible.value.includes(trail.wheelchair_accessible))
+        wheelchairAccessible.value.includes(trail.wheelchair_accessible)) &&
+      trailLength <= maxRouteLength.value
     );
   });
 }
@@ -160,6 +164,31 @@ function handleCheckboxClick(event) {
                     v-model="maxRouteTime"
                     :min="0"
                     :max="20"
+                    :step="0.1"
+                    show-tooltip
+                    tooltip-class="slider-tooltip"
+                    style="width: 200px"
+                  ></el-slider>
+                </div>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+
+        <el-dropdown trigger="click">
+          <el-button type="primary">
+            Długość trasy
+            <!-- <el-icon class="el-icon--right"><arrow-down /></el-icon> -->
+          </el-button>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item>
+                <div>
+                  <div>Długość trasy: {{ maxRouteLength }} km</div>
+                  <el-slider
+                    v-model="maxRouteLength"
+                    :min="0"
+                    :max="40"
                     :step="0.1"
                     show-tooltip
                     tooltip-class="slider-tooltip"

@@ -4,7 +4,11 @@ import api from "../../services/api";
 import { ref, onMounted } from "vue";
 import { ElMessage, ElCard, ElButton, ElProgress, ElTag } from "element-plus";
 import Auth from "../../components/Login/Auth.vue";
+import { useRoute } from "vue-router";
+
 const globalStore = useGlobalStore();
+const route = useRoute();
+const id = route.params.id;
 
 let challengesListData = ref([]);
 let userChallenges = ref([]);
@@ -12,10 +16,10 @@ let userChallenges = ref([]);
 async function challengesList() {
   try {
     const response = await api.challenges.challengesList();
-    challengesListData.value = response.data;
+    challengesListData.value = response.data.filter((item) => item.id == id);
     await loadUserChallenges();
   } catch (error) {
-    ElMessage.error("Błąd ładowania listy wyzwań");
+    ElMessage.error("Błąd ładowania wyzwania");
   }
 }
 
@@ -26,9 +30,11 @@ async function loadUserChallenges() {
 
   try {
     const response = await api.challenges.userChallenges(payload);
-    userChallenges.value = response.data;
+    userChallenges.value = response.data.filter(
+      (item) => item.challengeID == id
+    );
   } catch (error) {
-    ElMessage.error("Błąd ładowania wyzwań użytkownika");
+    ElMessage.error("Błąd ładowania wyzwania");
   }
 }
 
@@ -78,7 +84,7 @@ onMounted(() => {
   <div class="container">
     <Auth v-if="!globalStore.token" />
     <div class="challenges-container" v-else>
-      <span class="main-title challenges-main-title">Dołącz do wyzwania!</span>
+      <span class="main-title challenges-main-title">Szczegóły wyzwania</span>
       <div class="challenges-items-container">
         <el-card
           v-for="(item, index) in challengesListData"
@@ -86,9 +92,13 @@ onMounted(() => {
           class="challenges-item"
         >
           <template #header>
-            <RouterLink class="challenges-title" :to="`/challenges/${item.id}`">
-              <span class="challenges-title">{{ item.name }}</span>
-            </RouterLink>
+            <span class="challenges-title">{{ item.name }}</span>
+            <span class="challenges-details"
+              >Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Expedita unde nemo eveniet recusandae et quo natus dignissimos
+              omnis quis molestias ratione numquam harum beatae est non,
+              mollitia ullam at corrupti?</span
+            >
           </template>
           <div v-if="!getChallengeStatus(item.id)">
             <el-button
@@ -168,7 +178,6 @@ onMounted(() => {
 
 .challenges-items-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 20px;
   width: 100%;
 }
@@ -183,8 +192,6 @@ onMounted(() => {
   margin-bottom: 10px;
   display: block;
   text-align: center;
-  color: #000;
-  text-decoration: unset;
 }
 
 .challenge-status-box {

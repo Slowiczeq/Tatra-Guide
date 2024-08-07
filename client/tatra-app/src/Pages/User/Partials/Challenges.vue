@@ -54,6 +54,9 @@ const getPercentage = (challenge) => {
     (challenge.challangeProgress / challenge.challengeValue) * 100
   );
 };
+function getRoundedProgress(progress) {
+  return Math.round(progress);
+}
 </script>
 
 <template>
@@ -68,7 +71,12 @@ const getPercentage = (challenge) => {
           class="challenges-item"
         >
           <template #header>
-            <span class="challenges-title">{{ item.name }}</span>
+            <RouterLink
+              class="challenges-title"
+              :to="`/challenges/${item.challengeID}`"
+            >
+              <span class="challenges-title">{{ item.name }}</span>
+            </RouterLink>
           </template>
           <div class="progress-container" v-if="item.status === 'rozpoczęto'">
             <el-progress
@@ -79,7 +87,8 @@ const getPercentage = (challenge) => {
             <div class="challenge-status-box">
               <div class="progress-statuses">
                 <el-tag type="info"
-                  >Postęp: {{ item.challangeProgress }}</el-tag
+                  >Postęp:
+                  {{ getRoundedProgress(item.challangeProgress) }}</el-tag
                 >
                 <el-tag type="success">Cel: {{ item.challengeValue }}</el-tag>
               </div>
@@ -152,6 +161,8 @@ const getPercentage = (challenge) => {
   margin-bottom: 10px;
   display: block;
   text-align: center;
+  color: #000;
+  text-decoration: unset;
 }
 
 .challenge-status-box {

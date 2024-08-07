@@ -29,6 +29,17 @@ let selectedMountainRanges = ref(["Tatry Wysokie", "Tatry Zachodnie"]);
 let maxRouteLength = ref(30);
 let maxRouteTime = ref(20);
 let maxElevationGain = ref(2000);
+let selectedDifficultyLevels = ref([
+  "Łatwy",
+  "Średni",
+  "Trudny",
+  "Bardzo Trudny",
+]);
+let selectedSkillLevels = ref([
+  "Początkujący",
+  "Średniozaawansowany",
+  "Zaawansowany",
+]);
 let currentRouteIndex = 0;
 
 let map;
@@ -158,7 +169,9 @@ const updateMapMarkers = () => {
         selectedMountainRanges.value.includes(route.mountain_range.trim()) &&
         routeLength <= maxRouteLength.value &&
         routeTime <= maxRouteTime.value &&
-        routeElevation <= maxElevationGain.value
+        routeElevation <= maxElevationGain.value &&
+        selectedDifficultyLevels.value.includes(route.difficulty.trim()) &&
+        selectedSkillLevels.value.includes(route.skill_level.trim())
       );
     });
 
@@ -214,7 +227,14 @@ onMounted(() => {
 });
 
 watch(
-  [selectedMountainRanges, maxRouteLength, maxRouteTime, maxElevationGain],
+  [
+    selectedMountainRanges,
+    maxRouteLength,
+    maxRouteTime,
+    maxElevationGain,
+    selectedDifficultyLevels,
+    selectedSkillLevels,
+  ],
   () => {
     updateMapMarkers();
   }
@@ -304,7 +324,7 @@ function filterTrails(query) {
         </el-dropdown>
         <el-dropdown trigger="click">
           <el-button type="primary">
-            Średni czas
+            Czas trasy
             <el-icon class="el-icon--right"><arrow-down /></el-icon>
           </el-button>
           <template #dropdown>
@@ -348,6 +368,62 @@ function filterTrails(query) {
                   >
                   </el-slider>
                 </div>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+        <el-dropdown trigger="click">
+          <el-button type="primary"> Poziom trudności </el-button>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item>
+                <el-checkbox-group
+                  v-model="selectedDifficultyLevels"
+                  @click="handleCheckboxClick"
+                >
+                  <div class="checkbox-item">
+                    <el-checkbox label="Łatwy">Łatwy</el-checkbox>
+                  </div>
+                  <div class="checkbox-item">
+                    <el-checkbox label="Średni">Średni</el-checkbox>
+                  </div>
+                  <div class="checkbox-item">
+                    <el-checkbox label="Trudny">Trudny</el-checkbox>
+                  </div>
+                  <div class="checkbox-item">
+                    <el-checkbox label="Bardzo Trudny"
+                      >Bardzo Trudny</el-checkbox
+                    >
+                  </div>
+                </el-checkbox-group>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+        <el-dropdown trigger="click">
+          <el-button type="primary">
+            Poziom zaawansowania
+            <!-- <el-icon class="el-icon--right"><arrow-down /></el-icon> -->
+          </el-button>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item>
+                <el-checkbox-group
+                  v-model="selectedSkillLevels"
+                  @click="handleCheckboxClick"
+                >
+                  <div class="checkbox-item">
+                    <el-checkbox label="Początkujący">Początkujący</el-checkbox>
+                  </div>
+                  <div class="checkbox-item">
+                    <el-checkbox label="Średniozaawansowany"
+                      >Średniozaawansowany</el-checkbox
+                    >
+                  </div>
+                  <div class="checkbox-item">
+                    <el-checkbox label="Zaawansowany">Zaawansowany</el-checkbox>
+                  </div>
+                </el-checkbox-group>
               </el-dropdown-item>
             </el-dropdown-menu>
           </template>

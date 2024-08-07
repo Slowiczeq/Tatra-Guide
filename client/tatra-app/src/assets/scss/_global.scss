@@ -91,6 +91,30 @@
     align-items: flex-start !important;
   }
 
+  .end-trip-dialog {
+    width: 450px;
+    padding: 25px;
+    .el-dialog__header {
+      text-align: center;
+      padding-right: 0;
+      .el-dialog__title {
+        font-weight: 600;
+      }
+    }
+
+    .el-form-item {
+      flex-direction: column;
+    align-items: flex-start;  
+    .el-form-item__content {
+      width: 100%;
+    }
+    .el-input {
+      width: 100%;
+    }
+    }
+
+  }
+
   @media(max-width: 768px) {
     .trip-header {
       flex-direction: column;
@@ -121,6 +145,10 @@
     .el-form-item__content {
       flex-wrap: nowrap;
     }
+  }
+  .end-trip-dialog {
+    width: 320px !important;
+    padding: 15px 20px !important;
   }
 
   }

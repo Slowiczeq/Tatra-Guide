@@ -477,7 +477,8 @@ app.post("/api/trip/startRoute", async (req, res) => {
 });
 
 app.post("/api/trip/endRoute", async (req, res) => {
-  const { tripID, dayIndex, routeIndex, userID } = req.body;
+  const { tripID, dayIndex, routeIndex, userID, userTime, timeStart, timeEnd } =
+    req.body;
   let client;
 
   try {
@@ -485,13 +486,28 @@ app.post("/api/trip/endRoute", async (req, res) => {
 
     await client.query("BEGIN");
 
-    // Update the route status to 'ended'
+    // Update the route status to 'ended' and set userTime, timeStart, and timeEnd
     const queryText = `
       UPDATE "User_trips"
       SET trips = jsonb_set(
-        trips,
-        '{${dayIndex},${routeIndex},status}',
-        '"ended"',
+        jsonb_set(
+          jsonb_set(
+            jsonb_set(
+              trips,
+              '{${dayIndex},${routeIndex},status}',
+              '"ended"',
+              true
+            ),
+            '{${dayIndex},${routeIndex},userTime}',
+            '"${userTime}"',
+            true
+          ),
+          '{${dayIndex},${routeIndex},timeStart}',
+          '"${timeStart}"',
+          true
+        ),
+        '{${dayIndex},${routeIndex},timeEnd}',
+        '"${timeEnd}"',
         true
       )
       WHERE id = $1
@@ -516,8 +532,6 @@ app.post("/api/trip/endRoute", async (req, res) => {
     const userChallengesResult = await client.query(userChallengesQuery, [
       userID,
     ]);
-
-    let challengesCompleted = false;
 
     for (let challenge of userChallengesResult.rows) {
       let challengeProgress = parseFloat(challenge.challangeProgress) || 0;

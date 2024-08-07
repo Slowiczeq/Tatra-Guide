@@ -8,6 +8,7 @@ import DiscoverForDisabled from "../Pages/Discover/DiscoverForDisabled.vue";
 import Route from "../Pages/Discover/Route.vue";
 import Routes from "../Pages/Routes/Routes.vue";
 import Challenges from "../Pages/Challenges/Challenges.vue";
+import ChallengesDetails from "../Pages/Challenges/ChallengesDetails.vue";
 import Blog from "../Pages/Blog/Blog.vue";
 import Forum from "../Pages/Forum/Forum.vue";
 import User from "../Pages/User/User.vue";
@@ -92,6 +93,12 @@ const router = createRouter({
       name: "challenges",
       component: Challenges,
     },
+    {
+      path: "/challenges/:id",
+      name: "challenges-details",
+      component: ChallengesDetails,
+    },
+
     {
       path: "/blog",
       name: "blog",
