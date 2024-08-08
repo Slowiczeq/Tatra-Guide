@@ -1,6 +1,6 @@
 <script setup>
 import api from "../../services/api";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, nextTick } from "vue";
 import {
   ElMessage,
   ElCard,
@@ -8,12 +8,16 @@ import {
   ElTag,
   ElIcon,
   ElInput,
+  ElDialog,
 } from "element-plus";
 import { Star, StarFilled } from "@element-plus/icons-vue";
 import { useRoute } from "vue-router";
 import { useGlobalStore } from "../../stores/globalStore";
 import Reviews from "./Partials/Reviews.vue";
 import Auth from "../../components/Login/Auth.vue";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import "leaflet-gpx";
 
 const globalStore = useGlobalStore();
 
@@ -25,6 +29,9 @@ let userTrailInfo = ref(null);
 let isTrailSaved = ref(false); // Zmienna kontrolująca stan zapisu trasy
 let rating = ref(0);
 let review = ref("");
+let showMapDialog = ref(false); // Zmienna kontrolująca stan modala z mapą
+let map = ref(null);
+let gpxLayer = ref(null);
 
 async function loadTrail() {
   try {
@@ -120,6 +127,37 @@ async function submitReview() {
     ElMessage.error("Błąd podczas przesyłania opinii");
   }
 }
+function openMapDialog() {
+  showMapDialog.value = true;
+  nextTick(() => {
+    if (!map.value) {
+      map.value = L.map("map").setView([49.2771, 19.9817], 13);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      }).addTo(map.value);
+
+      L.tileLayer("https://mapa-turystyczna.pl/{z}/{x}/{y}.png", {
+        attribution:
+          '&copy; <a href="https://mapa-turystyczna.pl">mapa-turystyczna.pl</a>',
+      }).addTo(map.value);
+    }
+    if (gpxLayer.value) {
+      map.value.removeLayer(gpxLayer.value);
+    }
+    gpxLayer.value = new L.GPX(`/gpx/${trailData.value[0].gpx}`, {
+      async: true,
+      marker_options: {
+        startIconUrl: "images/pin-icon-start.png",
+        endIconUrl: "images/pin-icon-end.png",
+        shadowUrl: "images/pin-shadow.png",
+      },
+    }).on("loaded", (e) => {
+      map.value.fitBounds(e.target.getBounds());
+    });
+    gpxLayer.value.addTo(map.value);
+  });
+}
 </script>
 
 <template>
@@ -133,6 +171,9 @@ async function submitReview() {
           class="route-img"
           style="width: 100%; height: 400px; border-radius: 15px"
         />
+        <el-button class="map-button" @click="openMapDialog"
+          >Pokaż mapę</el-button
+        >
       </div>
       <div class="list-item-main">
         <h2 class="item-title">
@@ -211,6 +252,13 @@ async function submitReview() {
       <Reviews />
     </el-card>
     <div class="element-center" v-else>Ładowanie danych...</div>
+
+    <el-dialog v-model="showMapDialog" width="80%" center>
+      <template #title>
+        <span>Mapa trasy</span>
+      </template>
+      <div id="map" style="height: 500px"></div>
+    </el-dialog>
   </div>
 </template>
 
@@ -232,10 +280,17 @@ async function submitReview() {
 .list-item-header {
   text-align: center;
   margin-bottom: 20px;
+  position: relative;
 }
 .route-img {
   max-width: 100%;
   height: auto;
+}
+.map-button {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 .item-title {
   font-size: 24px;
