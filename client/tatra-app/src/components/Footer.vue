@@ -23,9 +23,9 @@
         <RouterLink to="/challenges" class="footer-list-title"
           >Wyzwania</RouterLink
         >
-        <RouterLink to="/challenges">Przejdź 5 tras</RouterLink>
-        <RouterLink to="/challenges">Przejdź 30km</RouterLink>
-        <RouterLink to="/challenges">Przejdź 100km</RouterLink>
+        <a href="/challenges/1">Przejdź 5 tras</a>
+        <a href="/challenges/2">Przejdź 30km</a>
+        <a href="/challenges/3">Przejdź 100km</a>
       </div>
       <div class="footer-list">
         <RouterLink to="/routes" class="footer-list-title"
