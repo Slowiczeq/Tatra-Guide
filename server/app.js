@@ -48,7 +48,6 @@ app.post("/api/auth/register", async (req, res) => {
   try {
     const client = await pool.connect();
     try {
-      // Sprawdź, czy email już istnieje
       const emailCheck = await client.query(
         `SELECT * FROM "Users" WHERE "email" = $1`,
         [req.body.email]
@@ -58,7 +57,6 @@ app.post("/api/auth/register", async (req, res) => {
         return res.status(409).send({ message: "Email jest już w użyciu" });
       }
 
-      // Hashuj hasło i wstaw nowego użytkownika
       const hashedPassword = SHA256(req.body.password).toString();
       const result = await client.query(
         `INSERT INTO "Users" ("firstName", "lastName", "email", "password") VALUES ($1, $2, $3, $4) RETURNING *`,
@@ -124,7 +122,7 @@ app.get("/api/hiking-trails/list", (req, res) => {
   try {
     pool.connect(async (error, client, release) => {
       let resp = await client.query(
-        `SELECT "id", "mountain_range", "trail_name", "start_point", "start_location", "end_point", "end_location", "difficulty_level", "child_friendly", "wheelchair_accessible", "suitable_for_seniors", "skill_level", "route_length", "route_time", "elevation_gain" FROM "Hiking_trails"`
+        `SELECT "id", "mountain_range", "trail_name", "start_point", "end_point", "difficulty_level", "child_friendly", "wheelchair_accessible", "suitable_for_seniors", "skill_level", "route_length", "route_time", "elevation_gain", "description" FROM "Hiking_trails"`
       );
       res.send(resp.rows);
       release();
@@ -153,7 +151,7 @@ app.get("/api/hiking-trails/details/:id", (req, res) => {
   try {
     pool.connect(async (error, client, release) => {
       let resp = await client.query(
-        `SELECT "id", "mountain_range", "trail_name", "start_point", "start_location", "end_point", "end_location", "difficulty_level", "child_friendly", "wheelchair_accessible", "suitable_for_seniors", "skill_level", "route_length", "route_time" FROM "Hiking_trails" WHERE "id"='${id}'`
+        `SELECT "id", "mountain_range", "trail_name", "start_point", "end_point", "difficulty_level", "child_friendly", "wheelchair_accessible", "suitable_for_seniors", "skill_level", "route_length", "route_time", "description" FROM "Hiking_trails" WHERE "id"='${id}'`
       );
       res.send(resp.rows);
       release();

@@ -163,15 +163,8 @@ async function submitReview() {
           </div>
         </div>
         <div class="item-details-description">
-          <p>
-            <strong>Opis: </strong> ipsum dolor sit amet consectetur adipisicing
-            elit. Quisquam dolore et maiores veniam optio omnis praesentium
-            aliquam deleniti nostrum, excepturi itaque minima consectetur?
-            Itaque natus dicta placeat enim eveniet eum? Lorem ipsum dolor sit,
-            amet consectetur adipisicing elit. Cupiditate consequuntur similique
-            ab eligendi itaque nihil explicabo. Odio, rem molestiae ullam
-            mollitia, minus dolorum commodi veniam nemo quae deserunt maiores
-            nulla.
+          <p style="text-align: justify">
+            <strong>Opis: </strong>{{ trailData[0].description }}
           </p>
         </div>
         <div class="action-buttons">
