@@ -54,7 +54,11 @@ const showRoute = (gpxFile) => {
   if (gpxFile) {
     gpxLayer = new L.GPX(gpxFile, {
       async: true,
-      marker_options: {}, // Pusty obiekt, nie będzie ikon startu/końca
+      marker_options: {
+        startIcon: L.icon(), // Użycie domyślnego ikony Leaflet
+        endIcon: L.icon(),
+        shadowUrl: "",
+      },
     })
       .on("loaded", (e) => {
         map.fitBounds(e.target.getBounds());
