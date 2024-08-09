@@ -45,6 +45,7 @@ let currentRouteIndex = 0;
 let map;
 let markers = [];
 let gpxLayer;
+let selectedTrailId = ref(null);
 
 const showRoute = (gpxFile) => {
   if (gpxLayer) {
@@ -134,6 +135,8 @@ const updatePopup = (marker, peak) => {
   }
   marker.bindPopup(popupContent).openPopup();
   showRoute(route.gpx);
+
+  selectedTrailId.value = ""; // Czyszczenie wartości w el-select po kliknięciu na mapie
 };
 
 const createCustomIcon = (peak) => {
@@ -206,6 +209,7 @@ const findAndOpenMarker = (trailId) => {
       if (marker) {
         updatePopup(marker, peak);
         marker.openPopup();
+        selectedTrailId.value = trailId; // Ustawianie wartości w el-select
         return;
       }
     }

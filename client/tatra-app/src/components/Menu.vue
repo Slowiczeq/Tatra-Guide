@@ -43,9 +43,9 @@ window.addEventListener("resize", checkMobile);
       <el-menu-item>
         <RouterLink to="/challenges">Podejmij wyzwanie</RouterLink>
       </el-menu-item>
-      <!-- <el-menu-item>
+      <el-menu-item>
         <RouterLink to="blog">Blog</RouterLink>
-      </el-menu-item> -->
+      </el-menu-item>
 
       <el-sub-menu style="margin-left: auto" v-if="globalStore.token">
         <template #title>
@@ -136,9 +136,9 @@ window.addEventListener("resize", checkMobile);
             >Podejmij wyzwanie</RouterLink
           >
         </el-menu-item>
-        <!-- <el-menu-item>
-          <RouterLink to="blog" @click="drawer = false">Blog</RouterLink>
-        </el-menu-item> -->
+        <el-menu-item>
+          <RouterLink to="/blog" @click="drawer = false">Blog</RouterLink>
+        </el-menu-item>
 
         <el-sub-menu v-if="globalStore.token">
           <template #title>

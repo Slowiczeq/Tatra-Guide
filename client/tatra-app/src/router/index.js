@@ -10,6 +10,7 @@ import Routes from "../Pages/Routes/Routes.vue";
 import Challenges from "../Pages/Challenges/Challenges.vue";
 import ChallengesDetails from "../Pages/Challenges/ChallengesDetails.vue";
 import Blog from "../Pages/Blog/Blog.vue";
+import BlogDetails from "../Pages/Blog/BlogDetails.vue";
 import Forum from "../Pages/Forum/Forum.vue";
 import User from "../Pages/User/User.vue";
 import Reviews from "../Pages/User/Partials/Reviews.vue";
@@ -104,6 +105,12 @@ const router = createRouter({
       name: "blog",
       component: Blog,
     },
+    {
+      path: "/blog/:id",
+      name: "blog-details",
+      component: BlogDetails,
+    },
+
     {
       path: "/forum",
       name: "forum",
