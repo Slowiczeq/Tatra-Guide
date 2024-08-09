@@ -54,7 +54,7 @@ const showRoute = (gpxFile) => {
   if (gpxFile) {
     gpxLayer = new L.GPX(gpxFile, {
       async: true,
-      marker_options: {},
+      wptIconUrls: false,
     })
       .on("loaded", (e) => {
         map.fitBounds(e.target.getBounds());

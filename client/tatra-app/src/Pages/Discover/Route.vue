@@ -127,6 +127,7 @@ async function submitReview() {
     ElMessage.error("Błąd podczas przesyłania opinii");
   }
 }
+
 function openMapDialog() {
   showMapDialog.value = true;
   nextTick(() => {
@@ -145,9 +146,10 @@ function openMapDialog() {
     if (gpxLayer.value) {
       map.value.removeLayer(gpxLayer.value);
     }
+
     gpxLayer.value = new L.GPX(`/gpx/${trailData.value[0].gpx}`, {
       async: true,
-      marker_options: {},
+      wptIconUrls: false,
     }).on("loaded", (e) => {
       map.value.fitBounds(e.target.getBounds());
     });
