@@ -1,6 +1,6 @@
 <script setup>
 import api from "../../services/api";
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted } from "vue";
 import { useGlobalStore } from "../../stores/globalStore";
 
 const globalStore = useGlobalStore();
@@ -16,6 +16,10 @@ async function loadTrails() {
   }
 }
 
+function getImageUrl(imageName) {
+  return new URL(`./img/${imageName}`, import.meta.url).href;
+}
+
 onMounted(() => {
   loadTrails();
 });
@@ -26,7 +30,7 @@ onMounted(() => {
     <div class="blog-background">
       <img src="./img/bg.png" alt="" />
     </div>
-    <div v-if="blogData" class="container">
+    <div v-if="blogData.length" class="container">
       <span class="blog-title">Blog</span>
       <div class="blog-container">
         <RouterLink
@@ -37,7 +41,7 @@ onMounted(() => {
           :class="{ 'first-blog-item': index === 0 }"
         >
           <div class="blog-top">
-            <img :src="`./img/${item.img}`" alt="" class="blog-img" />
+            <img :src="getImageUrl(item.img)" alt="" class="blog-img" />
           </div>
           <div class="blog-bottom">
             <p class="blog-author">Autor: {{ item.author }}</p>
