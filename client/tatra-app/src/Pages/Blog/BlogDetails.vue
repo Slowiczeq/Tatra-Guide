@@ -19,6 +19,10 @@ async function loadBlogDetails() {
   }
 }
 
+function getImageUrl(imageName) {
+  return new URL(`./img/${imageName}`, import.meta.url).href;
+}
+
 onMounted(() => {
   loadBlogDetails();
 });
@@ -28,7 +32,7 @@ onMounted(() => {
   <div v-if="blogDetails" class="blog-details-container">
     <div class="blog-details-top">
       <img
-        :src="`/src/Pages/Blog/img/${blogDetails[0].img}`"
+        :src="getImageUrl(blogDetails[0].img)"
         alt="Blog image"
         class="blog-details-img"
       />
