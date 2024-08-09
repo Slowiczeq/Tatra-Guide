@@ -106,5 +106,8 @@ onMounted(() => {
   .blog-title {
     font-size: 24px;
   }
+  .blog-details-img {
+    max-width: 290px;
+  }
 }
 </style>
