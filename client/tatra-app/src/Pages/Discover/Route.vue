@@ -147,11 +147,11 @@ function openMapDialog() {
     }
     gpxLayer.value = new L.GPX(`/gpx/${trailData.value[0].gpx}`, {
       async: true,
-      marker_options: {
-        startIconUrl: "images/pin-icon-start.png",
-        endIconUrl: "images/pin-icon-end.png",
-        shadowUrl: "images/pin-shadow.png",
-      },
+      // marker_options: {
+      //   startIconUrl: "images/pin-icon-start.png",
+      //   endIconUrl: "images/pin-icon-end.png",
+      //   shadowUrl: "images/pin-shadow.png",
+      // },
     }).on("loaded", (e) => {
       map.value.fitBounds(e.target.getBounds());
     });
