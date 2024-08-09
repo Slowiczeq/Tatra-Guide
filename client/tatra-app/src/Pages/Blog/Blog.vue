@@ -37,11 +37,7 @@ onMounted(() => {
           :class="{ 'first-blog-item': index === 0 }"
         >
           <div class="blog-top">
-            <img
-              :src="`/src/Pages/Blog/img/${item.img}`"
-              alt=""
-              class="blog-img"
-            />
+            <img :src="`./img/${item.img}`" alt="" class="blog-img" />
           </div>
           <div class="blog-bottom">
             <p class="blog-author">Autor: {{ item.author }}</p>
