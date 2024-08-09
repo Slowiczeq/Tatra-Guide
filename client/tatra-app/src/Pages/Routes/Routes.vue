@@ -54,7 +54,14 @@ const showRoute = (gpxFile) => {
   if (gpxFile) {
     gpxLayer = new L.GPX(gpxFile, {
       async: true,
-      wptIconUrls: false,
+      marker_options: {
+        startIconUrl:
+          "https://cdn.jsdelivr.net/npm/leaflet-gpx@1.7.0/pin-icon-start.png",
+        endIconUrl:
+          "https://cdn.jsdelivr.net/npm/leaflet-gpx@1.7.0/pin-icon-end.png",
+        shadowUrl:
+          "https://cdn.jsdelivr.net/npm/leaflet-gpx@1.7.0/pin-shadow.png",
+      },
     })
       .on("loaded", (e) => {
         map.fitBounds(e.target.getBounds());

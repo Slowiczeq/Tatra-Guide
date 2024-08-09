@@ -149,7 +149,14 @@ function openMapDialog() {
 
     gpxLayer.value = new L.GPX(`/gpx/${trailData.value[0].gpx}`, {
       async: true,
-      wptIconUrls: false,
+      marker_options: {
+        startIconUrl:
+          "https://cdn.jsdelivr.net/npm/leaflet-gpx@1.7.0/pin-icon-start.png",
+        endIconUrl:
+          "https://cdn.jsdelivr.net/npm/leaflet-gpx@1.7.0/pin-icon-end.png",
+        shadowUrl:
+          "https://cdn.jsdelivr.net/npm/leaflet-gpx@1.7.0/pin-shadow.png",
+      },
     }).on("loaded", (e) => {
       map.value.fitBounds(e.target.getBounds());
     });
