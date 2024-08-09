@@ -55,9 +55,24 @@ const showRoute = (gpxFile) => {
     gpxLayer = new L.GPX(gpxFile, {
       async: true,
       marker_options: {
-        startIcon: L.icon(), // Użycie domyślnego ikony Leaflet
-        endIcon: L.icon(),
-        shadowUrl: "",
+        startIcon: L.icon({
+          iconUrl:
+            "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
+          iconSize: [25, 41], // Wielkość ikony
+          iconAnchor: [12, 41], // Punkt zaczepienia ikony
+          popupAnchor: [1, -34], // Punkt zaczepienia popupu względem ikony
+          shadowSize: [41, 41], // Rozmiar cienia
+        }),
+        endIcon: L.icon({
+          iconUrl:
+            "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          shadowSize: [41, 41],
+        }),
+        shadowUrl:
+          "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
       },
     })
       .on("loaded", (e) => {
