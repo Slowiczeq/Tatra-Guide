@@ -93,12 +93,7 @@ onMounted(() => {
         >
           <template #header>
             <span class="challenges-title">{{ item.name }}</span>
-            <span class="challenges-details"
-              >Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Expedita unde nemo eveniet recusandae et quo natus dignissimos
-              omnis quis molestias ratione numquam harum beatae est non,
-              mollitia ullam at corrupti?</span
-            >
+            <span class="challenges-details">{{ item.description }}</span>
           </template>
           <div v-if="!getChallengeStatus(item.id)">
             <el-button

@@ -358,7 +358,7 @@ app.get("/api/challenges/list", (req, res) => {
   try {
     pool.connect(async (error, client, release) => {
       let resp = await client.query(
-        `SELECT "id", "name", "challengeType", "challengeValue"  FROM "Challenges"`
+        `SELECT "id", "name", "challengeType", "challengeValue", "description"  FROM "Challenges"`
       );
       res.send(resp.rows);
       release();

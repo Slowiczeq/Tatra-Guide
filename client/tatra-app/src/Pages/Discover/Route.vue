@@ -358,4 +358,8 @@ function openMapDialog() {
     gap: 0;
   }
 }
+
+.leaflet-marker-icon {
+  display: none !important;
+}
 </style>
