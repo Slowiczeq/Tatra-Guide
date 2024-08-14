@@ -14,7 +14,7 @@ import {
   ElIcon,
   ElSlider,
 } from "element-plus";
-import { ArrowDown } from "@element-plus/icons-vue";
+import { ArrowDown, Loading } from "@element-plus/icons-vue";
 
 const globalStore = useGlobalStore();
 
@@ -38,6 +38,7 @@ let selectedSkillLevels = ref([
 let childFriendly = ref([]);
 let suitableForSeniors = ref([]);
 let wheelchairAccessible = ref([]);
+let isLoading = ref(true);
 
 async function loadTrails() {
   try {
@@ -45,11 +46,11 @@ async function loadTrails() {
     trailsData.value = response.data.filter(
       (item) => item.wheelchair_accessible == "Tak"
     );
-    filteredTrails.value = response.data.filter(
-      (item) => item.wheelchair_accessible == "Tak"
-    );
+    filteredTrails.value = trailsData.value;
   } catch (error) {
     ElMessage.error("Błąd ładowania listy tras");
+  } finally {
+    isLoading.value = false;
   }
 }
 
@@ -127,10 +128,7 @@ function handleCheckboxClick(event) {
       <span class="filters-title">Dostosuj filtry</span>
       <div class="filters">
         <el-dropdown trigger="click">
-          <el-button type="primary">
-            Pasmo górskie
-            <!-- <el-icon class="el-icon--right"><arrow-down /></el-icon> -->
-          </el-button>
+          <el-button type="primary"> Pasmo górskie </el-button>
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item>
@@ -155,10 +153,7 @@ function handleCheckboxClick(event) {
         </el-dropdown>
 
         <el-dropdown trigger="click">
-          <el-button type="primary">
-            Czas trasy
-            <!-- <el-icon class="el-icon--right"><arrow-down /></el-icon> -->
-          </el-button>
+          <el-button type="primary"> Czas trasy </el-button>
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item>
@@ -180,10 +175,7 @@ function handleCheckboxClick(event) {
         </el-dropdown>
 
         <el-dropdown trigger="click">
-          <el-button type="primary">
-            Długość trasy
-            <!-- <el-icon class="el-icon--right"><arrow-down /></el-icon> -->
-          </el-button>
+          <el-button type="primary"> Długość trasy </el-button>
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item>
@@ -205,10 +197,7 @@ function handleCheckboxClick(event) {
         </el-dropdown>
 
         <el-dropdown trigger="click">
-          <el-button type="primary">
-            Przewyższenie
-            <!-- <el-icon class="el-icon--right"><arrow-down /></el-icon> -->
-          </el-button>
+          <el-button type="primary"> Przewyższenie </el-button>
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item>
@@ -229,10 +218,17 @@ function handleCheckboxClick(event) {
           </template>
         </el-dropdown>
       </div>
-      <span style="margin-top: 20px; margin-bottom: 5px" class="filters-title"
-        >Trasy dla wózków inwalidzkich</span
-      >
-      <div v-if="filteredTrails.length > 0" class="discover-page__list">
+      <span style="margin-top: 20px; margin-bottom: 5px" class="filters-title">
+        Trasy dla wózków inwalidzkich
+      </span>
+
+      <div v-if="isLoading" class="loading-container">
+        <el-icon class="is-loading">
+          <Loading />
+        </el-icon>
+      </div>
+
+      <div v-else-if="filteredTrails.length > 0" class="discover-page__list">
         <div v-for="item in filteredTrails" :key="item.id" class="list-item">
           <RouterLink :to="`/route/${item.id}`" class="list-item-link">
             <div class="list-item-header">
@@ -241,12 +237,12 @@ function handleCheckboxClick(event) {
             <div class="list-item-main">
               <span class="item-title">{{ item.trail_name }}</span>
               <span class="item-text">{{ item.mountain_range }}</span>
-              <span class="item-text"
-                >{{ item.route_length }}km - {{ item.route_time }} -
+              <span class="item-text">
+                {{ item.route_length }}km - {{ item.route_time }} -
                 <el-tag :type="getDifficultyColor(item.difficulty_level)">
                   {{ item.difficulty_level }}
-                </el-tag></span
-              >
+                </el-tag>
+              </span>
             </div>
             <div class="list-item-footer"></div>
           </RouterLink>
@@ -279,5 +275,12 @@ function handleCheckboxClick(event) {
   border: 1px solid #828282;
   border-radius: 25px;
   padding: 20px 15px;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
 }
 </style>

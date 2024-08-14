@@ -23,7 +23,8 @@ async function onSubmit() {
     globalStore.closeLoginModal();
     window.location.reload();
   } catch (error) {
-    ElMessage.error("Błąd podaczas logowania");
+    console.log(error);
+    ElMessage.error(error.response.data);
     form.email = "";
     form.password = "";
   }

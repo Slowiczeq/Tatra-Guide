@@ -2,9 +2,17 @@
 import { useGlobalStore } from "../../stores/globalStore";
 import api from "../../services/api";
 import { ref, onMounted } from "vue";
-import { ElMessage, ElCard, ElButton, ElProgress, ElTag } from "element-plus";
+import {
+  ElMessage,
+  ElCard,
+  ElButton,
+  ElProgress,
+  ElTag,
+  ElIcon,
+} from "element-plus";
 import Auth from "../../components/Login/Auth.vue";
 import { useRoute } from "vue-router";
+import { Loading } from "@element-plus/icons-vue";
 
 const globalStore = useGlobalStore();
 const route = useRoute();
@@ -12,6 +20,7 @@ const id = route.params.id;
 
 let challengesListData = ref([]);
 let userChallenges = ref([]);
+let isLoading = ref(true); // Dodano zmienną śledzącą stan ładowania
 
 async function challengesList() {
   try {
@@ -20,6 +29,8 @@ async function challengesList() {
     await loadUserChallenges();
   } catch (error) {
     ElMessage.error("Błąd ładowania wyzwania");
+  } finally {
+    isLoading.value = false; // Zakończenie ładowania
   }
 }
 
@@ -85,7 +96,14 @@ onMounted(() => {
     <Auth v-if="!globalStore.token" />
     <div class="challenges-container" v-else>
       <span class="main-title challenges-main-title">Szczegóły wyzwania</span>
-      <div class="challenges-items-container">
+
+      <div v-if="isLoading" class="loading-container">
+        <el-icon class="is-loading">
+          <Loading />
+        </el-icon>
+      </div>
+
+      <div v-else class="challenges-items-container">
         <el-card
           v-for="(item, index) in challengesListData"
           :key="index"
@@ -207,6 +225,14 @@ onMounted(() => {
   align-items: center;
   gap: 10px;
 }
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+
 @media (max-width: 768px) {
   .main-title {
     font-size: 24px;

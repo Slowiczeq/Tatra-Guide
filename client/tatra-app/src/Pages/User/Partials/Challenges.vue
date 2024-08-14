@@ -2,13 +2,16 @@
 import { useGlobalStore } from "../../../stores/globalStore";
 import api from "../../../services/api";
 import { ref, onMounted, computed } from "vue";
-import { ElMessage, ElCard, ElProgress, ElTag } from "element-plus";
+import { ElMessage, ElCard, ElProgress, ElTag, ElIcon } from "element-plus";
 import { format } from "date-fns";
 import Auth from "../../../components/Login/Auth.vue";
+import { RouterLink } from "vue-router";
+import { Loading } from "@element-plus/icons-vue";
 
 const globalStore = useGlobalStore();
 
 let userData = ref(null);
+let isLoading = ref(true); // Dodano zmienną śledzącą stan ładowania
 
 async function loadData() {
   if (globalStore.token) {
@@ -17,6 +20,8 @@ async function loadData() {
       userData.value = response.data;
     } catch (error) {
       ElMessage.error("Błąd ładowania danych");
+    } finally {
+      isLoading.value = false; // Zakończenie ładowania
     }
   }
 }
@@ -27,7 +32,6 @@ onMounted(() => {
 
 const userChallenges = computed(() => {
   if (!userData.value) return [];
-  // Filter challenges to include only those that are started or completed
   return userData.value.userChallenges
     .filter(
       (userChallenge) =>
@@ -54,6 +58,7 @@ const getPercentage = (challenge) => {
     (challenge.challangeProgress / challenge.challengeValue) * 100
   );
 };
+
 function getRoundedProgress(progress) {
   return Math.round(progress);
 }
@@ -64,7 +69,12 @@ function getRoundedProgress(progress) {
     <Auth v-if="!globalStore.token" />
     <div class="challenges-container" v-else>
       <span class="main-title challenges-main-title">Moje Wyzwania</span>
-      <div class="challenges-items-container">
+      <div v-if="isLoading" class="loading-container">
+        <el-icon class="is-loading">
+          <Loading />
+        </el-icon>
+      </div>
+      <div v-else class="challenges-items-container">
         <el-card
           v-for="(item, index) in userChallenges"
           :key="index"
@@ -190,6 +200,13 @@ function getRoundedProgress(progress) {
   flex-direction: column;
   align-items: center;
   gap: 5px;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
 }
 
 @media (max-width: 768px) {

@@ -2,14 +2,22 @@
 import { useGlobalStore } from "../../../stores/globalStore";
 import api from "../../../services/api";
 import { ref, onMounted, computed } from "vue";
-import { ElMessage, ElCard, ElTable, ElTableColumn } from "element-plus";
+import {
+  ElMessage,
+  ElCard,
+  ElTable,
+  ElTableColumn,
+  ElIcon,
+} from "element-plus";
 import { format } from "date-fns";
 import Auth from "../../../components/Login/Auth.vue";
 import { RouterLink } from "vue-router";
+import { Loading } from "@element-plus/icons-vue";
 
 const globalStore = useGlobalStore();
 
 let userData = ref(null);
+const isLoading = ref(true); // Dodano zmienną śledzącą stan ładowania
 const isMobile = ref(window.innerWidth < 768);
 
 window.addEventListener("resize", () => {
@@ -21,9 +29,10 @@ async function loadData() {
     try {
       const response = await api.auth.userInfo(globalStore.userID);
       userData.value = response.data;
-      console.log(userData.value);
     } catch (error) {
       ElMessage.error("Błąd ładowania danych");
+    } finally {
+      isLoading.value = false; // Zakończenie ładowania
     }
   }
 }
@@ -68,7 +77,16 @@ const completedTrails = computed(() => {
         <template #header>
           <div class="header">Ukończone trasy</div>
         </template>
-        <el-table v-if="!isMobile" :data="completedTrails" style="width: 100%">
+        <div v-if="isLoading" class="loading-container">
+          <el-icon class="is-loading">
+            <Loading />
+          </el-icon>
+        </div>
+        <el-table
+          v-else-if="!isMobile"
+          :data="completedTrails"
+          style="width: 100%"
+        >
           <el-table-column width="190" prop="trailName" label="Nazwa trasy">
             <template #default="{ row }">
               <RouterLink :to="`/route/${row.routeID}`">
@@ -141,6 +159,12 @@ const completedTrails = computed(() => {
 .trail {
   border-bottom: 1px solid #ebeef5;
   padding: 10px 0;
+}
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
 }
 @media (max-width: 768px) {
   .container {

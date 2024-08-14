@@ -23,6 +23,7 @@ const globalStore = useGlobalStore();
 
 let tripsData = ref([]);
 const isMobile = ref(window.innerWidth < 768);
+const isLoading = ref(true); // Dodano zmienną śledzącą stan ładowania
 
 window.addEventListener("resize", () => {
   isMobile.value = window.innerWidth < 768;
@@ -38,6 +39,8 @@ async function loadTrips() {
     tripsData.value = response.data;
   } catch (error) {
     ElMessage.error("Błąd ładowania wycieczek użytkownika");
+  } finally {
+    isLoading.value = false; // Zakończenie ładowania
   }
 }
 
@@ -153,7 +156,12 @@ onMounted(() => {
 <template>
   <div>
     <span class="main-title challenges-main-title">Moje wycieczki</span>
-    <div v-if="tripsData.length > 0">
+    <div v-if="isLoading" class="loading-container">
+      <el-icon class="is-loading">
+        <Loading />
+      </el-icon>
+    </div>
+    <div v-else-if="tripsData.length > 0">
       <el-card v-for="trip in tripsData" :key="trip.id" class="trip-item">
         <div class="trip-header">
           <h3 class="trip-title">Wycieczka - {{ trip.name }}</h3>
@@ -370,6 +378,13 @@ a {
 .mobile-route {
   border-bottom: 1px solid #ebeef5;
   padding: 10px 0;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
 }
 
 @media (max-width: 768px) {

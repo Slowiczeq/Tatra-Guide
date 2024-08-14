@@ -2,12 +2,14 @@
 import { useGlobalStore } from "../../stores/globalStore";
 import api from "../../services/api";
 import { ref, onMounted, computed } from "vue";
-import { ElMessage, ElCard } from "element-plus";
+import { ElMessage, ElCard, ElIcon } from "element-plus";
 import Auth from "../../components/Login/Auth.vue";
+import { Loading } from "@element-plus/icons-vue";
 
 const globalStore = useGlobalStore();
 
 let userData = ref(null);
+let isLoading = ref(true); // Dodano zmienną śledzącą stan ładowania
 
 async function loadData() {
   if (globalStore.token) {
@@ -17,6 +19,8 @@ async function loadData() {
       console.log(userData.value);
     } catch (error) {
       ElMessage.error("Błąd ładowania danych");
+    } finally {
+      isLoading.value = false; // Zakończenie ładowania
     }
   }
 }
@@ -76,7 +80,12 @@ onMounted(() => {
   <div class="container">
     <Auth v-if="!globalStore.token" />
     <div v-else>
-      <el-card class="user-info-card">
+      <div v-if="isLoading" class="loading-container">
+        <el-icon class="is-loading">
+          <Loading />
+        </el-icon>
+      </div>
+      <el-card v-else class="user-info-card">
         <template #header>
           <div class="header">
             {{ globalStore.userFirstName }} {{ globalStore.userLastName }}
@@ -129,6 +138,14 @@ onMounted(() => {
   font-weight: bold;
   color: #333;
 }
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+
 @media (max-width: 768px) {
   .container {
     margin-top: 20px;

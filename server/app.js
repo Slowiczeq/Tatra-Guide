@@ -58,20 +58,38 @@ app.post("/api/auth/register", async (req, res) => {
       }
 
       const hashedPassword = SHA256(req.body.password).toString();
+
       const result = await client.query(
         `INSERT INTO "Users" ("firstName", "lastName", "email", "password") VALUES ($1, $2, $3, $4) RETURNING *`,
         [req.body.firstName, req.body.lastName, req.body.email, hashedPassword]
       );
-      res.status(201).send(result.rows[0]);
+
+      const newUser = result.rows[0];
+
+      const token = jwt.sign({ email: newUser.email }, "secret", {
+        expiresIn: "1h",
+      });
+
+      await client.query(`UPDATE "Users" SET "token" = $1 WHERE "email" = $2`, [
+        token,
+        newUser.email,
+      ]);
+
+      res.status(201).send({
+        ...newUser,
+        token,
+      });
     } catch (error) {
       console.error(error);
-      res.status(500).send({ message: "Server error" });
+      res.status(500).send({ message: "Wystąpił błąd serwera." });
     } finally {
       client.release();
     }
   } catch (error) {
     console.error(error);
-    res.status(500).send({ message: "Database connection error" });
+    res
+      .status(500)
+      .send({ message: "Wystąpił błąd połączenia z bazą danych." });
   }
 });
 
@@ -88,7 +106,7 @@ app.post("/api/auth/user-login", async (req, res) => {
       );
 
       if (user.rows.length === 0) {
-        res.sendStatus(401);
+        res.status(401).send("Email lub hasło jest nieprawidłowe.");
       } else {
         if (user.rows[0].password === password) {
           const token = jwt.sign({ email: user.rows[0].email }, "secret", {
@@ -103,18 +121,24 @@ app.post("/api/auth/user-login", async (req, res) => {
             token,
           });
         } else {
-          res.sendStatus(401);
+          res.status(401).send("Email lub hasło jest nieprawidłowe.");
         }
       }
     } catch (error) {
       console.error(error);
-      res.sendStatus(401);
+      res
+        .status(500)
+        .send("Wystąpił błąd podczas logowania. Spróbuj ponownie później.");
     } finally {
       client.release();
     }
   } catch (error) {
     console.error(error);
-    res.sendStatus(500);
+    res
+      .status(500)
+      .send(
+        "Wystąpił problem z połączeniem do serwera. Spróbuj ponownie później."
+      );
   }
 });
 

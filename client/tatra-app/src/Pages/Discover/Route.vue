@@ -10,7 +10,7 @@ import {
   ElInput,
   ElDialog,
 } from "element-plus";
-import { Star, StarFilled } from "@element-plus/icons-vue";
+import { Star, StarFilled, Loading } from "@element-plus/icons-vue";
 import { useRoute } from "vue-router";
 import { useGlobalStore } from "../../stores/globalStore";
 import Reviews from "./Partials/Reviews.vue";
@@ -26,12 +26,13 @@ const id = route.params.id;
 
 let trailData = ref(null);
 let userTrailInfo = ref(null);
-let isTrailSaved = ref(false); // Zmienna kontrolująca stan zapisu trasy
+let isTrailSaved = ref(false);
 let rating = ref(0);
 let review = ref("");
-let showMapDialog = ref(false); // Zmienna kontrolująca stan modala z mapą
+let showMapDialog = ref(false);
 let map = ref(null);
 let gpxLayer = ref(null);
+let isLoading = ref(true);
 
 async function loadTrail() {
   try {
@@ -41,6 +42,8 @@ async function loadTrail() {
     console.log(userTrailInfo.value);
   } catch (error) {
     ElMessage.error("Błąd ładowania trasy");
+  } finally {
+    isLoading.value = false;
   }
 }
 
@@ -52,7 +55,7 @@ async function checkUser() {
   try {
     const response = await api.trails.checkUser(payload);
     userTrailInfo.value = response.data;
-    isTrailSaved.value = userTrailInfo.value.length > 0; // Ustawienie stanu na podstawie obecności trasy w danych użytkownika
+    isTrailSaved.value = userTrailInfo.value.length > 0;
   } catch (error) {
     ElMessage.error("Błąd ładowania danych użytkownika");
   }
@@ -168,7 +171,13 @@ function openMapDialog() {
 <template>
   <Auth v-if="!globalStore.token" />
   <div v-else class="container route-page">
-    <el-card v-if="trailData" class="route-page__item">
+    <div v-if="isLoading" class="loading-container">
+      <el-icon class="is-loading">
+        <Loading />
+      </el-icon>
+    </div>
+
+    <el-card v-else class="route-page__item">
       <div class="list-item-header">
         <img
           src="../../assets/img/route.jpg"
@@ -256,7 +265,6 @@ function openMapDialog() {
       </div>
       <Reviews />
     </el-card>
-    <div class="element-center" v-else>Ładowanie danych...</div>
 
     <el-dialog v-model="showMapDialog" width="80%" center>
       <template #title>
@@ -340,6 +348,13 @@ function openMapDialog() {
 
 .item-details-description {
   max-width: 450px;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
 }
 
 @media (max-width: 768px) {

@@ -2,10 +2,13 @@
 import api from "../../services/api";
 import { ref, onMounted } from "vue";
 import { useGlobalStore } from "../../stores/globalStore";
+import { ElMessage } from "element-plus";
+import { Loading } from "@element-plus/icons-vue";
 
 const globalStore = useGlobalStore();
 
 let blogData = ref([]);
+let isLoading = ref(true);
 
 async function loadTrails() {
   try {
@@ -13,6 +16,8 @@ async function loadTrails() {
     blogData.value = response.data;
   } catch (error) {
     ElMessage.error("Błąd ładowania blogów");
+  } finally {
+    isLoading.value = false;
   }
 }
 
@@ -30,7 +35,14 @@ onMounted(() => {
     <div class="blog-background">
       <img src="./img/bg.png" alt="" />
     </div>
-    <div v-if="blogData.length" class="container">
+
+    <div v-if="isLoading" class="loading-container">
+      <el-icon class="is-loading">
+        <Loading />
+      </el-icon>
+    </div>
+
+    <div v-else-if="blogData.length" class="container">
       <span class="blog-title">Blog</span>
       <div class="blog-container">
         <RouterLink
@@ -186,5 +198,12 @@ a {
   .blog-item {
     width: 100%;
   }
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
 }
 </style>

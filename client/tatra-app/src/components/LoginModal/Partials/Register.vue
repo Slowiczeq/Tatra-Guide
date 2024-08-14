@@ -48,6 +48,9 @@ async function onSubmit() {
           message: "Konto utworzone pomyślnie",
           type: "success",
         });
+        globalStore.userLogged(response.data);
+        globalStore.closeLoginModal();
+        window.location.reload();
         form.firstName = "";
         form.lastName = "";
         form.email = "";

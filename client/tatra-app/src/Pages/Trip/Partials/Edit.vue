@@ -11,11 +11,14 @@ import {
   ElCard,
   ElInput,
   ElDatePicker,
-  ElTimePicker,
+  ElTimeSelect,
   ElOptionGroup,
+  ElIcon,
 } from "element-plus";
 import { useRoute, useRouter } from "vue-router";
 import { useGlobalStore } from "../../../stores/globalStore";
+import { Plus } from "@element-plus/icons-vue";
+
 const globalStore = useGlobalStore();
 const route = useRoute();
 const router = useRouter();
@@ -24,6 +27,7 @@ const id = route.params.id;
 const tripData = ref(null);
 const trailsData = ref([]);
 const userTrailsData = ref([]);
+const isLoading = ref(true); // Zmienna do śledzenia stanu ładowania
 const form = ref({
   name: "",
   days: 1,
@@ -71,10 +75,9 @@ async function loadUserTrails() {
   }
 }
 
-onMounted(() => {
-  loadTrip();
-  loadTrails();
-  loadUserTrails();
+onMounted(async () => {
+  await Promise.all([loadTrip(), loadTrails(), loadUserTrails()]);
+  isLoading.value = false; // Ustawienie zakończenia ładowania
 });
 
 const selectedDays = computed(() => {
@@ -84,12 +87,24 @@ const selectedDays = computed(() => {
   );
 });
 
+// Dodanie pustej trasy przy zmianie ilości dni
 watch(
   () => form.value.days,
   (newDays) => {
     form.value.trips = Array.from(
       { length: newDays },
-      (_, i) => form.value.trips[i] || []
+      (_, i) =>
+        form.value.trips[i] || [
+          {
+            routeID: "",
+            status: "planned",
+            routeDist: 0,
+            trailName: "",
+            timeStart: null,
+            timeEnd: null,
+            userTime: "",
+          },
+        ]
     );
   }
 );
@@ -155,7 +170,7 @@ async function saveTrip() {
     userID: globalStore.userID,
   };
   try {
-    const response = await api.trip.updateTrip(payload);
+    await api.trip.updateTrip(payload);
     ElMessage.success("Wycieczka zapisana pomyślnie");
     router.push("/user/trips");
   } catch (error) {
@@ -167,7 +182,13 @@ async function saveTrip() {
 <template>
   <div class="container">
     <span class="main-title challenges-main-title">Edytuj wycieczkę</span>
+    <div v-if="isLoading" class="loading-container">
+      <el-icon class="is-loading">
+        <Loading />
+      </el-icon>
+    </div>
     <el-form
+      v-else
       ref="formRef"
       :model="form"
       label-width="auto"
@@ -201,78 +222,98 @@ async function saveTrip() {
             :key="rIndex"
             class="route-selection"
           >
-            <el-form-item
-              class="form-days-route"
-              label="Trasa"
-              style="width: 100%"
-            >
-              <el-select
-                v-model="form.trips[index][rIndex].routeID"
-                placeholder="Wybierz trasę"
-                @change="updateRouteData(index, rIndex)"
-                filterable
+            <div class="edit-small-box">
+              <el-form-item
+                class="form-days-route edit-small-box-element"
+                label="Trasa"
                 style="width: 100%"
               >
-                <el-option-group label="Zapisane trasy">
-                  <el-option
-                    v-for="trail in userSavedTrails"
-                    :key="trail.id"
-                    :label="trail.trail_name"
-                    :value="trail.id"
-                  >
-                    {{ trail.trail_name }}
-                  </el-option>
-                </el-option-group>
-                <el-option-group label="Pozostałe trasy">
-                  <el-option
-                    v-for="trail in otherTrails"
-                    :key="trail.id"
-                    :label="trail.trail_name"
-                    :value="trail.id"
-                  >
-                    {{ trail.trail_name }}
-                  </el-option>
-                </el-option-group>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="Status">
-              <el-select
-                v-model="form.trips[index][rIndex].status"
-                placeholder="Wybierz status"
+                <el-select
+                  v-model="form.trips[index][rIndex].routeID"
+                  placeholder="Wybierz trasę"
+                  @change="updateRouteData(index, rIndex)"
+                  filterable
+                  style="width: 100%"
+                >
+                  <el-option-group label="Zapisane trasy">
+                    <el-option
+                      v-for="trail in userSavedTrails"
+                      :key="trail.id"
+                      :label="trail.trail_name"
+                      :value="trail.id"
+                    >
+                      {{ trail.trail_name }}
+                    </el-option>
+                  </el-option-group>
+                  <el-option-group label="Pozostałe trasy">
+                    <el-option
+                      v-for="trail in otherTrails"
+                      :key="trail.id"
+                      :label="trail.trail_name"
+                      :value="trail.id"
+                    >
+                      {{ trail.trail_name }}
+                    </el-option>
+                  </el-option-group>
+                </el-select>
+              </el-form-item>
+
+              <el-form-item class="edit-small-box-element" label="Status">
+                <el-select
+                  v-model="form.trips[index][rIndex].status"
+                  placeholder="Wybierz status"
+                >
+                  <el-option label="Zaplanowana" value="planned"></el-option>
+                  <el-option label="Zakończona" value="ended"></el-option>
+                </el-select>
+              </el-form-item>
+            </div>
+
+            <div class="edit-big-box">
+              <el-form-item
+                class="edit-big-box-element"
+                label="Czas użytkownika"
               >
-                <el-option label="Zaplanowana" value="planned"></el-option>
-                <el-option label="Zakończona" value="ended"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="Czas użytkownika">
-              <el-time-select
-                v-model="form.trips[index][rIndex].userTime"
-                style="width: 240px"
-                start="00:00"
-                step="00:01"
-                end="20:00"
-                placeholder="Wybierz czas"
-              />
-            </el-form-item>
+                <el-time-select
+                  v-model="form.trips[index][rIndex].userTime"
+                  style="width: 240px"
+                  start="00:00"
+                  step="00:01"
+                  end="20:00"
+                  placeholder="Wybierz czas"
+                />
+              </el-form-item>
 
-            <el-form-item label="Data rozpoczęcia">
-              <el-date-picker
-                v-model="form.trips[index][rIndex].timeStart"
-                type="date"
-                placeholder="Wybierz datę"
-              />
-            </el-form-item>
+              <el-form-item
+                class="edit-big-box-element"
+                label="Data rozpoczęcia"
+              >
+                <el-date-picker
+                  v-model="form.trips[index][rIndex].timeStart"
+                  type="date"
+                  placeholder="Wybierz datę"
+                />
+              </el-form-item>
 
-            <el-form-item label="Data zakończenia">
-              <el-date-picker
-                v-model="form.trips[index][rIndex].timeEnd"
-                type="date"
-                placeholder="Wybierz datę"
-              />
-            </el-form-item>
+              <el-form-item
+                class="edit-big-box-element"
+                label="Data zakończenia"
+              >
+                <el-date-picker
+                  v-model="form.trips[index][rIndex].timeEnd"
+                  type="date"
+                  placeholder="Wybierz datę"
+                />
+              </el-form-item>
+            </div>
+
             <el-button
-              @click="form.trips[index].splice(rIndex, 1)"
+              @click="
+                form.trips[index].length > 1 &&
+                  form.trips[index].splice(rIndex, 1)
+              "
               type="danger"
+              :disabled="form.trips[index].length <= 1"
               style="width: 150px"
               >Usuń</el-button
             >
@@ -292,13 +333,6 @@ async function saveTrip() {
 </template>
 
 <style scoped>
-.container {
-  max-width: 1200px;
-  width: 1000px;
-  margin: auto;
-  padding: 20px;
-}
-
 .main-title {
   font-size: 24px;
   font-weight: bold;
@@ -306,8 +340,11 @@ async function saveTrip() {
   text-align: center;
 }
 
-.trip-form {
-  width: 100%;
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
 }
 
 .trip-form-days {
@@ -347,6 +384,28 @@ async function saveTrip() {
 .save-trip-button {
   text-align: center;
   margin-top: 20px;
+}
+
+@media (min-width: 1040px) {
+  .container {
+    max-width: 1200px;
+    width: 1000px;
+    margin: auto;
+    padding: 20px;
+  }
+  .edit-big-box {
+    display: flex;
+  }
+  .edit-big-box-element {
+    flex-basis: 33.33%;
+  }
+  .edit-small-box {
+    display: flex;
+    gap: 60px;
+  }
+  .edit-small-box-element {
+    flex-basis: 50%;
+  }
 }
 @media (max-width: 768px) {
   .main-title {

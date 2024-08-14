@@ -106,7 +106,7 @@ import { ref, computed } from "vue";
 .discover-images img {
   width: 100%;
 }
-@media (max-width: 768px) {
+@media (max-width: 1040px) {
   .discover-left-title {
     font-size: 24px;
     font-weight: 600;

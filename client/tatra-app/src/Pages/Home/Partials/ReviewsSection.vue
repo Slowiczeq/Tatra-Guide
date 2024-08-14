@@ -129,7 +129,7 @@ function renderStars(rating) {
   margin-bottom: 60px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1040px) {
   .routes-home-title {
     font-size: 24px;
     font-weight: 600;

@@ -3,19 +3,22 @@ import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import api from "../../services/api";
 import { ElMessage } from "element-plus";
+import { Loading } from "@element-plus/icons-vue";
 
 const route = useRoute();
 const blogId = route.params.id;
 
 let blogDetails = ref(null);
+let isLoading = ref(true);
 
 async function loadBlogDetails() {
   try {
     const response = await api.blog.loadBlog(blogId);
     blogDetails.value = response.data;
-    console.log(response.data);
   } catch (error) {
     ElMessage.error("Błąd ładowania szczegółów bloga");
+  } finally {
+    isLoading.value = false;
   }
 }
 
@@ -29,7 +32,13 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-if="blogDetails" class="blog-details-container">
+  <div v-if="isLoading" class="loading-container">
+    <el-icon class="is-loading">
+      <Loading />
+    </el-icon>
+  </div>
+
+  <div v-else-if="blogDetails" class="blog-details-container">
     <div class="blog-details-top">
       <img
         :src="getImageUrl(blogDetails[0].img)"
@@ -109,5 +118,12 @@ onMounted(() => {
   .blog-details-img {
     max-width: 290px;
   }
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 500px;
 }
 </style>

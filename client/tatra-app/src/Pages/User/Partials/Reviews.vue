@@ -13,11 +13,13 @@ import { Star, StarFilled } from "@element-plus/icons-vue";
 import { format } from "date-fns";
 import Auth from "../../../components/Login/Auth.vue";
 import { RouterLink } from "vue-router";
+import { Loading } from "@element-plus/icons-vue";
 
 const globalStore = useGlobalStore();
 
 let userData = ref(null);
 const isMobile = ref(window.innerWidth < 768);
+let isLoading = ref(true); // Dodano zmienną śledzącą stan ładowania
 
 window.addEventListener("resize", () => {
   isMobile.value = window.innerWidth < 768;
@@ -30,6 +32,8 @@ async function loadData() {
       userData.value = response.data;
     } catch (error) {
       ElMessage.error("Błąd ładowania danych");
+    } finally {
+      isLoading.value = false; // Zakończenie ładowania
     }
   }
 }
@@ -71,7 +75,12 @@ function renderStars(rating) {
     <div v-else>
       <el-card class="reviews-card">
         <div class="header">Moje Recenzje</div>
-        <div class="table-container">
+        <div v-if="isLoading" class="loading-container">
+          <el-icon class="is-loading">
+            <Loading />
+          </el-icon>
+        </div>
+        <div v-else class="table-container">
           <el-table v-if="!isMobile" :data="userReviews">
             <el-table-column prop="trailName" label="Nazwa Trasy" width="240">
               <template #default="{ row }">
@@ -158,6 +167,12 @@ function renderStars(rating) {
 .review {
   border-bottom: 1px solid #ebeef5;
   padding: 10px 0;
+}
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
 }
 @media (max-width: 768px) {
   .container {

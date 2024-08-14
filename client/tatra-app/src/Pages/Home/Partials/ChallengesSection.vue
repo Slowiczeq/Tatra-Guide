@@ -85,7 +85,7 @@ import { ref, computed } from "vue";
   width: 100%;
   border-radius: 20px;
 }
-@media (max-width: 768px) {
+@media (max-width: 1040px) {
   .challenge-left-title {
     font-size: 24px;
     font-weight: 600;

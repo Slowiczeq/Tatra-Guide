@@ -6,15 +6,12 @@ const globalStore = useGlobalStore();
 const isMobile = ref(false);
 const drawer = ref(false);
 
-// Funkcja do sprawdzania szerokości okna
 const checkMobile = () => {
-  isMobile.value = window.innerWidth <= 768;
+  isMobile.value = window.innerWidth <= 1040;
 };
 
-// Sprawdzanie szerokości okna podczas ładowania strony
 checkMobile();
 
-// Listener do zmiany szerokości okna
 window.addEventListener("resize", checkMobile);
 </script>
 
@@ -73,11 +70,12 @@ window.addEventListener("resize", checkMobile);
         >
         <el-menu-item @click="globalStore.userLogout()">Wyloguj</el-menu-item>
       </el-sub-menu>
-      <el-menu-item class="menu-sign-in">
-        <el-button
-          v-if="!globalStore.token"
-          @click="globalStore.openLoginModal()"
-          class="btn-primary"
+      <el-menu-item
+        v-if="!globalStore.token"
+        style="margin-left: auto"
+        class="menu-sign-in"
+      >
+        <el-button @click="globalStore.openLoginModal()" class="btn-primary"
           >Zaloguj się
         </el-button>
       </el-menu-item>
@@ -207,7 +205,7 @@ window.addEventListener("resize", checkMobile);
 .drawer-menu {
   width: 100%;
 }
-@media (max-width: 768px) {
+@media (max-width: 1040px) {
   .page-menu {
     display: none;
   }

@@ -14,7 +14,7 @@ import {
   ElIcon,
   ElSlider,
 } from "element-plus";
-import { ArrowDown } from "@element-plus/icons-vue";
+import { ArrowDown, Loading } from "@element-plus/icons-vue";
 
 const globalStore = useGlobalStore();
 
@@ -38,6 +38,7 @@ let selectedSkillLevels = ref([
 let childFriendly = ref([]);
 let suitableForSeniors = ref([]);
 let wheelchairAccessible = ref([]);
+let isLoading = ref(true);
 
 async function loadTrails() {
   try {
@@ -46,6 +47,8 @@ async function loadTrails() {
     filteredTrails.value = response.data;
   } catch (error) {
     ElMessage.error("Błąd ładowania listy tras");
+  } finally {
+    isLoading.value = false;
   }
 }
 
@@ -122,6 +125,7 @@ function handleCheckboxClick(event) {
     <div v-else class="discover-page">
       <span class="filters-title">Dostosuj filtry</span>
       <div class="filters">
+        <!-- Filters content here -->
         <el-dropdown trigger="click">
           <el-button type="primary">
             Pasmo górskie
@@ -324,7 +328,13 @@ function handleCheckboxClick(event) {
         </el-dropdown>
       </div>
 
-      <div v-if="filteredTrails.length > 0" class="discover-page__list">
+      <div v-if="isLoading" class="loading-container">
+        <el-icon class="is-loading">
+          <Loading />
+        </el-icon>
+      </div>
+
+      <div v-else-if="filteredTrails.length > 0" class="discover-page__list">
         <div v-for="item in filteredTrails" :key="item.id" class="list-item">
           <RouterLink :to="`/route/${item.id}`" class="list-item-link">
             <div class="list-item-header">
@@ -371,5 +381,12 @@ function handleCheckboxClick(event) {
   border: 1px solid #828282;
   border-radius: 25px;
   padding: 20px 15px;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
 }
 </style>
