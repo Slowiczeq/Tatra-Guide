@@ -1,4 +1,28 @@
 .user-sign-container {
     max-width: 600px;
     margin: 0 auto;
+    .el-tabs__nav-scroll {
+        width: 100%;
+    }
+    .el-tabs__nav {
+        width: 100%
+    }
+    .el-tabs__item {
+        flex-basis: 50%;
+    }
+}
+
+@media(max-width: 1040px) {
+    .user-sign-container {
+        .user-sign-card {
+            width: auto !important;
+        }
+    }
+
+}
+
+@media(max-width: 768px) {
+    .login-modal__content {
+        padding: 0 !important;
+    }
 }

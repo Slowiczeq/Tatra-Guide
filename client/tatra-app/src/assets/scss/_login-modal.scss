@@ -1,6 +1,8 @@
 .login-modal {
-    background-color: $primary-color !important;
+    border-radius: 10px !important;
+    // background-color: $primary-color !important;
     padding: 0 !important;
+    box-shadow: 0px 0px 40px -12px black !important;
     .show-close {
         display: none !important;
     } 
@@ -8,8 +10,10 @@
         &__header {
             margin-bottom: 0;
             padding-top: 15px;
-            background-color: $secondary-color;
-        }
+            // background-color: $secondary-color;
+            border-top-right-radius: 10px;
+            border-top-left-radius: 10px;
+        }   
         &__nav {
             width: 100%;
         }
@@ -20,7 +24,7 @@
             color: #000;
         }
         &__item.is-active {
-            color: white;
+            color: #000;
         }
     }
     &__content {
@@ -40,4 +44,17 @@
         margin-bottom: 3px;
         font-weight: 600;
     }
+}
+
+.login-modal-title {
+    text-align: center;
+    margin-bottom: 15px;
+}
+@media(max-width: 768px) {
+    .login-modal {
+        .login-modal__content {
+            padding: 20px !important;
+        }
+    }
+
 }

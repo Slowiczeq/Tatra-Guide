@@ -15,10 +15,10 @@ const activeName = ref("login");
   >
     <el-tabs v-model="activeName">
       <el-tab-pane label="Logowanie" name="login">
-        <Login />
+        <Login v-if="activeName === 'login'" />
       </el-tab-pane>
       <el-tab-pane label="Rejestracja" name="register">
-        <Register />
+        <Register v-if="activeName === 'register'" />
       </el-tab-pane>
     </el-tabs>
   </el-dialog>

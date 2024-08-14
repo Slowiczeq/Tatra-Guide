@@ -1,9 +1,10 @@
 <script setup>
-import { reactive, ref } from "vue";
+import { reactive, ref, onMounted, onBeforeUnmount } from "vue";
 import { useGlobalStore } from "../../../stores/globalStore";
-const globalStore = useGlobalStore();
 import { ElMessage } from "element-plus";
 import api from "../../../services/api";
+
+const globalStore = useGlobalStore();
 
 const form = reactive({
   firstName: "",
@@ -56,18 +57,36 @@ async function onSubmit() {
         form.email = "";
         form.password = "";
       } catch (error) {
-        ElMessage.error("Wystąpił bład podczas rejestracji");
+        if (error.response.data) {
+          ElMessage.error(error.response.data);
+        } else {
+          ElMessage.error("Wystąpił bład podczas rejestracji");
+        }
       }
-    } else {
-      ElMessage.error("Wystąpił bład podczas rejestracji");
     }
   });
 }
+
+function handleEnterKey(event) {
+  if (event.key === "Enter") {
+    onSubmit();
+  }
+}
+
+onMounted(() => {
+  document.addEventListener("keydown", handleEnterKey);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener("keydown", handleEnterKey);
+});
 </script>
 
 <template>
   <div class="login-modal__content">
     <el-form :model="form" :rules="rules" ref="formRef" label-position="top">
+      <h2 class="login-modal-title">Rejestracja</h2>
+
       <el-form-item label="Imię" prop="firstName">
         <el-input v-model="form.firstName" />
       </el-form-item>
