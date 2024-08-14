@@ -136,10 +136,11 @@ const updatePopup = (marker, peak) => {
     popupContent.appendChild(button);
     popupContent.appendChild(counter);
   }
-  marker.bindPopup(popupContent).openPopup();
+
+  marker.bindPopup(popupContent, { autoPan: false }).openPopup();
   showRoute(route.gpx);
 
-  selectedTrailId.value = ""; // Czyszczenie wartości w el-select po kliknięciu na mapie
+  selectedTrailId.value = "";
 };
 
 const createCustomIcon = (peak) => {
