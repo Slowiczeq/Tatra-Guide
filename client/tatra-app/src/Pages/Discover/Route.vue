@@ -303,7 +303,7 @@ function getImageUrl(imageName) {
         <template #footer>
           <div class="dialog-footer">
             <el-button @click="showReviewDialog = false">Anuluj</el-button>
-            <el-button type="primary" @click="submitReview"
+            <el-button class="btn-primary" @click="submitReview"
               >Wyślij opinię</el-button
             >
           </div>
@@ -431,6 +431,7 @@ function getImageUrl(imageName) {
   display: flex;
   justify-content: flex-end;
   padding: 10px 20px;
+  align-items: center;
 }
 
 .dialog-footer .el-button:first-child {

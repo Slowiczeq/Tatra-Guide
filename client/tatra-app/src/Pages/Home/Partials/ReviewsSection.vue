@@ -140,11 +140,13 @@ function getImageUrl(imageName) {
   padding: 15px 20px;
 }
 .routes-home-title {
-  font-size: 40px;
   font-weight: 400;
-  margin-bottom: 60px;
+  font-size: 40px;
+  border-bottom: 1px solid;
+  display: flex;
+  margin-bottom: 30px;
+  padding-bottom: 30px;
 }
-
 @media (max-width: 1040px) {
   .routes-home-title {
     font-size: 24px;
