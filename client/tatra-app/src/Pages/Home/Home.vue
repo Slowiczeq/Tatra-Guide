@@ -4,6 +4,7 @@ import PopularRoutes from "./Partials/PopularRoutes.vue";
 import DiscoverRoutes from "./Partials/DiscoverRoutes.vue";
 import ChallengesSection from "./Partials/ChallengesSection.vue";
 import ReviewsSection from "./Partials/ReviewsSection.vue";
+import BlogSection from "./Partials/BlogSection.vue";
 import { ref, onMounted } from "vue";
 import api from "../../services/api";
 import { Loading } from "@element-plus/icons-vue";
@@ -40,6 +41,7 @@ onMounted(() => {
     <DiscoverRoutes />
     <ChallengesSection />
     <ReviewsSection :trailsData="trailsData" />
+    <BlogSection />
   </div>
 </template>
 
