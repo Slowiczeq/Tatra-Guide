@@ -120,7 +120,7 @@ onMounted(() => {
 
 .blog-top {
   width: 100%;
-  height: 300px;
+  height: 250px;
   overflow: hidden;
   display: flex;
   align-content: center;
