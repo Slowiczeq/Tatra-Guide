@@ -1,7 +1,7 @@
 <template>
   <footer>
     <div class="container">
-      <span class="footer-title">TATRA GUIDE</span>
+      <RouterLink class="footer-title" to="/">TATRA GUIDE</RouterLink>
       <div class="footer-list">
         <RouterLink to="/discover" class="footer-list-title"
           >Odkrywaj</RouterLink

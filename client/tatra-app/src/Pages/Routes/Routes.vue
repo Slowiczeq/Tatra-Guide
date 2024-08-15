@@ -103,27 +103,41 @@ const updatePopup = (marker, peak) => {
   const popupContent = document.createElement("div");
 
   const titleLink = route.id
-    ? `<a href="/route/${route.id}" target="_blank" class="route-link">${route.name}</a>`
+    ? `<a href="/route/${route.id}" target="_blank" class="route-link route-popup-link">${route.name}</a>`
     : `<strong>${route.name}</strong>`;
 
   popupContent.innerHTML = `
-    <div>
-      ${titleLink}
-      <br>
-      ${route.length ? `Długość trasy: ${route.length}` : ""}
-      <br>
-      ${route.time ? `Czas trasy: ${route.time}` : ""}
-      <br>
-      ${route.difficulty ? `Trudność: ${route.difficulty}` : ""}
-      <br>
+    <div class="popup-content">
+      <div class="popup-header">
+        ${titleLink}
+      </div>
+      <div class="popup-body">
+        ${
+          route.length
+            ? `<div class="popup-info"><span>Długość:</span> ${route.length}</div>`
+            : ""
+        }
+        ${
+          route.time
+            ? `<div class="popup-info"><span>Czas:</span> ${route.time}</div>`
+            : ""
+        }
+        ${
+          route.difficulty
+            ? `<div class="popup-info"><span>Trudność:</span> ${route.difficulty}</div>`
+            : ""
+        }
+      </div>
     </div>
   `;
+
   if (peak.routes.length > 1) {
     const counter = document.createElement("span");
+    counter.className = "route-counter";
     counter.innerText = ` (${currentRouteIndex + 1}/${peak.routes.length})`;
 
     const button = document.createElement("button");
-    button.innerText = "Dalej";
+    button.innerText = "Następna trasa";
     button.className = "el-button el-button--primary";
     button.onclick = () => {
       currentRouteIndex = (currentRouteIndex + 1) % peak.routes.length;
@@ -133,8 +147,12 @@ const updatePopup = (marker, peak) => {
         marker.openPopup();
       }, 200);
     };
-    popupContent.appendChild(button);
-    popupContent.appendChild(counter);
+
+    const buttonContainer = document.createElement("div");
+    buttonContainer.className = "popup-footer";
+    buttonContainer.appendChild(button);
+    button.appendChild(counter);
+    popupContent.appendChild(buttonContainer);
   }
 
   marker.bindPopup(popupContent, { autoPan: false }).openPopup();
@@ -270,13 +288,13 @@ function filterTrails(query) {
 <template>
   <div>
     <div class="container" v-if="!globalStore.token">
-      <Auth style="margin-top: 95px" />
+      <Auth />
     </div>
     <div class="map-page-container" v-else>
-      <span style="padding: 0px 30px" class="filters-title"
-        >Dostosuj filtry</span
-      >
-      <div style="padding: 5px 30px" class="filters">
+      <div style="padding: 20px 30px" class="filters">
+        <span style="padding: 0px 30px" class="filters-title"
+          >Dostosuj filtry</span
+        >
         <el-dropdown trigger="click">
           <el-button type="primary">
             Pasmo górskie
@@ -444,8 +462,8 @@ function filterTrails(query) {
             filterable
             placeholder="Wyszukaj trasę"
             style="width: 100%; margin-bottom: 20px"
-            :filter-method="filterTrails"
             @change="handleListItemClick"
+            no-match-text="Brak danych"
           >
             <el-option
               v-for="item in filteredTrails"
@@ -456,29 +474,31 @@ function filterTrails(query) {
           </el-select>
           <div class="map-aside__list">
             <span class="list-title">Nasze rekomendacje</span>
-            <div
-              v-for="item in Object.values(trailsData).slice(0, 3)"
-              :key="item.id"
-              class="list-item"
-              @click="handleListItemClick(item.id)"
-            >
-              <div class="list-item-link">
-                <div class="list-item-header">
-                  <!-- <img src="../../assets/img/route-img.png" alt="trasa" /> -->
+            <el-scrollbar height="600px">
+              <div
+                v-for="item in Object.values(trailsData).slice(0, 11)"
+                :key="item.id"
+                class="list-item"
+                @click="handleListItemClick(item.id)"
+              >
+                <div class="list-item-link">
+                  <div class="list-item-header">
+                    <!-- <img src="../../assets/img/route-img.png" alt="trasa" /> -->
+                  </div>
+                  <div class="list-item-main">
+                    <el-tag :type="getDifficultyColor(item.difficulty_level)">
+                      {{ item.difficulty_level }}
+                    </el-tag>
+                    <span class="item-title">{{ item.trail_name }}</span>
+                    <span class="item-text">{{ item.mountain_range }}</span>
+                    <span class="item-text">
+                      {{ item.route_length }} - {{ item.route_time }}
+                    </span>
+                  </div>
+                  <div class="list-item-footer"></div>
                 </div>
-                <div class="list-item-main">
-                  <el-tag :type="getDifficultyColor(item.difficulty_level)">
-                    {{ item.difficulty_level }}
-                  </el-tag>
-                  <span class="item-title">{{ item.trail_name }}</span>
-                  <span class="item-text">{{ item.mountain_range }}</span>
-                  <span class="item-text">
-                    {{ item.route_length }} - {{ item.route_time }}
-                  </span>
-                </div>
-                <div class="list-item-footer"></div>
               </div>
-            </div>
+            </el-scrollbar>
           </div>
         </div>
         <div id="map"></div>
@@ -490,8 +510,6 @@ function filterTrails(query) {
 <style scoped>
 .container {
   max-width: 1200px;
-  margin: auto;
-  padding: 20px;
 }
 
 .filters {
@@ -499,6 +517,7 @@ function filterTrails(query) {
   flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 10px;
+  align-items: center;
 }
 .filters-title {
   font-size: 20px;
@@ -506,6 +525,7 @@ function filterTrails(query) {
   display: flex;
   margin-bottom: 15px;
   margin-top: 20px;
+  margin-right: 30px;
 }
 .filters .el-dropdown button {
   background: transparent;
@@ -546,7 +566,7 @@ function filterTrails(query) {
 }
 
 .map-aside__list {
-  margin-top: 20px;
+  margin-top: 5px;
 }
 
 .list-title {
@@ -558,6 +578,7 @@ function filterTrails(query) {
 .list-item {
   border-bottom: 1px solid #ddd;
   padding: 10px 0;
+  cursor: pointer;
 }
 
 .list-item-link {

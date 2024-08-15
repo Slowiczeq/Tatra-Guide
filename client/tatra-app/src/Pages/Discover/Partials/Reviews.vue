@@ -55,8 +55,7 @@ const averageRating = computed(() => {
       <span class="review-count">({{ reviews.length }} opinii)</span>
     </div>
 
-    <!-- Wyświetlanie recenzji -->
-    <div v-if="reviews.length > 0">
+    <div class="reviews-list-box" v-if="reviews.length > 0">
       <div v-for="review in reviews" :key="review.id" class="review-item">
         <div class="review-rating">
           <strong>Ocena:</strong>
@@ -130,5 +129,9 @@ const averageRating = computed(() => {
 
 p {
   margin: 5px 0;
+}
+.reviews-list-box {
+  display: flex;
+  flex-direction: column-reverse;
 }
 </style>

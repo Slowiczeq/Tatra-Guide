@@ -173,12 +173,6 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.container {
-  max-width: 1000px;
-  margin: auto;
-  padding: 20px;
-}
-
 .challenges-container {
   display: flex;
   flex-direction: column;

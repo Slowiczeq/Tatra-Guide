@@ -24,13 +24,16 @@ onMounted(() => {
 });
 
 const topThreeReviews = computed(() => {
-  return reviewsData.value.slice(0, 3).map((review) => {
-    const trail = props.trailsData[review.routeID];
-    return {
-      ...review,
-      trailName: trail ? trail.trail_name : "Nieznana trasa",
-    };
-  });
+  return reviewsData.value
+    .slice(-3)
+    .reverse()
+    .map((review) => {
+      const trail = props.trailsData[review.routeID];
+      return {
+        ...review,
+        trailName: trail ? trail.trail_name : "Nieznana trasa",
+      };
+    });
 });
 
 function renderStars(rating) {

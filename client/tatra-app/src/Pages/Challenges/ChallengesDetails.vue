@@ -113,7 +113,10 @@ onMounted(() => {
             <span class="challenges-title">{{ item.name }}</span>
             <span class="challenges-details">{{ item.description }}</span>
           </template>
-          <div v-if="!getChallengeStatus(item.id)">
+          <div
+            style="display: flex; justify-content: center"
+            v-if="!getChallengeStatus(item.id)"
+          >
             <el-button
               class="btn-primary"
               @click="
@@ -179,8 +182,6 @@ onMounted(() => {
 <style scoped>
 .container {
   max-width: 1000px;
-  margin: auto;
-  padding: 20px;
 }
 
 .challenges-container {

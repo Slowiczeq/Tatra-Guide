@@ -40,11 +40,11 @@ window.addEventListener("resize", checkMobile);
       <el-menu-item>
         <RouterLink to="/challenges">Podejmij wyzwanie</RouterLink>
       </el-menu-item>
-      <el-menu-item>
+      <el-menu-item style="margin-left: auto">
         <RouterLink to="blog">Blog</RouterLink>
       </el-menu-item>
 
-      <el-sub-menu style="margin-left: auto" v-if="globalStore.token">
+      <el-sub-menu v-if="globalStore.token">
         <template #title>
           <RouterLink to="/user"
             ><el-icon><UserFilled /></el-icon>{{ globalStore.userFirstName }}
@@ -70,11 +70,7 @@ window.addEventListener("resize", checkMobile);
         >
         <el-menu-item @click="globalStore.userLogout()">Wyloguj</el-menu-item>
       </el-sub-menu>
-      <el-menu-item
-        v-if="!globalStore.token"
-        style="margin-left: auto"
-        class="menu-sign-in"
-      >
+      <el-menu-item v-if="!globalStore.token" class="menu-sign-in">
         <el-button @click="globalStore.openLoginModal()" class="btn-primary"
           >Zaloguj się
         </el-button>

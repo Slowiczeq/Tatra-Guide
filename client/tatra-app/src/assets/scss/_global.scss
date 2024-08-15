@@ -192,3 +192,85 @@
   .custom-icon {
     display: block !important;
   }
+
+  .review-dialog {
+    border-radius: 15px !important;
+    min-width: 320px;
+  }
+  .map-dialog {
+    border-radius: 15px !important;
+    min-width: 320px;
+  }
+  .leaflet-popup-content {
+    max-width: 180px;
+    width: 180px !important;
+  }
+
+
+  .popup-content {
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    background-color: #fff;
+    border-radius: 8px;
+    max-width: 300px;
+  }
+  
+  .popup-header {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #007bff;
+  }
+  
+  .popup-body {
+    font-size: 14px;
+  }
+  
+  .popup-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+  }
+  
+  .popup-info span {
+    font-weight: bold;
+    color: #555;
+  }
+  
+  .route-counter {
+    margin-left: 10px;
+    font-size: 12px;
+    color: #fff;
+  }
+  
+  .popup-footer {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+
+  }
+  
+  .popup-footer button {
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .route-link {
+    text-decoration: none;
+    color: #007bff;
+    transition: color 0.3s;
+  }
+  
+  .route-link:hover {
+    color: #0056b3;
+  }
+  .route-popup-link {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+  }
+  

@@ -117,6 +117,10 @@ function getDifficultyColor(level) {
 function handleCheckboxClick(event) {
   event.stopPropagation();
 }
+
+function getImageUrl(imageName) {
+  return new URL(`./img/${imageName}.webp`, import.meta.url).href;
+}
 </script>
 
 <template>
@@ -338,7 +342,11 @@ function handleCheckboxClick(event) {
         <div v-for="item in filteredTrails" :key="item.id" class="list-item">
           <RouterLink :to="`/route/${item.id}`" class="list-item-link">
             <div class="list-item-header">
-              <img src="../../assets/img/route-img.png" alt="trasa" />
+              <img
+                style="border-radius: 15px"
+                :src="getImageUrl(item.image)"
+                alt="trasa"
+              />
             </div>
             <div class="list-item-main">
               <span class="item-title">{{ item.trail_name }}</span>
