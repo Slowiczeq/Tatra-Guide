@@ -109,8 +109,7 @@ import { ref, computed } from "vue";
   position: relative;
 }
 .discover-right-text {
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 18px;
   color: #000;
   white-space: nowrap;
   display: flex;
