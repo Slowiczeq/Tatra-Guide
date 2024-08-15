@@ -68,7 +68,9 @@ function getImageUrl(imageName) {
           />
           <div class="reviews-box-container">
             <div class="review-box">
-              <p>{{ review.userName }}</p>
+              <p style="margin-bottom: 10px; font-weight: 600">
+                {{ review.userName }}
+              </p>
               <div class="review-rating">
                 <div class="stars">
                   <el-icon
@@ -82,7 +84,7 @@ function getImageUrl(imageName) {
               </div>
             </div>
 
-            <p>{{ review.content }}</p>
+            <p style="text-align: justify">{{ review.content }}</p>
           </div>
         </div>
       </div>

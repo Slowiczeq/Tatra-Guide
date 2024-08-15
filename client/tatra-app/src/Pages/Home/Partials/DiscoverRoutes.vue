@@ -22,28 +22,44 @@ import { ref, computed } from "vue";
         <div class="discover-images">
           <RouterLink to="/discover/for-child">
             <span class="discover-right-text">Dla rodzin z dziećmi</span>
-            <img src="../../../assets/img/route-img.png" alt="trasa" />
+            <img
+              style="border-radius: 15px"
+              src="../../../assets/img/child.webp"
+              alt="trasa"
+            />
           </RouterLink>
         </div>
 
         <div class="discover-images">
           <RouterLink to="/discover/for-beginner">
             <span class="discover-right-text">Dla początkujących</span>
-            <img src="../../../assets/img/route-img.png" alt="trasa" />
+            <img
+              style="border-radius: 15px"
+              src="../../../assets/img/beginner.webp"
+              alt="trasa"
+            />
           </RouterLink>
         </div>
 
         <div class="discover-images">
           <RouterLink to="/discover/for-advanced">
             <span class="discover-right-text">Dla fanów adrenaliny</span>
-            <img src="../../../assets/img/route-img.png" alt="trasa" />
+            <img
+              style="border-radius: 15px"
+              src="../../../assets/img/hard.webp"
+              alt="trasa"
+            />
           </RouterLink>
         </div>
 
         <div class="discover-images">
           <RouterLink to="/discover/for-disabled">
             <span class="discover-right-text">Dla wózków inwalidzkich</span>
-            <img src="../../../assets/img/route-img.png" alt="trasa" />
+            <img
+              style="border-radius: 15px"
+              src="../../../assets/img/disabled.webp"
+              alt="trasa"
+            />
           </RouterLink>
         </div>
       </div>
