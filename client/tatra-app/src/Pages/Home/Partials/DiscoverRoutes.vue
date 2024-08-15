@@ -21,45 +21,45 @@ import { ref, computed } from "vue";
       <div class="discover-right-side">
         <div class="discover-images">
           <RouterLink to="/discover/for-child">
-            <span class="discover-right-text">Dla rodzin z dziećmi</span>
             <img
               style="border-radius: 15px"
               src="../../../assets/img/child.webp"
               alt="trasa"
             />
+            <span class="discover-right-text">Dla rodzin z dziećmi</span>
           </RouterLink>
         </div>
 
         <div class="discover-images">
           <RouterLink to="/discover/for-beginner">
-            <span class="discover-right-text">Dla początkujących</span>
             <img
               style="border-radius: 15px"
               src="../../../assets/img/beginner.webp"
               alt="trasa"
             />
+            <span class="discover-right-text">Dla początkujących</span>
           </RouterLink>
         </div>
 
         <div class="discover-images">
           <RouterLink to="/discover/for-advanced">
-            <span class="discover-right-text">Dla fanów adrenaliny</span>
             <img
               style="border-radius: 15px"
               src="../../../assets/img/hard.webp"
               alt="trasa"
             />
+            <span class="discover-right-text">Dla fanów adrenaliny</span>
           </RouterLink>
         </div>
 
         <div class="discover-images">
           <RouterLink to="/discover/for-disabled">
-            <span class="discover-right-text">Dla wózków inwalidzkich</span>
             <img
               style="border-radius: 15px"
               src="../../../assets/img/disabled.webp"
               alt="trasa"
             />
+            <span class="discover-right-text">Dla wózków inwalidzkich</span>
           </RouterLink>
         </div>
       </div>
@@ -111,16 +111,16 @@ import { ref, computed } from "vue";
 .discover-right-text {
   font-size: 20px;
   font-weight: 700;
-  color: #fff;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-shadow: 1px 1px black;
+  color: #000;
   white-space: nowrap;
+  display: flex;
+  justify-content: center;
 }
 .discover-images img {
   width: 100%;
+}
+.discover-images a {
+  text-decoration: unset;
 }
 @media (max-width: 1040px) {
   .discover-left-title {
