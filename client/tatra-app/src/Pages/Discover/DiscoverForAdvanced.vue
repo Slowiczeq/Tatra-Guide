@@ -44,7 +44,9 @@ async function loadTrails() {
   try {
     const response = await api.trails.loadTrails();
     trailsData.value = response.data.filter(
-      (item) => item.difficulty_level == "Bardzo Trudny"
+      (item) =>
+        item.difficulty_level == "Bardzo Trudny" ||
+        item.difficulty_level == "Trudny"
     );
     filteredTrails.value = trailsData.value;
   } catch (error) {
