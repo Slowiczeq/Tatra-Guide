@@ -43,6 +43,9 @@ function renderStars(rating) {
   }
   return stars;
 }
+function getImageUrl(imageName) {
+  return new URL(`../../Discover/img/${imageName}.webp`, import.meta.url).href;
+}
 </script>
 
 <template>
@@ -58,7 +61,11 @@ function renderStars(rating) {
           <RouterLink class="review-title" :to="`/route/${review.routeID}`">{{
             review.trailName
           }}</RouterLink>
-          <img src="../../../assets/img/route-img.png" alt="trasa" />
+          <img
+            style="border-radius: 15px"
+            :src="getImageUrl(review.routeID)"
+            alt="trasa"
+          />
           <div class="reviews-box-container">
             <div class="review-box">
               <p>{{ review.userName }}</p>
@@ -87,6 +94,7 @@ function renderStars(rating) {
 .review-rating {
   display: flex;
   align-items: center;
+  margin-left: -15px;
 }
 
 .stars {
@@ -98,6 +106,9 @@ function renderStars(rating) {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column-reverse;
+  align-items: flex-start;
+  gap: 5px;
 }
 .review-section-container {
   display: flex;
