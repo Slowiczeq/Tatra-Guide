@@ -149,7 +149,7 @@ a {
   height: 100px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1040px) {
   .blog-item {
     width: 100%;
   }

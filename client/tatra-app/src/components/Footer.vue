@@ -71,7 +71,7 @@ a {
   font-weight: 700;
   margin-bottom: 10px;
 }
-@media (max-width: 768px) {
+@media (max-width: 1040px) {
   .container {
     flex-direction: column;
     gap: 40px;
