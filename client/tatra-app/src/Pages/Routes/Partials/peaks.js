@@ -426,7 +426,7 @@ export const peaks = [
       {
         id: 21,
         name: "Dolina Kościeliska do schroniska Ornak",
-        gpx: "/gpx/DolinaKościeliskadosschroniskaOrnak.gpx",
+        gpx: "/gpx/DolinaKościeliskadoschroniskaOrnak.gpx",
         time: "1:35h",
         length: "5.6km",
         difficulty: "Łatwy",
@@ -717,7 +717,7 @@ export const peaks = [
       {
         id: 21,
         name: "Dolina Kościeliska do schroniska Ornak",
-        gpx: "/gpx/DolinaKościeliskadosschroniskaOrnak.gpx",
+        gpx: "/gpx/DolinaKościeliskadoschroniskaOrnak.gpx",
         time: "1:35h",
         length: "5.6km",
         difficulty: "Łatwy",

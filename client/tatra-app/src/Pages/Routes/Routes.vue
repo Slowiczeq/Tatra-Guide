@@ -40,6 +40,9 @@ let selectedSkillLevels = ref([
   "Średniozaawansowany",
   "Zaawansowany",
 ]);
+let filterChildFriendly = ref(false);
+let filterSuitableForSeniors = ref(false);
+let filterWheelchairAccessible = ref(false);
 let currentRouteIndex = 0;
 
 let map;
@@ -64,7 +67,11 @@ const showRoute = (gpxFile) => {
       },
     })
       .on("loaded", (e) => {
-        map.fitBounds(e.target.getBounds());
+        const bounds = e.target.getBounds();
+        map.fitBounds(bounds, {
+          padding: [50, 50],
+          maxZoom: 13,
+        });
       })
       .addTo(map);
   }
@@ -190,13 +197,24 @@ const updateMapMarkers = () => {
       const routeTime = parseFloat(route.time);
       const routeElevation = parseFloat(route.elevation_gain);
 
+      const childFriendlyMatch =
+        !filterChildFriendly.value || route.child_friendly === "Tak";
+      const suitableForSeniorsMatch =
+        !filterSuitableForSeniors.value || route.suitable_for_seniors === "Tak";
+      const wheelchairAccessibleMatch =
+        !filterWheelchairAccessible.value ||
+        route.wheelchair_accessible === "Tak";
+
       return (
         selectedMountainRanges.value.includes(route.mountain_range.trim()) &&
         routeLength <= maxRouteLength.value &&
         routeTime <= maxRouteTime.value &&
         routeElevation <= maxElevationGain.value &&
         selectedDifficultyLevels.value.includes(route.difficulty.trim()) &&
-        selectedSkillLevels.value.includes(route.skill_level.trim())
+        selectedSkillLevels.value.includes(route.skill_level.trim()) &&
+        childFriendlyMatch &&
+        suitableForSeniorsMatch &&
+        wheelchairAccessibleMatch
       );
     });
 
@@ -220,6 +238,36 @@ const updateMapMarkers = () => {
         });
     }
   });
+};
+
+const applyFilters = () => {
+  filteredTrails.value = trailsData.value.filter((route) => {
+    const routeLength = parseFloat(route.route_length);
+    const routeTime = parseFloat(route.route_time);
+    const routeElevation = parseFloat(route.elevation_gain);
+
+    const childFriendlyMatch =
+      !filterChildFriendly.value || route.child_friendly === "Tak";
+    const suitableForSeniorsMatch =
+      !filterSuitableForSeniors.value || route.suitable_for_seniors === "Tak";
+    const wheelchairAccessibleMatch =
+      !filterWheelchairAccessible.value ||
+      route.wheelchair_accessible === "Tak";
+
+    return (
+      selectedMountainRanges.value.includes(route.mountain_range.trim()) &&
+      routeLength <= maxRouteLength.value &&
+      routeTime <= maxRouteTime.value &&
+      routeElevation <= maxElevationGain.value &&
+      selectedDifficultyLevels.value.includes(route.difficulty_level.trim()) &&
+      selectedSkillLevels.value.includes(route.skill_level.trim()) &&
+      childFriendlyMatch &&
+      suitableForSeniorsMatch &&
+      wheelchairAccessibleMatch
+    );
+  });
+
+  updateMapMarkers();
 };
 
 const findAndOpenMarker = (trailId) => {
@@ -260,9 +308,12 @@ watch(
     maxElevationGain,
     selectedDifficultyLevels,
     selectedSkillLevels,
+    filterChildFriendly,
+    filterSuitableForSeniors,
+    filterWheelchairAccessible,
   ],
   () => {
-    updateMapMarkers();
+    applyFilters();
   }
 );
 
@@ -454,6 +505,40 @@ function filterTrails(query) {
             </el-dropdown-menu>
           </template>
         </el-dropdown>
+        <el-dropdown trigger="click">
+          <el-button type="primary">
+            Więcej filtrów
+            <el-icon class="el-icon--right"><arrow-down /></el-icon>
+          </el-button>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item>
+                <el-checkbox
+                  v-model="filterChildFriendly"
+                  @click="handleCheckboxClick"
+                >
+                  Trasa dla dzieci
+                </el-checkbox>
+              </el-dropdown-item>
+              <el-dropdown-item>
+                <el-checkbox
+                  v-model="filterSuitableForSeniors"
+                  @click="handleCheckboxClick"
+                >
+                  Trasa dla seniorów
+                </el-checkbox>
+              </el-dropdown-item>
+              <el-dropdown-item>
+                <el-checkbox
+                  v-model="filterWheelchairAccessible"
+                  @click="handleCheckboxClick"
+                >
+                  Trasa dla osób na wózku
+                </el-checkbox>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
       </div>
       <div class="map-container">
         <div class="map-aside">
@@ -476,7 +561,7 @@ function filterTrails(query) {
             <span class="list-title">Nasze rekomendacje</span>
             <el-scrollbar height="600px">
               <div
-                v-for="item in Object.values(trailsData).slice(0, 11)"
+                v-for="item in filteredTrails"
                 :key="item.id"
                 class="list-item"
                 @click="handleListItemClick(item.id)"
