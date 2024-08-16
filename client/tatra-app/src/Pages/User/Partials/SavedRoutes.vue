@@ -106,8 +106,13 @@ const savedTrails = computed(() => {
             <Loading />
           </el-icon>
         </div>
-        <el-table v-else-if="!isMobile" :data="savedTrails" style="width: 100%">
-          <el-table-column width="190" prop="trailName" label="Nazwa trasy">
+        <el-table
+          empty-text="Brak zapisanych tras"
+          v-else-if="!isMobile"
+          :data="savedTrails"
+          style="width: 100%"
+        >
+          <el-table-column width="310" prop="trailName" label="Nazwa trasy">
             <template #default="{ row }">
               <RouterLink :to="`/route/${row.routeID}`">
                 {{ row.trailName }}
@@ -129,7 +134,7 @@ const savedTrails = computed(() => {
             prop="difficultyLevel"
             label="Poziom trudności"
           ></el-table-column>
-          <el-table-column width="150" label="">
+          <el-table-column width="70" label="">
             <template #default="{ row }">
               <el-button
                 type="danger"

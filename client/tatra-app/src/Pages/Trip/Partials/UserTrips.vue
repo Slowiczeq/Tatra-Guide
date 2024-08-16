@@ -177,7 +177,7 @@ onMounted(() => {
     <div v-else-if="tripsData.length > 0">
       <el-card v-for="trip in tripsData" :key="trip.id" class="trip-item">
         <div class="trip-header">
-          <h3 class="trip-title">Wycieczka - {{ trip.name }}</h3>
+          <h3 class="trip-title">{{ trip.name }}</h3>
           <div class="trip-actions">
             <RouterLink :to="`/user/trips/${trip.id}`">
               <el-icon><Edit /></el-icon>
@@ -345,6 +345,7 @@ onMounted(() => {
   font-weight: bold;
   margin-bottom: 20px;
   text-align: center;
+  border-bottom: unset;
 }
 
 .trip-item {

@@ -70,7 +70,7 @@ function renderStars(rating) {
 </script>
 
 <template>
-  <div class="container">
+  <div class="container user-reviews-page">
     <Auth v-if="!globalStore.token" />
     <div v-else>
       <el-card class="reviews-card">
@@ -81,7 +81,11 @@ function renderStars(rating) {
           </el-icon>
         </div>
         <div v-else class="table-container">
-          <el-table v-if="!isMobile" :data="userReviews">
+          <el-table
+            empty-text="Brak recenzji"
+            v-if="!isMobile"
+            :data="userReviews"
+          >
             <el-table-column prop="trailName" label="Nazwa Trasy" width="210">
               <template #default="{ row }">
                 <RouterLink :to="`/route/${row.routeID}`">

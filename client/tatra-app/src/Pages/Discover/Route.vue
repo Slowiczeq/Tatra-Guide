@@ -210,7 +210,7 @@ function getImageUrl(imageName) {
             :src="getImageUrl(trailData[0].image)"
             alt="trasa"
             class="route-img"
-            style="width: 100%; height: 400px; border-radius: 15px"
+            style="width: 100%; height: 400px"
           />
           <el-button class="map-button" @click="openMapDialog"
             >Pokaż mapę</el-button
@@ -330,6 +330,9 @@ function getImageUrl(imageName) {
   text-align: center;
   margin-bottom: 20px;
   position: relative;
+  margin-top: -20px;
+  margin-left: -20px;
+  margin-right: -20px;
 }
 .route-img {
   max-width: 100%;
@@ -471,7 +474,7 @@ function getImageUrl(imageName) {
     right: 5px;
   }
   .route-img {
-    height: 310px !important;
+    height: 260px !important;
   }
   .item-details {
     gap: 0;
@@ -488,6 +491,11 @@ function getImageUrl(imageName) {
   width: 45px;
   border: unset;
   background: transparent;
+}
+.list-item-header {
+  margin-top: 0;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .button-fav img {

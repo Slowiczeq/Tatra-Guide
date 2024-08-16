@@ -52,7 +52,7 @@ const getTrailName = (routeID) => {
 };
 
 const formatDate = (dateString) => {
-  return dateString ? format(new Date(dateString), "yyyy-MM-dd HH:mm") : "N/A";
+  return dateString ? format(new Date(dateString), "yyyy-MM-dd") : "N/A";
 };
 
 const formatUserTime = (timeString) => {
@@ -86,6 +86,7 @@ const completedTrails = computed(() => {
           v-else-if="!isMobile"
           :data="completedTrails"
           style="width: 100%"
+          empty-text="Brak ukończonych tras"
         >
           <el-table-column width="190" prop="trailName" label="Nazwa trasy">
             <template #default="{ row }">
@@ -112,7 +113,7 @@ const completedTrails = computed(() => {
           <el-table-column
             width="190"
             prop="timeEnd"
-            label="Czas zakończenia"
+            label="Data zakończenia"
             :formatter="(row) => formatDate(row.timeEnd)"
           ></el-table-column>
         </el-table>
@@ -128,7 +129,7 @@ const completedTrails = computed(() => {
             <p><strong>Średni czas: </strong> {{ trail.routeTime }}</p>
             <p><strong>Mój czas: </strong> {{ trail.userTime }}</p>
             <p>
-              <strong>Czas zakończenia: </strong>
+              <strong>Data zakończenia: </strong>
               {{ formatDate(trail.timeEnd) }}
             </p>
           </div>
