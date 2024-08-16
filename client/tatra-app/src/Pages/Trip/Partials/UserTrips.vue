@@ -345,9 +345,10 @@ onMounted(() => {
 .main-title {
   font-size: 24px;
   font-weight: bold;
-  margin-bottom: 20px;
+  margin-bottom: 0px;
   text-align: center;
   border-bottom: unset;
+  padding-bottom: 30px;
 }
 
 .trip-item {
