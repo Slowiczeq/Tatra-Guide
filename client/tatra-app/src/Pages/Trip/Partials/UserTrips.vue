@@ -148,6 +148,19 @@ function formatDateTime(dateTime) {
   return format(new Date(dateTime), "yyyy-MM-dd");
 }
 
+async function deleteTrip(id) {
+  const payload = {
+    userID: globalStore.userID,
+    tripID: id,
+  };
+  try {
+    const response = await api.trip.deleteTrip(payload);
+    window.location.reload();
+  } catch (error) {
+    ElMessage.error("Błąd podczas usuwania wycieczki");
+  }
+}
+
 onMounted(() => {
   loadTrips();
 });
@@ -216,7 +229,7 @@ onMounted(() => {
                   }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="Akcje">
+              <el-table-column label="">
                 <template #default="{ row, $index }">
                   <el-button
                     v-if="row.status === 'planned'"

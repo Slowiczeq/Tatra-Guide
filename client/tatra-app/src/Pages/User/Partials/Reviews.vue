@@ -82,16 +82,16 @@ function renderStars(rating) {
         </div>
         <div v-else class="table-container">
           <el-table v-if="!isMobile" :data="userReviews">
-            <el-table-column prop="trailName" label="Nazwa Trasy" width="240">
+            <el-table-column prop="trailName" label="Nazwa Trasy" width="210">
               <template #default="{ row }">
                 <RouterLink :to="`/route/${row.routeID}`">
                   {{ row.trailName }}
                 </RouterLink>
               </template>
             </el-table-column>
-            <el-table-column prop="content" label="Treść Recenzji" width="300">
+            <el-table-column prop="content" label="Treść Recenzji" width="390">
             </el-table-column>
-            <el-table-column label="Ocena" width="220">
+            <el-table-column label="Ocena" width="190">
               <template #default="{ row }">
                 <div class="stars">
                   <el-icon
@@ -107,7 +107,7 @@ function renderStars(rating) {
             <el-table-column
               prop="date"
               label="Data"
-              width="180"
+              width="150"
               :formatter="(row) => formatDate(row.date)"
             ></el-table-column>
           </el-table>

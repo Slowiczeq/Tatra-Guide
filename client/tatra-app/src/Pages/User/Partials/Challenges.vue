@@ -62,6 +62,18 @@ const getPercentage = (challenge) => {
 function getRoundedProgress(progress) {
   return Math.round(progress);
 }
+async function deleteUserChallenge(id) {
+  const payload = {
+    userID: globalStore.userID,
+    challengeID: id,
+  };
+  try {
+    const response = await api.challenges.deleteUserChallenge(payload);
+    window.location.reload();
+  } catch (error) {
+    ElMessage.error("Błąd podczas anulowania wyzwania");
+  }
+}
 </script>
 
 <template>
@@ -110,7 +122,12 @@ function getRoundedProgress(progress) {
             </div>
             <div class="challenge-dates">
               <el-tag type="info"
-                >Czas rozpoczęcia: {{ formatDate(item.timeStart) }}</el-tag
+                >Data rozpoczęcia: {{ formatDate(item.timeStart) }}</el-tag
+              >
+            </div>
+            <div class="delete-challenge-button">
+              <el-button @click="deleteUserChallenge(item.challengeID)"
+                >Anuluj</el-button
               >
             </div>
           </div>
@@ -128,10 +145,10 @@ function getRoundedProgress(progress) {
             </div>
             <div class="challenge-dates">
               <el-tag type="info"
-                >Czas rozpoczęcia: {{ formatDate(item.timeStart) }}</el-tag
+                >Data rozpoczęcia: {{ formatDate(item.timeStart) }}</el-tag
               >
               <el-tag type="info"
-                >Czas zakończenia: {{ formatDate(item.timeEnd) }}</el-tag
+                >Data zakończenia: {{ formatDate(item.timeEnd) }}</el-tag
               >
             </div>
           </div>
@@ -207,6 +224,11 @@ function getRoundedProgress(progress) {
   justify-content: center;
   align-items: center;
   height: 200px;
+}
+.delete-challenge-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
 }
 
 @media (max-width: 768px) {

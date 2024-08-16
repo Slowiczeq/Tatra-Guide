@@ -10,4 +10,7 @@ export default {
   userChallenges(payload) {
     return http.post("/challenges/user", payload);
   },
+  deleteUserChallenge(payload) {
+    return http.post("/challenges/delete", payload);
+  },
 };

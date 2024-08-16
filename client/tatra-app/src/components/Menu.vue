@@ -55,9 +55,7 @@ window.addEventListener("resize", checkMobile);
         <el-menu-item
           ><RouterLink to="/user/reviews">Recenzje</RouterLink></el-menu-item
         >
-        <el-menu-item
-          ><RouterLink to="/user/challenges">Wyzwania</RouterLink></el-menu-item
-        >
+
         <el-menu-item
           ><RouterLink to="/user/history"
             >Historia tras</RouterLink
@@ -66,6 +64,11 @@ window.addEventListener("resize", checkMobile);
         <el-menu-item
           ><RouterLink to="/user/saved-routes" @click="drawer = false"
             >Zapisane trasy</RouterLink
+          ></el-menu-item
+        >
+        <el-menu-item
+          ><RouterLink to="/user/challenges"
+            >Moje wyzwania</RouterLink
           ></el-menu-item
         >
         <el-menu-item
@@ -156,11 +159,7 @@ window.addEventListener("resize", checkMobile);
               >Recenzje</RouterLink
             ></el-menu-item
           >
-          <el-menu-item
-            ><RouterLink to="/user/challenges" @click="drawer = false"
-              >Wyzwania</RouterLink
-            ></el-menu-item
-          >
+
           <el-menu-item
             ><RouterLink to="/user/history" @click="drawer = false"
               >Historia tras</RouterLink
@@ -169,6 +168,11 @@ window.addEventListener("resize", checkMobile);
           <el-menu-item
             ><RouterLink to="/user/saved-routes" @click="drawer = false"
               >Zapisane trasy</RouterLink
+            ></el-menu-item
+          >
+          <el-menu-item
+            ><RouterLink to="/user/challenges" @click="drawer = false"
+              >Moje wyzwania</RouterLink
             ></el-menu-item
           >
           <el-menu-item

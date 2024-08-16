@@ -79,6 +79,19 @@ function getRoundedProgress(progress) {
   return Math.round(progress);
 }
 
+async function deleteUserChallenge(id) {
+  const payload = {
+    userID: globalStore.userID,
+    challengeID: id,
+  };
+  try {
+    const response = await api.challenges.deleteUserChallenge(payload);
+    window.location.reload();
+  } catch (error) {
+    ElMessage.error("Błąd podczas anulowania wyzwania");
+  }
+}
+
 onMounted(() => {
   if (globalStore.token) {
     challengesList();
@@ -109,7 +122,7 @@ onMounted(() => {
               <span class="challenges-title">{{ item.name }}</span>
             </RouterLink>
           </template>
-          <div v-if="!getChallengeStatus(item.id)">
+          <div class="start-challenge" v-if="!getChallengeStatus(item.id)">
             <el-button
               class="btn-primary"
               @click="
@@ -146,6 +159,11 @@ onMounted(() => {
               <div class="progress-statuses">
                 <el-tag type="warning" class="challenge-status__in-progress"
                   >W trakcie wyzwania</el-tag
+                >
+              </div>
+              <div class="delete-challenge-button">
+                <el-button @click="deleteUserChallenge(item.id)"
+                  >Anuluj</el-button
                 >
               </div>
             </div>
@@ -225,7 +243,15 @@ onMounted(() => {
   align-items: center;
   height: 200px;
 }
-
+.delete-challenge-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+.start-challenge {
+  display: flex;
+  justify-content: center;
+}
 @media (max-width: 768px) {
   .main-title {
     font-size: 24px;

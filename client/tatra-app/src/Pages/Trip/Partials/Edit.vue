@@ -77,7 +77,7 @@ async function loadUserTrails() {
 
 onMounted(async () => {
   await Promise.all([loadTrip(), loadTrails(), loadUserTrails()]);
-  isLoading.value = false; // Ustawienie zakończenia ładowania
+  isLoading.value = false;
 });
 
 const selectedDays = computed(() => {
@@ -87,7 +87,6 @@ const selectedDays = computed(() => {
   );
 });
 
-// Dodanie pustej trasy przy zmianie ilości dni
 watch(
   () => form.value.days,
   (newDays) => {
@@ -99,6 +98,7 @@ watch(
             routeID: "",
             status: "planned",
             routeDist: 0,
+            routeTime: "",
             trailName: "",
             timeStart: null,
             timeEnd: null,
@@ -114,6 +114,7 @@ const addRoute = (dayIndex) => {
     routeID: "",
     status: "planned",
     routeDist: 0,
+    routeTime: "",
     trailName: "",
     timeStart: null,
     timeEnd: null,
@@ -130,6 +131,7 @@ const updateRouteData = (dayIndex, routeIndex) => {
     form.value.trips[dayIndex][routeIndex].routeDist =
       selectedRoute.route_length;
     form.value.trips[dayIndex][routeIndex].trailName = selectedRoute.trail_name;
+    form.value.trips[dayIndex][routeIndex].routeTime = selectedRoute.route_time;
   }
 };
 

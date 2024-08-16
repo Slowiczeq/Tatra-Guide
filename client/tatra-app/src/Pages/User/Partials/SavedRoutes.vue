@@ -129,7 +129,7 @@ const savedTrails = computed(() => {
             prop="difficultyLevel"
             label="Poziom trudności"
           ></el-table-column>
-          <el-table-column width="150" label="Akcje">
+          <el-table-column width="150" label="">
             <template #default="{ row }">
               <el-button
                 type="danger"

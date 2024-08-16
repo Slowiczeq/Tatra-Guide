@@ -20,7 +20,7 @@ const id = route.params.id;
 
 let challengesListData = ref([]);
 let userChallenges = ref([]);
-let isLoading = ref(true); // Dodano zmienną śledzącą stan ładowania
+let isLoading = ref(true);
 
 async function challengesList() {
   try {
@@ -30,7 +30,7 @@ async function challengesList() {
   } catch (error) {
     ElMessage.error("Błąd ładowania wyzwania");
   } finally {
-    isLoading.value = false; // Zakończenie ładowania
+    isLoading.value = false;
   }
 }
 
@@ -84,6 +84,19 @@ function getRoundedProgress(progress) {
   return Math.round(progress);
 }
 
+async function deleteUserChallenge(id) {
+  const payload = {
+    userID: globalStore.userID,
+    challengeID: id,
+  };
+  try {
+    const response = await api.challenges.deleteUserChallenge(payload);
+    window.location.reload();
+  } catch (error) {
+    ElMessage.error("Błąd podczas anulowania wyzwania");
+  }
+}
+
 onMounted(() => {
   if (globalStore.token) {
     challengesList();
@@ -95,7 +108,11 @@ onMounted(() => {
   <div class="container">
     <Auth v-if="!globalStore.token" />
     <div class="challenges-container" v-else>
-      <span class="main-title challenges-main-title">Szczegóły wyzwania</span>
+      <span
+        v-if="challengesListData.length > 0"
+        class="main-title challenges-main-title"
+        >{{ challengesListData[0].name }}</span
+      >
 
       <div v-if="isLoading" class="loading-container">
         <el-icon class="is-loading">
@@ -110,7 +127,7 @@ onMounted(() => {
           class="challenges-item"
         >
           <template #header>
-            <span class="challenges-title">{{ item.name }}</span>
+            <span class="challenges-title">Szczegóły wyzwania</span>
             <span class="challenges-details">{{ item.description }}</span>
           </template>
           <div
@@ -153,6 +170,11 @@ onMounted(() => {
               <div class="progress-statuses">
                 <el-tag type="warning" class="challenge-status__in-progress"
                   >W trakcie wyzwania</el-tag
+                >
+              </div>
+              <div class="delete-challenge-button">
+                <el-button @click="deleteUserChallenge(item.id)"
+                  >Anuluj</el-button
                 >
               </div>
             </div>
@@ -234,6 +256,11 @@ onMounted(() => {
   height: 200px;
 }
 
+.delete-challenge-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
 @media (max-width: 768px) {
   .main-title {
     font-size: 24px;

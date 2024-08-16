@@ -341,7 +341,6 @@ app.post("/api/trails/delete", async (req, res) => {
 
     await client.query("BEGIN");
 
-    // Usuń trasę użytkownika
     const deleteUserTrailQuery = `
       DELETE FROM "User_trails"
       WHERE "userID" = $1 AND "routeID" = $2
@@ -350,7 +349,6 @@ app.post("/api/trails/delete", async (req, res) => {
 
     const deleteResult = await client.query(deleteUserTrailQuery, deleteValues);
 
-    // Pobierz zaktualizowaną listę tras użytkownika
     const getUserTrailsQuery = `
       SELECT *
       FROM "User_trails"
@@ -447,6 +445,35 @@ app.post("/api/challenges/start", async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).send("Server error");
+  }
+});
+
+app.post("/api/challenges/delete", async (req, res) => {
+  const { userID, challengeID } = req.body;
+  let client;
+
+  try {
+    client = await pool.connect();
+    const deleteChallengeQuery = `
+      DELETE FROM "User_challenges"
+      WHERE "userID" = $1 AND "challengeID" = $2
+      RETURNING *`;
+    const values = [userID, challengeID];
+
+    const result = await client.query(deleteChallengeQuery, values);
+
+    if (result.rows.length === 0) {
+      return res.status(404).send("Wyzwanie nie zostało znalezione.");
+    }
+
+    res.status(200).send({ message: "Wyzwanie zostało pomyślnie usunięte." });
+  } catch (error) {
+    console.error("Błąd podczas usuwania wyzwania:", error);
+    res.status(500).send("Wystąpił błąd serwera.");
+  } finally {
+    if (client) {
+      client.release();
+    }
   }
 });
 
