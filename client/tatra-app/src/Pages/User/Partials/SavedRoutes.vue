@@ -137,7 +137,7 @@ const savedTrails = computed(() => {
             align="center"
             label="Poziom trudności"
           ></el-table-column>
-          <el-table-column width="70" label="">
+          <el-table-column width="80" label="">
             <template #default="{ row }">
               <el-button
                 type="danger"
