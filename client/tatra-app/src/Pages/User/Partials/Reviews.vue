@@ -19,7 +19,7 @@ const globalStore = useGlobalStore();
 
 let userData = ref(null);
 const isMobile = ref(window.innerWidth < 768);
-let isLoading = ref(true); // Dodano zmienną śledzącą stan ładowania
+let isLoading = ref(true);
 
 window.addEventListener("resize", () => {
   isMobile.value = window.innerWidth < 768;
@@ -33,7 +33,7 @@ async function loadData() {
     } catch (error) {
       ElMessage.error("Błąd ładowania danych");
     } finally {
-      isLoading.value = false; // Zakończenie ładowania
+      isLoading.value = false;
     }
   }
 }

@@ -27,7 +27,7 @@ const id = route.params.id;
 const tripData = ref(null);
 const trailsData = ref([]);
 const userTrailsData = ref([]);
-const isLoading = ref(true); // Zmienna do śledzenia stanu ładowania
+const isLoading = ref(true);
 const form = ref({
   name: "",
   days: 1,

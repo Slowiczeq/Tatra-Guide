@@ -17,7 +17,6 @@ async function loadTrails() {
     const response = await api.trails.loadTrails();
     trailsData.value = response.data;
   } catch (error) {
-    // ElMessage.error("Błąd ładowania listy tras");
   } finally {
     isLoading.value = false;
   }

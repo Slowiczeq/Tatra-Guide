@@ -17,7 +17,6 @@ export const useGlobalStore = defineStore("globalStore", {
       this.loginModalActive = false;
     },
     userLogged(data) {
-      console.log(data);
       this.userID = data.id;
       this.userFirstName = data.firstName;
       this.userLastName = data.lastName;

@@ -63,7 +63,7 @@ async function submitComment() {
     ElMessage.success("Komentarz został dodany!");
     showCommentDialog.value = false;
     comment.value = "";
-    loadComments(); // Ponowne załadowanie komentarzy po dodaniu nowego
+    loadComments();
   } catch (error) {
     ElMessage.error("Błąd podczas dodawania komentarza");
   }
@@ -208,7 +208,6 @@ onMounted(() => {
   display: block;
 }
 
-/* Stylizacja sekcji komentarzy */
 .comments-section {
   margin-top: 40px;
   padding-top: 20px;

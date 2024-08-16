@@ -176,10 +176,8 @@ async function saveTrip() {
     trips: form.value.trips,
     name: form.value.name,
   };
-  console.log(payload);
   try {
     const response = await api.trip.startNewTrip(payload);
-    console.log(response.data);
     ElMessage.success("Wycieczka zapisana pomyślnie");
     router.push("/user/trips");
   } catch (error) {

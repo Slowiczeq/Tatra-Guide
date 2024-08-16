@@ -286,7 +286,7 @@ const findAndOpenMarker = (trailId) => {
       if (marker) {
         updatePopup(marker, peak);
         marker.openPopup();
-        selectedTrailId.value = trailId; // Ustawianie wartości w el-select
+        selectedTrailId.value = trailId;
         return;
       }
     }
@@ -485,10 +485,7 @@ function filterTrails(query) {
           </template>
         </el-dropdown>
         <el-dropdown trigger="click">
-          <el-button type="primary">
-            Poziom zaawansowania
-            <!-- <el-icon class="el-icon--right"><arrow-down /></el-icon> -->
-          </el-button>
+          <el-button type="primary"> Poziom zaawansowania </el-button>
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item>
@@ -574,9 +571,7 @@ function filterTrails(query) {
                 @click="handleListItemClick(item.id)"
               >
                 <div class="list-item-link">
-                  <div class="list-item-header">
-                    <!-- <img src="../../assets/img/route-img.png" alt="trasa" /> -->
-                  </div>
+                  <div class="list-item-header"></div>
                   <div class="list-item-main">
                     <span class="item-title">{{ item.trail_name }}</span>
                     <span class="item-text">{{ item.mountain_range }}</span>

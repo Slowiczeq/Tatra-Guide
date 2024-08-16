@@ -43,7 +43,6 @@ async function loadTrail() {
     const response = await api.trails.loadTrail(id);
     trailData.value = response.data;
     await checkUser();
-    console.log(userTrailInfo.value);
   } catch (error) {
     ElMessage.error("Błąd ładowania trasy");
   } finally {

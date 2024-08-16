@@ -9,18 +9,17 @@ import { Loading } from "@element-plus/icons-vue";
 const globalStore = useGlobalStore();
 
 let userData = ref(null);
-let isLoading = ref(true); // Dodano zmienną śledzącą stan ładowania
+let isLoading = ref(true);
 
 async function loadData() {
   if (globalStore.token) {
     try {
       const response = await api.auth.userInfo(globalStore.userID);
       userData.value = response.data;
-      console.log(userData.value);
     } catch (error) {
       ElMessage.error("Błąd ładowania danych");
     } finally {
-      isLoading.value = false; // Zakończenie ładowania
+      isLoading.value = false;
     }
   }
 }

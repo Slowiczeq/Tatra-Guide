@@ -129,12 +129,8 @@ function getImageUrl(imageName) {
     <div v-else class="discover-page">
       <span class="filters-title">Dostosuj filtry</span>
       <div class="filters">
-        <!-- Filters content here -->
         <el-dropdown trigger="click">
-          <el-button type="primary">
-            Pasmo górskie
-            <!-- <el-icon class="el-icon--right"><arrow-down /></el-icon> -->
-          </el-button>
+          <el-button type="primary"> Pasmo górskie </el-button>
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item>
@@ -159,10 +155,7 @@ function getImageUrl(imageName) {
         </el-dropdown>
 
         <el-dropdown trigger="click">
-          <el-button type="primary">
-            Czas trasy
-            <!-- <el-icon class="el-icon--right"><arrow-down /></el-icon> -->
-          </el-button>
+          <el-button type="primary"> Czas trasy </el-button>
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item>
@@ -184,10 +177,7 @@ function getImageUrl(imageName) {
         </el-dropdown>
 
         <el-dropdown trigger="click">
-          <el-button type="primary">
-            Długość trasy
-            <!-- <el-icon class="el-icon--right"><arrow-down /></el-icon> -->
-          </el-button>
+          <el-button type="primary"> Długość trasy </el-button>
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item>
@@ -209,10 +199,7 @@ function getImageUrl(imageName) {
         </el-dropdown>
 
         <el-dropdown trigger="click">
-          <el-button type="primary">
-            Przewyższenie
-            <!-- <el-icon class="el-icon--right"><arrow-down /></el-icon> -->
-          </el-button>
+          <el-button type="primary"> Przewyższenie </el-button>
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item>
@@ -234,10 +221,7 @@ function getImageUrl(imageName) {
         </el-dropdown>
 
         <el-dropdown trigger="click">
-          <el-button type="primary">
-            Poziom trudności
-            <!-- <el-icon class="el-icon--right"><arrow-down /></el-icon> -->
-          </el-button>
+          <el-button type="primary"> Poziom trudności </el-button>
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item>
@@ -266,10 +250,7 @@ function getImageUrl(imageName) {
         </el-dropdown>
 
         <el-dropdown trigger="click">
-          <el-button type="primary">
-            Poziom zaawansowania
-            <!-- <el-icon class="el-icon--right"><arrow-down /></el-icon> -->
-          </el-button>
+          <el-button type="primary"> Poziom zaawansowania </el-button>
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item>
@@ -295,10 +276,7 @@ function getImageUrl(imageName) {
         </el-dropdown>
 
         <el-dropdown trigger="click">
-          <el-button type="primary">
-            Więcej filtrów
-            <!-- <el-icon class="el-icon--right"><arrow-down /></el-icon> -->
-          </el-button>
+          <el-button type="primary"> Więcej filtrów </el-button>
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item class="more-filters">

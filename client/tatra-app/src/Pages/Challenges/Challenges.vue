@@ -17,7 +17,7 @@ const globalStore = useGlobalStore();
 
 let challengesListData = ref([]);
 let userChallenges = ref([]);
-let isLoading = ref(true); // Dodano zmienną śledzącą stan ładowania
+let isLoading = ref(true);
 
 async function challengesList() {
   try {
@@ -27,7 +27,7 @@ async function challengesList() {
   } catch (error) {
     ElMessage.error("Błąd ładowania listy wyzwań");
   } finally {
-    isLoading.value = false; // Zakończenie ładowania
+    isLoading.value = false;
   }
 }
 

@@ -23,7 +23,7 @@ const globalStore = useGlobalStore();
 
 let tripsData = ref([]);
 const isMobile = ref(window.innerWidth < 768);
-const isLoading = ref(true); // Dodano zmienną śledzącą stan ładowania
+const isLoading = ref(true);
 
 window.addEventListener("resize", () => {
   isMobile.value = window.innerWidth < 768;
@@ -40,7 +40,7 @@ async function loadTrips() {
   } catch (error) {
     ElMessage.error("Błąd ładowania wycieczek użytkownika");
   } finally {
-    isLoading.value = false; // Zakończenie ładowania
+    isLoading.value = false;
   }
 }
 
