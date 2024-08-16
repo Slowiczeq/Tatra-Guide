@@ -93,7 +93,7 @@ async function saveTrail(id, dist) {
     const response = await api.trails.saveTrail(payload);
     userTrailInfo.value = response.data;
     isTrailSaved.value = true;
-    ElMessage.success("Trasa zapisana!");
+    ElMessage.success("Trasa dodana do ulubionych");
   } catch (error) {
     ElMessage.error("Błąd podczas zapisywania trasy");
   }
@@ -108,7 +108,7 @@ async function deleteTrail(id) {
     const response = await api.trails.deleteTrail(payload);
     userTrailInfo.value = response.data;
     isTrailSaved.value = false;
-    ElMessage.success("Trasa usunięta!");
+    ElMessage.success("Trasa usunięta z ulubionych");
   } catch (error) {
     ElMessage.error("Błąd podczas usuwania trasy");
   }
@@ -242,16 +242,16 @@ function getImageUrl(imageName) {
           <div class="action-buttons">
             <el-button
               v-if="!isTrailSaved"
-              class="btn-primary"
+              class="button-fav"
               @click="saveTrail(trailData[0].id)"
-              >Zapisz trasę</el-button
-            >
+              ><img src="../../assets/img/not-fav.svg"
+            /></el-button>
             <el-button
               v-if="isTrailSaved"
-              class="btn-primary"
+              class="button-fav is-fav"
               @click="deleteTrail(trailData[0].id)"
-              >Usuń</el-button
-            >
+              ><img src="../../assets/img/fav.svg"
+            /></el-button>
           </div>
           <div class="review-section">
             <el-button class="btn-primary" @click="openReviewDialog"
@@ -481,5 +481,17 @@ function getImageUrl(imageName) {
   .item-details-description {
     padding: 0;
   }
+}
+.button-fav {
+  border-radius: 50%;
+  height: 45px;
+  width: 45px;
+  border: unset;
+  background: transparent;
+}
+
+.button-fav img {
+  width: 20px;
+  filter: drop-shadow(2px 4px 6px black);
 }
 </style>

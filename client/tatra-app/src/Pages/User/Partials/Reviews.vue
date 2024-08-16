@@ -150,7 +150,8 @@ function renderStars(rating) {
 .header {
   font-size: 18px;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+  text-align: center;
 }
 .reviews-card {
   margin-bottom: 20px;

@@ -564,7 +564,6 @@ app.post("/api/trip/endRoute", async (req, res) => {
 
     await client.query("BEGIN");
 
-    // Update the route status to 'ended' and set userTime, timeStart, and timeEnd
     const queryText = `
       UPDATE "User_trips"
       SET trips = jsonb_set(
@@ -603,7 +602,6 @@ app.post("/api/trip/endRoute", async (req, res) => {
     const route = trip.trips[dayIndex][routeIndex];
     const routeDist = parseFloat(route.routeDist);
 
-    // Update user's challenges
     const userChallengesQuery = `
       SELECT * FROM "User_challenges"
       WHERE "userID" = $1`;
@@ -697,7 +695,6 @@ app.post("/api/trip/endRoute", async (req, res) => {
       }
     }
 
-    // Check if all routes are ended, and update trip status if necessary
     let allRoutesEnded = true;
     for (let day of trip.trips) {
       for (let route of day) {
@@ -920,18 +917,32 @@ app.post("/api/trip/update", async (req, res) => {
       if (challengeProgress >= parseFloat(challenge.challengeValue)) {
         challenge.status = "zakończono";
         challengeProgress = parseFloat(challenge.challengeValue);
-      }
 
-      const updateChallengeQuery = `
-        UPDATE "User_challenges"
-        SET "challangeProgress" = $1, "challangeProgressAfter" = $2, "status" = $3
-        WHERE "id" = $4`;
-      await client.query(updateChallengeQuery, [
-        challengeProgress,
-        challengeProgressAfter,
-        challenge.status,
-        challenge.id,
-      ]);
+        // Ustawienie timeEnd na aktualny czas
+        const timeEnd = new Date().toISOString();
+        const updateChallengeQuery = `
+          UPDATE "User_challenges"
+          SET "challangeProgress" = $1, "challangeProgressAfter" = $2, "status" = $3, "timeEnd" = $4
+          WHERE "id" = $5`;
+        await client.query(updateChallengeQuery, [
+          challengeProgress,
+          challengeProgressAfter,
+          challenge.status,
+          timeEnd,
+          challenge.id,
+        ]);
+      } else {
+        const updateChallengeQuery = `
+          UPDATE "User_challenges"
+          SET "challangeProgress" = $1, "challangeProgressAfter" = $2, "status" = $3
+          WHERE "id" = $4`;
+        await client.query(updateChallengeQuery, [
+          challengeProgress,
+          challengeProgressAfter,
+          challenge.status,
+          challenge.id,
+        ]);
+      }
     }
 
     await client.query("COMMIT");
@@ -959,7 +970,6 @@ app.post("/api/trip/delete", async (req, res) => {
 
     await client.query("BEGIN");
 
-    // Pobierz oryginalną wycieczkę
     const originalTripQuery = `
       SELECT * FROM "User_trips"
       WHERE "id" = $1`;
@@ -973,7 +983,6 @@ app.post("/api/trip/delete", async (req, res) => {
     const originalTrip = originalTripResult.rows[0];
     const originalTrips = originalTrip.trips;
 
-    // Oblicz liczbę zakończonych tras i dystans
     const originalEndedCount = originalTrips
       .flat()
       .filter((route) => route.status === "ended").length;
@@ -982,13 +991,11 @@ app.post("/api/trip/delete", async (req, res) => {
       .filter((route) => route.status === "ended")
       .reduce((sum, route) => sum + parseFloat(route.routeDist), 0);
 
-    // Usuń wycieczkę
     const deleteTripQuery = `
       DELETE FROM "User_trips"
       WHERE "id" = $1`;
     await client.query(deleteTripQuery, [tripID]);
 
-    // Aktualizuj wyzwania użytkownika
     const userChallengesQuery = `
       SELECT * FROM "User_challenges"
       WHERE "userID" = $1`;
@@ -1061,13 +1068,11 @@ app.post("/api/trails/user-trails", async (req, res) => {
   try {
     client = await pool.connect();
 
-    // Query to get all trails assigned to the user
     const userTrailsQuery = `
       SELECT * FROM "User_trails"
       WHERE "userID" = $1`;
     const userTrailsResult = await client.query(userTrailsQuery, [userID]);
 
-    // Send the user trails as the response
     res.status(200).send(userTrailsResult.rows);
   } catch (error) {
     console.error("Error fetching user trails:", error);
