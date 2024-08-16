@@ -255,7 +255,7 @@ function getImageUrl(imageName) {
           </div>
           <div class="review-section">
             <el-button class="btn-primary" @click="openReviewDialog"
-              >Napisz swoją opinię</el-button
+              >Napisz opinię</el-button
             >
           </div>
         </div>

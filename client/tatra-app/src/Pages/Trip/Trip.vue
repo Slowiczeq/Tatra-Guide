@@ -277,7 +277,10 @@ async function saveTrip() {
           </div>
         </el-form>
         <div class="save-trip-button">
-          <el-button :disabled="!isFormValid" type="primary" @click="saveTrip"
+          <el-button
+            :disabled="!isFormValid"
+            class="btn-primary"
+            @click="saveTrip"
             >Zapisz wycieczkę</el-button
           >
         </div>

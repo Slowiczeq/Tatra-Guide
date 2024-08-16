@@ -486,13 +486,13 @@ function filterTrails(query) {
                     <!-- <img src="../../assets/img/route-img.png" alt="trasa" /> -->
                   </div>
                   <div class="list-item-main">
-                    <el-tag :type="getDifficultyColor(item.difficulty_level)">
-                      {{ item.difficulty_level }}
-                    </el-tag>
                     <span class="item-title">{{ item.trail_name }}</span>
                     <span class="item-text">{{ item.mountain_range }}</span>
                     <span class="item-text">
-                      {{ item.route_length }} - {{ item.route_time }}
+                      {{ item.route_length }}km - {{ item.route_time }} -
+                      <el-tag :type="getDifficultyColor(item.difficulty_level)">
+                        {{ item.difficulty_level }}
+                      </el-tag>
                     </span>
                   </div>
                   <div class="list-item-footer"></div>

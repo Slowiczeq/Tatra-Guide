@@ -17,6 +17,7 @@ import Reviews from "../Pages/User/Partials/Reviews.vue";
 import UserChallenges from "../Pages/User/Partials/Challenges.vue";
 import RoutesHistory from "../Pages/User/Partials/RoutesHistory.vue";
 import UserTrips from "../Pages/User/Partials/Trips.vue";
+import SavedRoutes from "../Pages/User/Partials/SavedRoutes.vue";
 import EditTrip from "../Pages/Trip/Partials/Edit.vue";
 import Trip from "../Pages/Trip/Trip.vue";
 
@@ -52,6 +53,12 @@ const router = createRouter({
       path: "/user/trips/:id",
       name: "user-trips-edit",
       component: EditTrip,
+    },
+
+    {
+      path: "/user/saved-routes",
+      name: "user-saved-routes",
+      component: SavedRoutes,
     },
 
     {

@@ -41,7 +41,7 @@ window.addEventListener("resize", checkMobile);
         <RouterLink to="/challenges">Podejmij wyzwanie</RouterLink>
       </el-menu-item>
       <el-menu-item style="margin-left: auto">
-        <RouterLink to="blog">Blog</RouterLink>
+        <RouterLink to="/blog">Blog</RouterLink>
       </el-menu-item>
 
       <el-sub-menu v-if="globalStore.token">
@@ -61,6 +61,11 @@ window.addEventListener("resize", checkMobile);
         <el-menu-item
           ><RouterLink to="/user/history"
             >Historia tras</RouterLink
+          ></el-menu-item
+        >
+        <el-menu-item
+          ><RouterLink to="/user/saved-routes" @click="drawer = false"
+            >Zapisane trasy</RouterLink
           ></el-menu-item
         >
         <el-menu-item
@@ -159,6 +164,11 @@ window.addEventListener("resize", checkMobile);
           <el-menu-item
             ><RouterLink to="/user/history" @click="drawer = false"
               >Historia tras</RouterLink
+            ></el-menu-item
+          >
+          <el-menu-item
+            ><RouterLink to="/user/saved-routes" @click="drawer = false"
+              >Zapisane trasy</RouterLink
             ></el-menu-item
           >
           <el-menu-item

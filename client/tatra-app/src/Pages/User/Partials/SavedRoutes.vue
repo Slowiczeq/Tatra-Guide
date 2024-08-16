@@ -8,6 +8,7 @@ import {
   ElTable,
   ElTableColumn,
   ElIcon,
+  ElButton,
 } from "element-plus";
 import { format } from "date-fns";
 import Auth from "../../../components/Login/Auth.vue";
@@ -16,12 +17,14 @@ import { Loading } from "@element-plus/icons-vue";
 
 const globalStore = useGlobalStore();
 
+let userTrailsData = ref([]);
 let userData = ref(null);
+
 const isLoading = ref(true);
-const isMobile = ref(window.innerWidth < 768);
+const isMobile = ref(window.innerWidth < 1040);
 
 window.addEventListener("resize", () => {
-  isMobile.value = window.innerWidth < 768;
+  isMobile.value = window.innerWidth < 1040;
 });
 
 async function loadData() {
@@ -37,35 +40,56 @@ async function loadData() {
   }
 }
 
+async function loadUserTrails() {
+  if (globalStore.token) {
+    try {
+      const payload = { userID: globalStore.userID };
+      const response = await api.trails.userTrails(payload);
+      userTrailsData.value = response.data;
+    } catch (error) {
+      ElMessage.error("Błąd ładowania tras użytkownika");
+    }
+  }
+}
+
+async function deleteTrail(id) {
+  const payload = {
+    userID: globalStore.userID,
+    routeID: id,
+  };
+  try {
+    const response = await api.trails.deleteTrail(payload);
+    userTrailsData.value = response.data;
+    ElMessage.success("Trasa usunięta");
+  } catch (error) {
+    ElMessage.error("Błąd podczas usuwania trasy");
+  }
+}
+
 onMounted(() => {
   loadData();
+  loadUserTrails();
 });
 
-const getTrailName = (routeID) => {
+const getTrailInfo = (routeID, field) => {
   if (userData.value && userData.value.hikingTrails) {
     const trail = userData.value.hikingTrails.find(
       (trail) => trail.id == routeID
     );
-    return trail ? trail.trail_name : "Nieznana trasa";
+    return trail ? trail[field] : "N/A";
   }
-  return "Nieznana trasa";
+  return "N/A";
 };
 
-const formatDate = (dateString) => {
-  return dateString ? format(new Date(dateString), "yyyy-MM-dd HH:mm") : "N/A";
-};
-
-const formatUserTime = (timeString) => {
-  return timeString ? format(new Date(timeString), "HH:mm:ss") : "N/A";
-};
-
-const completedTrails = computed(() => {
-  if (!userData.value) return [];
-  return userData.value.userTrips.flatMap((trip) => {
-    return trip.trips.flatMap((routes) => {
-      return routes.filter((route) => route.status === "ended");
-    });
-  });
+const savedTrails = computed(() => {
+  if (!userTrailsData.value || !userData.value) return [];
+  return userTrailsData.value.map((trail) => ({
+    ...trail,
+    trailName: getTrailInfo(trail.routeID, "trail_name"),
+    routeDist: getTrailInfo(trail.routeID, "route_length"),
+    routeTime: getTrailInfo(trail.routeID, "route_time"),
+    difficultyLevel: getTrailInfo(trail.routeID, "difficulty_level"),
+  }));
 });
 </script>
 
@@ -73,24 +97,20 @@ const completedTrails = computed(() => {
   <div class="container">
     <Auth v-if="!globalStore.token" />
     <div v-else>
-      <el-card class="completed-trails-card">
+      <el-card class="saved-trails-card">
         <template #header>
-          <div class="header">Ukończone trasy</div>
+          <div class="header">Zapisane trasy</div>
         </template>
         <div v-if="isLoading" class="loading-container">
           <el-icon class="is-loading">
             <Loading />
           </el-icon>
         </div>
-        <el-table
-          v-else-if="!isMobile"
-          :data="completedTrails"
-          style="width: 100%"
-        >
+        <el-table v-else-if="!isMobile" :data="savedTrails" style="width: 100%">
           <el-table-column width="190" prop="trailName" label="Nazwa trasy">
             <template #default="{ row }">
               <RouterLink :to="`/route/${row.routeID}`">
-                {{ getTrailName(row.routeID) }}
+                {{ row.trailName }}
               </RouterLink>
             </template>
           </el-table-column>
@@ -104,33 +124,43 @@ const completedTrails = computed(() => {
             prop="routeTime"
             label="Średni czas"
           ></el-table-column>
-          <el-table-column width="190" label="Mój czas">
-            <template #default="{ row }">
-              {{ row.userTime }}
-            </template>
-          </el-table-column>
           <el-table-column
             width="190"
-            prop="timeEnd"
-            label="Czas zakończenia"
-            :formatter="(row) => formatDate(row.timeEnd)"
+            prop="difficultyLevel"
+            label="Poziom trudności"
           ></el-table-column>
+          <el-table-column width="150" label="Akcje">
+            <template #default="{ row }">
+              <el-button
+                type="danger"
+                size="small"
+                @click="deleteTrail(row.routeID)"
+              >
+                Usuń
+              </el-button>
+            </template>
+          </el-table-column>
         </el-table>
-        <div v-else class="mobile-completed-trails">
-          <div v-for="trail in completedTrails" :key="trail.id" class="trail">
+        <div v-else class="mobile-saved-trails">
+          <div v-for="trail in savedTrails" :key="trail.routeID" class="trail">
             <p>
               <strong>Nazwa trasy: </strong>
               <RouterLink :to="`/route/${trail.routeID}`">{{
-                getTrailName(trail.routeID)
+                trail.trailName
               }}</RouterLink>
             </p>
             <p><strong>Dystans (km): </strong> {{ trail.routeDist }}</p>
             <p><strong>Średni czas: </strong> {{ trail.routeTime }}</p>
-            <p><strong>Mój czas: </strong> {{ trail.userTime }}</p>
             <p>
-              <strong>Czas zakończenia: </strong>
-              {{ formatDate(trail.timeEnd) }}
+              <strong>Poziom trudności: </strong> {{ trail.difficultyLevel }}
             </p>
+            <el-button
+              type="danger"
+              size="small"
+              @click="deleteTrail(trail.routeID)"
+            >
+              Usuń
+            </el-button>
           </div>
         </div>
       </el-card>
@@ -150,10 +180,7 @@ const completedTrails = computed(() => {
   margin-bottom: 10px;
   text-align: center;
 }
-.user-info-card,
-.completed-trails-card,
-.completed-trips-card,
-.started-trails-card {
+.saved-trails-card {
   margin-bottom: 20px;
 }
 .trail {
@@ -166,12 +193,12 @@ const completedTrails = computed(() => {
   align-items: center;
   height: 200px;
 }
-@media (max-width: 768px) {
+@media (max-width: 1040px) {
   .container {
     margin-top: 20px;
     margin-bottom: 20px;
   }
-  .mobile-completed-trails {
+  .mobile-saved-trails {
     display: block;
   }
   .el-table {
@@ -181,5 +208,8 @@ const completedTrails = computed(() => {
 a {
   color: #000;
   text-decoration: unset;
+}
+.mobile-saved-trails p {
+  margin-bottom: 5px;
 }
 </style>
