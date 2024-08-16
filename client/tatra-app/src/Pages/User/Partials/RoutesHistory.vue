@@ -99,19 +99,22 @@ const completedTrails = computed(() => {
             width="190"
             prop="routeDist"
             label="Dystans (km)"
+            align="center"
           ></el-table-column>
           <el-table-column
+            align="center"
             width="190"
             prop="routeTime"
             label="Średni czas"
           ></el-table-column>
-          <el-table-column width="190" label="Mój czas">
+          <el-table-column width="190" label="Mój czas" align="center">
             <template #default="{ row }">
               {{ row.userTime }}
             </template>
           </el-table-column>
           <el-table-column
             width="190"
+            align="center"
             prop="timeEnd"
             label="Data zakończenia"
             :formatter="(row) => formatDate(row.timeEnd)"

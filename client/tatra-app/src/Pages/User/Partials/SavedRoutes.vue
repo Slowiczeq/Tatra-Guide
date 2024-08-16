@@ -121,17 +121,20 @@ const savedTrails = computed(() => {
           </el-table-column>
           <el-table-column
             width="190"
+            align="center"
             prop="routeDist"
             label="Dystans (km)"
           ></el-table-column>
           <el-table-column
             width="190"
             prop="routeTime"
+            align="center"
             label="Średni czas"
           ></el-table-column>
           <el-table-column
             width="190"
             prop="difficultyLevel"
+            align="center"
             label="Poziom trudności"
           ></el-table-column>
           <el-table-column width="70" label="">

@@ -1084,6 +1084,59 @@ app.post("/api/trails/user-trails", async (req, res) => {
   }
 });
 
+app.post("/api/blog-comment/create", async (req, res) => {
+  const { userID, blogID, comment, userName, date } = req.body;
+  let client;
+
+  try {
+    client = await pool.connect();
+
+    const insertCommentQuery = `
+      INSERT INTO "Blog_comments" ("userID", "blogID", "comment", "userName", "date")
+      VALUES ($1, $2, $3, $4, $5)
+      RETURNING *`;
+    const values = [userID, blogID, comment, userName, date];
+
+    const result = await client.query(insertCommentQuery, values);
+
+    res.status(201).send(result.rows[0]);
+  } catch (error) {
+    console.error("Error creating review:", error);
+    res.status(500).send("Server error");
+  } finally {
+    if (client) {
+      client.release();
+    }
+  }
+});
+
+app.post("/api/blog/getByUser", async (req, res) => {
+  const { blogID } = req.body;
+  console.log(blogID);
+  let client;
+
+  try {
+    client = await pool.connect();
+
+    const getBlogQuery = `
+      SELECT *
+      FROM "Blog_comments"
+      WHERE "blogID" = $1`;
+    const values = [blogID];
+
+    const result = await client.query(getBlogQuery, values);
+
+    res.status(200).send(result.rows);
+  } catch (error) {
+    console.error("Error fetching reviews:", error);
+    res.status(500).send("Server error");
+  } finally {
+    if (client) {
+      client.release();
+    }
+  }
+});
+
 app.use(
   express.static(path.join(__dirname, "..", "client", "tatra-app", "dist"))
 );

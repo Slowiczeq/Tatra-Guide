@@ -95,7 +95,7 @@ function renderStars(rating) {
             </el-table-column>
             <el-table-column prop="content" label="Treść Recenzji" width="390">
             </el-table-column>
-            <el-table-column label="Ocena" width="190">
+            <el-table-column label="Ocena" width="190" align="center">
               <template #default="{ row }">
                 <div class="stars">
                   <el-icon
@@ -112,6 +112,7 @@ function renderStars(rating) {
               prop="date"
               label="Data"
               width="150"
+              align="center"
               :formatter="(row) => formatDate(row.date)"
             ></el-table-column>
           </el-table>
@@ -162,6 +163,7 @@ function renderStars(rating) {
 }
 .stars {
   display: flex;
+  justify-content: center;
 }
 .table-container {
   overflow-x: auto;

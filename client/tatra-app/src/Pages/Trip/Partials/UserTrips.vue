@@ -201,28 +201,30 @@ onMounted(() => {
               </el-table-column>
               <el-table-column
                 prop="routeDist"
+                align="center"
                 label="Dystans (km)"
               ></el-table-column>
               <el-table-column
                 prop="routeTime"
+                align="center"
                 label="Średni czas"
               ></el-table-column>
-              <el-table-column label="Mój czas">
+              <el-table-column label="Mój czas" align="center">
                 <template #default="{ row }"> {{ row.userTime }} </template>
               </el-table-column>
-              <el-table-column label="Status">
+              <el-table-column label="Status" align="center">
                 <template #default="{ row }">
                   {{ formatRouteStatus(row.status) }}
                 </template>
               </el-table-column>
-              <el-table-column label="Czas rozpoczęcia">
+              <el-table-column label="Czas rozpoczęcia" align="center">
                 <template #default="{ row }">
                   <span v-if="row.timeStart">{{
                     formatDateTime(row.timeStart)
                   }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="Czas zakończenia">
+              <el-table-column label="Czas zakończenia" align="center">
                 <template #default="{ row }">
                   <span v-if="row.timeEnd">{{
                     formatDateTime(row.timeEnd)
