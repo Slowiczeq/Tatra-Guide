@@ -74,6 +74,7 @@ onMounted(() => {
 
 .blog-details-img {
   border-radius: 24px;
+  width: 100%;
 }
 
 .blog-details-bottom {

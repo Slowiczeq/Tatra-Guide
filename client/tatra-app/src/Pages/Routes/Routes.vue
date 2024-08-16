@@ -70,7 +70,7 @@ const showRoute = (gpxFile) => {
         const bounds = e.target.getBounds();
         map.fitBounds(bounds, {
           padding: [50, 50],
-          maxZoom: 13,
+          maxZoom: 14,
         });
       })
       .addTo(map);
@@ -168,13 +168,13 @@ const updatePopup = (marker, peak) => {
   selectedTrailId.value = "";
 };
 
-const createCustomIcon = (peak) => {
+const createCustomIcon = (peak, routeCount) => {
   const iconHtml = `
     <div style="position: relative;">
       <img src="https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png" style="width: 25px; height: 41px;">
       ${
-        peak.routes && peak.routes.length > 1
-          ? `<div style="position: absolute; top: -5px; right: -10px; background: red; color: white; border-radius: 50%; padding: 2px 5px;">${peak.routes.length}</div>`
+        routeCount > 1
+          ? `<div style="position: absolute; top: -5px; right: -10px; background: red; color: white; border-radius: 50%; padding: 2px 5px;">${routeCount}</div>`
           : ""
       }
     </div>
@@ -192,7 +192,11 @@ const updateMapMarkers = () => {
   markers = [];
 
   peaks.forEach((peak) => {
-    const routesInRange = peak.routes.filter((route) => {
+    if (!peak.originalRoutes) {
+      peak.originalRoutes = [...peak.routes];
+    }
+
+    const filteredRoutes = peak.originalRoutes.filter((route) => {
       const routeLength = parseFloat(route.length);
       const routeTime = parseFloat(route.time);
       const routeElevation = parseFloat(route.elevation_gain);
@@ -218,11 +222,14 @@ const updateMapMarkers = () => {
       );
     });
 
-    if (routesInRange.length > 0) {
-      const icon = createCustomIcon(peak);
+    if (filteredRoutes.length > 0) {
+      const icon = createCustomIcon(peak, filteredRoutes.length);
       const marker = L.marker([peak.lat, peak.lng], { icon }).addTo(map);
       peak.marker = marker;
       markers.push(marker);
+
+      peak.routes = filteredRoutes;
+
       marker
         .bindPopup("", { keepInView: true })
         .on("click", () => {
