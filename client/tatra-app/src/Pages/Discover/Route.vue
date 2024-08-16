@@ -93,7 +93,7 @@ async function saveTrail(id, dist) {
     const response = await api.trails.saveTrail(payload);
     userTrailInfo.value = response.data;
     isTrailSaved.value = true;
-    ElMessage.success("Trasa dodana do ulubionych");
+    ElMessage.success("Trasa zapisana");
   } catch (error) {
     ElMessage.error("Błąd podczas zapisywania trasy");
   }
@@ -108,7 +108,7 @@ async function deleteTrail(id) {
     const response = await api.trails.deleteTrail(payload);
     userTrailInfo.value = response.data;
     isTrailSaved.value = false;
-    ElMessage.success("Trasa usunięta z ulubionych");
+    ElMessage.success("Trasa usunięta");
   } catch (error) {
     ElMessage.error("Błąd podczas usuwania trasy");
   }
