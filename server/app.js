@@ -142,6 +142,30 @@ app.post("/api/auth/user-login", async (req, res) => {
   }
 });
 
+function verifyToken(req, res, next) {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+
+  if (!token) {
+    return res
+      .status(401)
+      .send({ message: "Brak tokena, autoryzacja nieudana" });
+  }
+
+  jwt.verify(token, "secret", (err, user) => {
+    if (err) {
+      return res.status(403).send({ message: "Token jest nieprawidłowy" });
+    }
+
+    req.user = user;
+    next();
+  });
+}
+
+app.get("/api/auth/verify-token", verifyToken, (req, res) => {
+  res.send({ message: "Auth" });
+});
+
 app.get("/api/hiking-trails/list", (req, res) => {
   try {
     pool.connect(async (error, client, release) => {

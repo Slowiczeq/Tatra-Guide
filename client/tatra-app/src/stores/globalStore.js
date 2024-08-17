@@ -8,8 +8,12 @@ export const useGlobalStore = defineStore("globalStore", {
     userEmail: localStorage.getItem("userEmail"),
     token: localStorage.getItem("token"),
     loginModalActive: false,
+    tokenVerified: false,
   }),
   actions: {
+    setTokenVerified() {
+      this.tokenVerified = true;
+    },
     openLoginModal() {
       this.loginModalActive = true;
     },
@@ -39,6 +43,7 @@ export const useGlobalStore = defineStore("globalStore", {
       localStorage.removeItem("userLastName");
       localStorage.removeItem("userEmail");
       localStorage.removeItem("token");
+      this.tokenVerified = false;
       window.location.reload();
     },
   },
