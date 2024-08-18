@@ -10,7 +10,6 @@ import { useGlobalStore } from "./stores/globalStore";
 const globalStore = useGlobalStore();
 
 const verifyToken = async () => {
-  console.log("wykonuje sie");
   if (globalStore.token) {
     try {
       await api.auth.verifyToken();

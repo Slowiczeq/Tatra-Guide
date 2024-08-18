@@ -217,13 +217,13 @@ onMounted(() => {
                   {{ formatRouteStatus(row.status) }}
                 </template>
               </el-table-column>
-              <el-table-column label="Czas rozpoczęcia" align="center">
+              <!-- <el-table-column label="Czas rozpoczęcia" align="center">
                 <template #default="{ row }">
                   <span v-if="row.timeStart">{{
                     formatDateTime(row.timeStart)
                   }}</span>
                 </template>
-              </el-table-column>
+              </el-table-column> -->
               <el-table-column label="Czas zakończenia" align="center">
                 <template #default="{ row }">
                   <span v-if="row.timeEnd">{{
@@ -300,7 +300,7 @@ onMounted(() => {
       title="Zakończ trasę"
     >
       <el-form>
-        <el-form-item label="Czas użytkownika">
+        <el-form-item label="Czas przejścia">
           <el-time-select
             v-model="form.userTime"
             start="00:00"
@@ -309,14 +309,14 @@ onMounted(() => {
             placeholder="Wybierz czas"
           />
         </el-form-item>
-
+        <!-- 
         <el-form-item label="Data rozpoczęcia">
           <el-date-picker
             v-model="form.timeStart"
             type="date"
             placeholder="Wybierz datę"
           />
-        </el-form-item>
+        </el-form-item> -->
 
         <el-form-item label="Data zakończenia">
           <el-date-picker

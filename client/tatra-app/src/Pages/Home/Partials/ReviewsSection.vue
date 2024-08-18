@@ -28,7 +28,9 @@ const topThreeReviews = computed(() => {
     .slice(-3)
     .reverse()
     .map((review) => {
-      const trail = props.trailsData[review.routeID];
+      const trail = props.trailsData.find(
+        (trail) => trail.id == review.routeID
+      );
       return {
         ...review,
         trailName: trail ? trail.trail_name : "Nieznana trasa",

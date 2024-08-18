@@ -184,6 +184,37 @@ async function saveTrip() {
     ElMessage.error("Błąd podczas zapisywania wycieczki");
   }
 }
+
+function validateForm() {
+  if (!form.value.name) {
+    ElMessage.warning("Wpisz nazwę wycieczki");
+    return false;
+  }
+
+  for (let dayIndex = 0; dayIndex < form.value.days; dayIndex++) {
+    for (
+      let routeIndex = 0;
+      routeIndex < form.value.trips[dayIndex].length;
+      routeIndex++
+    ) {
+      const trip = form.value.trips[dayIndex][routeIndex];
+      if (!trip.routeID) {
+        ElMessage.warning(
+          `Wybierz trasę dla dnia ${dayIndex + 1}, trasa ${routeIndex + 1}`
+        );
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
+async function handleSaveTrip() {
+  if (validateForm()) {
+    await saveTrip();
+  }
+}
 </script>
 
 <template>
@@ -275,10 +306,7 @@ async function saveTrip() {
           </div>
         </el-form>
         <div class="save-trip-button">
-          <el-button
-            :disabled="!isFormValid"
-            class="btn-primary"
-            @click="saveTrip"
+          <el-button class="btn-primary" @click="handleSaveTrip"
             >Zapisz wycieczkę</el-button
           >
         </div>

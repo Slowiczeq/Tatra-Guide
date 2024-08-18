@@ -179,6 +179,43 @@ async function saveTrip() {
     ElMessage.error("Błąd podczas zapisywania wycieczki");
   }
 }
+
+function validateForm() {
+  if (!form.value.name) {
+    ElMessage.warning("Wpisz nazwę wycieczki");
+    return false;
+  }
+
+  for (let dayIndex = 0; dayIndex < form.value.days; dayIndex++) {
+    for (
+      let routeIndex = 0;
+      routeIndex < form.value.trips[dayIndex].length;
+      routeIndex++
+    ) {
+      const trip = form.value.trips[dayIndex][routeIndex];
+      if (!trip.routeID) {
+        ElMessage.warning(
+          `Wybierz trasę dla dnia ${dayIndex + 1}, trasa ${routeIndex + 1}`
+        );
+        return false;
+      }
+      if (!trip.status) {
+        ElMessage.warning(
+          `Wybierz status dla dnia ${dayIndex + 1}, trasa ${routeIndex + 1}`
+        );
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
+async function handleSaveTrip() {
+  if (validateForm()) {
+    await saveTrip();
+  }
+}
 </script>
 
 <template>
@@ -271,14 +308,13 @@ async function saveTrip() {
               </el-form-item>
             </div>
 
-            <div class="edit-big-box">
+            <div class="edit-small-box">
               <el-form-item
-                class="edit-big-box-element"
-                label="Czas użytkownika"
+                class="edit-small-box-element"
+                label="Czas przejścia"
               >
                 <el-time-select
                   v-model="form.trips[index][rIndex].userTime"
-                  style="width: 240px"
                   start="00:00"
                   step="00:01"
                   end="20:00"
@@ -286,7 +322,7 @@ async function saveTrip() {
                 />
               </el-form-item>
 
-              <el-form-item
+              <!-- <el-form-item
                 class="edit-big-box-element"
                 label="Data rozpoczęcia"
               >
@@ -295,13 +331,14 @@ async function saveTrip() {
                   type="date"
                   placeholder="Wybierz datę"
                 />
-              </el-form-item>
+              </el-form-item> -->
 
               <el-form-item
-                class="edit-big-box-element"
+                class="edit-small-box-element"
                 label="Data zakończenia"
               >
                 <el-date-picker
+                  style="width: 100%"
                   v-model="form.trips[index][rIndex].timeEnd"
                   type="date"
                   placeholder="Wybierz datę"
@@ -327,9 +364,9 @@ async function saveTrip() {
       </div>
     </el-form>
     <div class="save-trip-button">
-      <el-button :disabled="!isFormValid" class="btn-primary" @click="saveTrip"
-        >Zapisz wycieczkę</el-button
-      >
+      <el-button class="btn-primary" @click="handleSaveTrip">
+        Zapisz wycieczkę
+      </el-button>
     </div>
   </div>
 </template>
@@ -399,7 +436,7 @@ async function saveTrip() {
     display: flex;
   }
   .edit-big-box-element {
-    flex-basis: 33.33%;
+    flex-basis: 50%;
   }
   .edit-small-box {
     display: flex;
