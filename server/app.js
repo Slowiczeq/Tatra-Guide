@@ -48,9 +48,11 @@ app.post("/api/auth/register", async (req, res) => {
   try {
     const client = await pool.connect();
     try {
+      const email = req.body.email.toLowerCase();
+
       const emailCheck = await client.query(
         `SELECT * FROM "Users" WHERE "email" = $1`,
-        [req.body.email]
+        [email]
       );
 
       if (emailCheck.rows.length > 0) {
@@ -61,7 +63,7 @@ app.post("/api/auth/register", async (req, res) => {
 
       const result = await client.query(
         `INSERT INTO "Users" ("firstName", "lastName", "email", "password") VALUES ($1, $2, $3, $4) RETURNING *`,
-        [req.body.firstName, req.body.lastName, req.body.email, hashedPassword]
+        [req.body.firstName, req.body.lastName, email, hashedPassword]
       );
 
       const newUser = result.rows[0];
