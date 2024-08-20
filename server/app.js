@@ -742,7 +742,7 @@ app.post("/api/trip/endRoute", async (req, res) => {
 
     await client.query("COMMIT");
 
-    res.send(trip); // Sending the updated trip information
+    res.send(trip);
   } catch (error) {
     if (client) {
       await client.query("ROLLBACK");
@@ -944,7 +944,6 @@ app.post("/api/trip/update", async (req, res) => {
         challenge.status = "zakończono";
         challengeProgress = parseFloat(challenge.challengeValue);
 
-        // Ustawienie timeEnd na aktualny czas
         const timeEnd = new Date().toISOString();
         const updateChallengeQuery = `
           UPDATE "User_challenges"
